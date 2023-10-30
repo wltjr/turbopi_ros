@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
-    <link name="base_link"></link>
+	<xacro:include filename="colors.xacro" />
+	<xacro:include filename="turbopi_core.xacro" />
 
 </robot>
