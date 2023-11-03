@@ -9,6 +9,12 @@
         <origin xyz="-0.1 0 0"/>
     </joint>
     <link name="chassis">
+        <collision>
+            <origin xyz="0.0935 0 0.00" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.187 0.095 0.04"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.0935 0 0.00" rpy="0 0 0"/>
             <geometry>
@@ -26,6 +32,11 @@
         <axis xyz="0 0 1"/>
     </joint>
     <link name="front_left_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.0325" />
+            </geometry>
+        </collision>
         <visual>
             <geometry>
                 <cylinder length="0.03" radius="0.0325" />
@@ -42,6 +53,11 @@
         <axis xyz="0 0 -1"/>
     </joint>
     <link name="front_right_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.0325" />
+            </geometry>
+        </collision>
         <visual>
             <geometry>
                 <cylinder length="0.03" radius="0.0325" />
@@ -58,6 +74,11 @@
         <axis xyz="0 0 1"/>
     </joint>
     <link name="rear_left_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.0325" />
+            </geometry>
+        </collision>
         <visual>
             <geometry>
                 <cylinder length="0.03" radius="0.0325" />
@@ -74,6 +95,11 @@
         <axis xyz="0 0 -1"/>
     </joint>
     <link name="rear_right_wheel">
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.0325" />
+            </geometry>
+        </collision>
         <visual>
             <geometry>
                 <cylinder length="0.03" radius="0.0325" />
