@@ -22,6 +22,9 @@
             </geometry>
             <material name="white"/>
         </visual>
+        <xacro:inertial_box mass="0.5" x="0.187" y="0.095" z="0.04">
+            <origin xyz="0.0935 0 0.04675" rpy="0 0 0"/>
+        </xacro:inertial_box>
     </link>
 
     <!-- Front Left Wheel -->
@@ -43,6 +46,9 @@
             </geometry>
             <material name="yellow"/>
         </visual>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.0325">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
     </link>
 
     <!-- Front Right Wheel -->
@@ -64,6 +70,9 @@
             </geometry>
             <material name="yellow"/>
         </visual>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.0325">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
     </link>
 
     <!-- Rear Left Wheel -->
@@ -85,6 +94,9 @@
             </geometry>
             <material name="yellow"/>
         </visual>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.0325">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
     </link>
 
     <!-- Rear Right Wheel -->
@@ -106,6 +118,9 @@
             </geometry>
             <material name="yellow"/>
         </visual>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.0325">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
     </link>
 
 </robot>
