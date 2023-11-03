@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
 	<xacro:include filename="colors.xacro" />
+	<xacro:include filename="inertial_macros.xacro" />
 	<xacro:include filename="turbopi_core.xacro" />
 
 </robot>
