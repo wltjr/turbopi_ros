@@ -4,5 +4,6 @@
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
 	<xacro:include filename="turbopi_core.xacro" />
+	<xacro:include filename="gz_ros2_control.xacro" />
 
 </robot>
