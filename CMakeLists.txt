@@ -34,7 +34,7 @@ endif()
 # Install
 ################################################################################
 install(
-  DIRECTORY description launch2
+  DIRECTORY config description launch2 worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
