@@ -1,22 +1,34 @@
+# hardware_interface:
+#   ros__parameters:
+#     loop_hz: 10 # hz
+#     joints:
+#       - front_left_wheel_joint
+#       - front_right_wheel_joint
+#       - rear_left_wheel_joint
+#       - rear_right_wheel_joint
+#     sim_control_mode: 1
+
 controller_manager:
   ros__parameters:
-    update_rate: 30
+    update_rate: 10
 
-    diff_cont:
+    diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
-    
-    joint_broad:
+
+    joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-diff_cont:
+diff_drive_controller:
   ros__parameters:
-
-    publish_rate: 30.0
-    base_frame_id: base_link
-
     left_wheel_names: ['front_left_wheel_joint', 'rear_left_wheel_joint']
     right_wheel_names: ['front_right_wheel_joint', 'rear_right_wheel_joint']
+    wheels_per_side: 2
     wheel_separation: 0.192
     wheel_radius: 0.0325
+
+    odom_frame_id: odom
+    base_frame_id: base_link
+
+    enable_odom_tf: true
 
     use_stamped_vel: false
