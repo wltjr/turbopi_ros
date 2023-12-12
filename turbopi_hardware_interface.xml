@@ -1,0 +1,10 @@
+<library path="turbopi_hardware_interface">
+  <class name="turbopi_hardware_interface/TurboPiSystemHardware"
+         type="turbopi_hardware_interface::TurboPiSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      A ros2_control system hardware interface-type for TurboPi.
+      It uses velocity command and position state interfaces.
+    </description>
+  </class>
+</library>
