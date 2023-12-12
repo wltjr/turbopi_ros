@@ -30,9 +30,10 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "turbopi.hpp"
 #include "visibility_control.h"
 
-extern const auto CLASS_NAME = "TurboPiSystemHardware";
+const char* CLASS_NAME = "TurboPiSystemHardware";
 
 namespace turbopi_hardware_interface
 {
@@ -72,7 +73,8 @@ namespace turbopi_hardware_interface
         double hw_start_sec_;
         double hw_stop_sec_;
 
-        // store command for simulated robot
+        turbopi::TurboPi turbopi_;
+        std::vector<double> hw_effort_;
         std::vector<double> hw_commands_;
         std::vector<double> hw_positions_;
         std::vector<double> hw_velocities_;
