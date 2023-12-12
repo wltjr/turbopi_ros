@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
+	<xacro:arg name="use_mock_hardware" default="false" />
+
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
 	<xacro:include filename="turbopi_core.xacro" />
-	<xacro:include filename="gz_ros2_control.xacro" />
+	<xacro:include filename="ros2_control.xacro" />
+
+	<xacro:ros2_control use_mock_hardware="$(arg use_mock_hardware)"/>
 
 </robot>
