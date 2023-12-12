@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="ros2_control" params="use_mock_hardware">
+    <ros2_control name="ros2_control" type="system">
+       <xacro:unless value="${use_mock_hardware}">
+            <hardware>
+                <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
+                <param name="hw_start_duration_sec">1.0</param>
+                <param name="hw_stop_duration_sec">3.0</param>
+            </hardware>
+        </xacro:unless>
+        <xacro:if value="${use_mock_hardware}">
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+                <!-- <plugin>mock_components/GenericSystem</plugin>
+                <param name="calculate_dynamics">true</param> -->
+            </hardware>
+        </xacro:if>
+        <joint name="front_left_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="front_right_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="rear_left_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="rear_right_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+    </ros2_control>
+  </xacro:macro>
+    <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <robot_param>robot_description</robot_param>
+            <robot_param_node>robot_state_publisher</robot_param_node>
+            <parameters>$(find turbopi_ros)/config/turbopi_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+</robot>
