@@ -14,14 +14,14 @@ namespace turbopi
 		public:
 			uint8_t dataBuffer[BUFFER_SIZE];
 
-			I2C(int, int);
+			I2C(uint8_t bus, int8_t address);
 			virtual ~I2C();
-			uint8_t readBytes(uint8_t registerNumber, uint8_t bufferSize, uint16_t &position);
-			uint8_t writeData(uint8_t registerNumber, int8_t data[2]);
+			uint8_t readBytes(int8_t registerNumber, uint8_t bufferSize, int16_t &position);
+			uint8_t writeData(int8_t registerNumber, int8_t data[2]);
 
 		private:
-			int _i2caddr;
-			int _i2cbus;
+			int8_t _i2caddr;
+			uint8_t _i2cbus;
 			char busfile[64];
 			int fd;
 
