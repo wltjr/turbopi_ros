@@ -73,7 +73,7 @@ namespace turbopi
 	{
 		if (_actuatorType == ACTUATOR_TYPE_MOTOR)
 		{
-			uint16_t position;
+			int16_t position;
 			const int TAU = M_PI + M_PI;
 
 			I2C i2cSlave = I2C(1, _getSlaveAddress());
@@ -120,7 +120,7 @@ namespace turbopi
 			int8_t data[2];
 
 			_prepareI2CWrite(data, effort);
-			uint8_t slaveAddress = _getSlaveAddress();
+			int8_t slaveAddress = _getSlaveAddress();
 			I2C i2cSlave = I2C(1, slaveAddress);
 			uint8_t result = i2cSlave.writeData(MOTOR_ADDRESS, data);
 			RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
@@ -133,7 +133,7 @@ namespace turbopi
 			{
 				int8_t data[2];
 				_prepareI2CWrite(data, effort);
-				uint8_t slaveAddress = _getSlaveAddress();
+				int8_t slaveAddress = _getSlaveAddress();
 				I2C i2cSlave = I2C(1, slaveAddress);
 				uint8_t result = i2cSlave.writeData(_motorId + slaveAddress, data);
 				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
@@ -145,7 +145,7 @@ namespace turbopi
 		_previousEffort = effort;
 	}
 
-	uint8_t Joint::_getSlaveAddress()
+	int8_t Joint::_getSlaveAddress()
 	{
 		// wheels
 		if (_motorId > 0 && _motorId <= 4)
