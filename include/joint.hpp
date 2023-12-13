@@ -20,7 +20,7 @@ namespace turbopi
 		private:
 			uint8_t _motorId = 0;
 			uint8_t _actuatorType = 0;
-			uint8_t _getSlaveAddress();
+			int8_t _getSlaveAddress();
 			uint8_t _minServoValue = 0;
 			uint8_t _maxServoValue = 75;
 			double _previousEffort;
