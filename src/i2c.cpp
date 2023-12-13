@@ -12,7 +12,7 @@
 
 namespace turbopi
 {
-	I2C::I2C(int bus, int address)
+	I2C::I2C(uint8_t bus, int8_t address)
 	{
 		_i2cbus = bus;
 		_i2caddr = address;
@@ -25,14 +25,14 @@ namespace turbopi
 		close(fd);
 	}
 
-	uint8_t I2C::readBytes(uint8_t registerNumber, uint8_t bufferSize, uint16_t &position)
+	uint8_t I2C::readBytes(int8_t registerNumber, uint8_t bufferSize, int16_t &position)
 	{
 		if (fd != -1)
 		{
-			uint8_t buff[bufferSize];
+			int8_t buff[bufferSize];
 
 			uint8_t writeBufferSize = 1;
-			uint8_t writeBuffer[writeBufferSize] = {0};
+			int8_t writeBuffer[writeBufferSize] = {0};
 			writeBuffer[0] = registerNumber;
 
 			if (ioctl(fd, I2C_SLAVE, _i2caddr) < 0)
@@ -81,7 +81,7 @@ namespace turbopi
 		return (1);
 	}
 
-	uint8_t I2C::writeData(uint8_t registerNumber, int8_t data[2])
+	uint8_t I2C::writeData(int8_t registerNumber, int8_t data[2])
 	{
 		if (fd != -1)
 		{
