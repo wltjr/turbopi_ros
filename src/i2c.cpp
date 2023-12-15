@@ -25,7 +25,7 @@ namespace turbopi
 		close(fd);
 	}
 
-	uint8_t I2C::readBytes(int8_t registerNumber, uint8_t bufferSize, int16_t &position)
+	uint8_t I2C::readBytes(int8_t registerNumber, uint8_t bufferSize, int8_t &position)
 	{
 		if (fd != -1)
 		{
