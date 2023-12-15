@@ -58,19 +58,13 @@ namespace turbopi
 			}
 			else
 			{
-				position = 1;
+				position = 0;
 				for (int i = 0; i < bufferSize; i++)
 				{
-					int shift = pow(256, abs(i + 1 - bufferSize));
-					position = position + (buff[i] * shift);
-					if (registerNumber == 2)
-					{
-						RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-									"%i: %i", i, buff[i]);
-					}
+					position =  position + buff[i] ;
+					RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+								"i2c Buffer #%i: %i", i, buff[i]);
 				}
-				uint32_t excessK = pow(256, bufferSize) / 2;
-				position -= excessK;
 			}
 		}
 		else
