@@ -73,11 +73,11 @@ namespace turbopi
 	{
 		if (_actuatorType == ACTUATOR_TYPE_MOTOR)
 		{
-			int16_t position;
+			int8_t position;
 			const int TAU = M_PI + M_PI;
 
 			I2C i2cSlave = I2C(1, _getSlaveAddress());
-			uint8_t result = i2cSlave.readBytes(_motorId + MOTOR_ADDRESS, 4, position);
+			uint8_t result = i2cSlave.readBytes(_motorId + MOTOR_ADDRESS, 2, position);
 			if (result == 1)
 			{
 				double angle = (position / sensorResolution * TAU);
