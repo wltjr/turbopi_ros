@@ -16,7 +16,7 @@ namespace turbopi
 
 			I2C(uint8_t bus, int8_t address);
 			virtual ~I2C();
-			uint8_t readBytes(int8_t registerNumber, uint8_t bufferSize, int16_t &position);
+			uint8_t readBytes(int8_t registerNumber, uint8_t bufferSize, int8_t &position);
 			uint8_t writeData(int8_t registerNumber, int8_t data[2]);
 
 		private:
