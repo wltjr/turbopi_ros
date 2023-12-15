@@ -77,17 +77,18 @@ namespace turbopi
 			const int TAU = M_PI + M_PI;
 
 			I2C i2cSlave = I2C(1, _getSlaveAddress());
-			uint8_t result = i2cSlave.readBytes(_motorId + MOTOR_ADDRESS, 2, position);
+			uint8_t result = i2cSlave.readBytes(_motorId - 1 + MOTOR_ADDRESS, 1, position);
 			if (result == 1)
 			{
-				double angle = (position / sensorResolution * TAU);
-				angle = _filterAngle(angle);
-				angle += angleOffset;
-				if (angle > M_PI)
-					angle -= TAU;
-				if (angle < -M_PI)
-					angle += TAU;
-				angle *= readRatio;
+				// double angle = (position / sensorResolution * TAU);
+				// angle = _filterAngle(angle);
+				// angle += angleOffset;
+				// if (angle > M_PI)
+				// 	angle -= TAU;
+				// if (angle < -M_PI)
+				// 	angle += TAU;
+				// angle *= readRatio;
+				angle = position;
 				return angle;
 			}
 			else
