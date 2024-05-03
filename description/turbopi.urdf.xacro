@@ -1,13 +1,21 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
-	<xacro:arg name="use_mock_hardware" default="false" />
+	<xacro:arg name="use_hardware" default="robot" />
 
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
 	<xacro:include filename="turbopi_core.xacro" />
 	<xacro:include filename="ros2_control.xacro" />
 
-	<xacro:ros2_control use_mock_hardware="$(arg use_mock_hardware)"/>
+	<xacro:ros2_control use_hardware="$(arg use_hardware)"/>
+
+    <xacro:macro name="gazebo" params="use_hardware">
+      <xacro:if value="${use_hardware == 'ign_gazebo'}">
+	    <xacro:include filename="gazebo_plugins.xacro" />
+      </xacro:if>
+    </xacro:macro>
+
+    <xacro:gazebo use_hardware="$(arg use_hardware)"/>
 
 </robot>
