@@ -3,6 +3,9 @@
 This project aims to get all functionality of the TurboPi robot running on
 [ROS 2 Iron](https://docs.ros.org/en/iron/), along with an RPLidar for SLAM.
 
+Mesh files have been generously provided by Hiwonder and are their property.
+Mesh files are copyright Hiwonder. All Rights Reserved.
+
 ## Environment Preparation
 The following assumes you have installed all the necessary ROS 2 Iron packages, and have sourced the installation before running any `ros2` commands.
 ```bash
