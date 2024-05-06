@@ -67,7 +67,7 @@ pluginlib_export_plugin_description_file(hardware_interface turbopi_hardware_int
 # Install
 ################################################################################
 install(
-  DIRECTORY config description launch2 worlds
+  DIRECTORY config description launch2 meshes worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
