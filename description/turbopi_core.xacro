@@ -8,15 +8,19 @@
 
     <xacro:property name="chassis_length" value="0.187" />
     <xacro:property name="chassis_height" value="0.04" />
-    <xacro:property name="chassis_width" value="0.095" />
+    <xacro:property name="chassis_width" value="0.094" />
 
-    <xacro:property name="wheel_gap" value="0.001" />
+    <xacro:property name="mesh_scale" value="0.001 0.001 0.001" />
+
+    <xacro:property name="wheel_gap" value="0.005" />
     <xacro:property name="wheel_length" value="0.03" />
     <xacro:property name="wheel_radius" value="0.0325" />
     <xacro:property name="wheel_mass" value="0.0016" />
-    <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.1778}" />
-    <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.2286}" />
+    <xacro:property name="wheel_mesh_file" value="file://$(find turbopi_ros)/meshes/wheel.dae" />
+    <xacro:property name="wheel_offset_front" value="${-chassis_length/2 + 0.0372}" />
+    <xacro:property name="wheel_offset_rear" value="${chassis_length/2 - 0.0305}" />
     <xacro:property name="wheel_offset_side" value="${wheel_length/2 + chassis_width/2 + wheel_gap}" />
+    <xacro:property name="wheel_zoffset" value="${chassis_height/2 + 0.0064}" />
 
     <link name="base_link"></link>
 
@@ -24,7 +28,7 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
     </joint>
     <link name="chassis">
         <collision>
@@ -34,7 +38,7 @@
         </collision>
         <visual>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <mesh filename="file://$(find turbopi_ros)/meshes/chassis.dae" scale="${mesh_scale}" />
             </geometry>
             <material name="white"/>
         </visual>
@@ -47,7 +51,7 @@
     <joint name="front_left_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="front_left_wheel"/>
-        <origin xyz="${wheel_offset_front} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} -${wheel_offset_side} -${wheel_zoffset}" rpy="${pi/2} ${pi/2} 0"/>
         <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -58,9 +62,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
+            <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <mesh filename="${wheel_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="yellow"/>
         </visual>
@@ -73,7 +77,7 @@
     <joint name="front_right_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="front_right_wheel"/>
-        <origin xyz="${wheel_offset_front} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_front} ${wheel_offset_side} -${wheel_zoffset}" rpy="-${pi/2} ${pi/2} 0"/>
         <axis xyz="0 0 -1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -84,9 +88,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <mesh filename="${wheel_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="yellow"/>
         </visual>
@@ -99,7 +103,7 @@
     <joint name="rear_left_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="rear_left_wheel"/>
-        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} 0" rpy="-${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} -${wheel_zoffset}" rpy="${pi/2} ${pi/2} 0"/>
         <axis xyz="0 0 1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -110,9 +114,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${wheel_radius} -${wheel_radius} ${wheel_length/2}" rpy="-${pi/2} 0 0"/>
+            <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <mesh filename="${wheel_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="yellow"/>
         </visual>
@@ -125,7 +129,7 @@
     <joint name="rear_right_wheel_joint" type="continuous">
         <parent link="chassis"/>
         <child link="rear_right_wheel"/>
-        <origin xyz="${wheel_offset_rear} -${wheel_offset_side} 0" rpy="${pi/2} 0 0"/>
+        <origin xyz="${wheel_offset_rear} ${wheel_offset_side} -${wheel_zoffset}" rpy="-${pi/2} ${pi/2} 0"/>
         <axis xyz="0 0 -1"/>
         <limit effort="${limit_effort}" velocity="${limit_velocity}"/>
     </joint>
@@ -136,9 +140,9 @@
             </geometry>
         </collision>
         <visual>
-            <origin xyz="-${wheel_radius} ${wheel_radius} -${wheel_length/2}" rpy="${pi/2} 0 0"/>
+            <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
             <geometry>
-                <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                <mesh filename="${wheel_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="yellow"/>
         </visual>
