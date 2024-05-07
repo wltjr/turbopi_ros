@@ -67,13 +67,12 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 - [Hiwonder TurboPi](https://www.hiwonder.com/products/turbopi?variant=40112905388119) - 
   [Amazon](https://www.amazon.com/dp/B0BTTH8WD2)
 
-  ![Picture of Hiwonder TurboPi](https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/51BCBQzoGUL._AC_UL232_SR232,232_.jpg)
+  ![Picture of Hiwonder TurboPi](https://github.com/wltjr/turbopi_ros/assets/12835340/81dd585b-5b98-43b2-b532-ddd4233721ce)
 
 - [Slamtec RPlidar A1](https://www.slamtec.ai/home/rplidar_a1/) -
   [Amazon](https://www.amazon.com/dp/B07TJW5SXF/)
 
-  ![Picture of Slamtec RPlidar A1](https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/515P0yY+uxL._AC_UL232_SR232,232_.jpg)
-
+  ![Picture of Slamtec RPlidar A1](https://github.com/wltjr/turbopi_ros/assets/12835340/9f7b9688-b600-42d9-8b1b-c3a834252112)
 
 
 
