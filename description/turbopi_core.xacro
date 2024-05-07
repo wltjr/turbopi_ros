@@ -6,6 +6,10 @@
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
+    <xacro:property name="camera_frame_length" value="0.0254" />
+    <xacro:property name="camera_frame_height" value="0.0333" />
+    <xacro:property name="camera_frame_width" value="0.04445" />
+
     <xacro:property name="chassis_length" value="0.187" />
     <xacro:property name="chassis_height" value="0.04" />
     <xacro:property name="chassis_width" value="0.094" />
@@ -149,6 +153,31 @@
         <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_length}" radius="${wheel_radius}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
+    </link>
+
+    <!-- Camera frame turns left/right -->
+    <joint name="camera_frame_joint" type="revolute">
+        <parent link="chassis"/>
+        <child link="camera_frame"/>
+        <origin xyz="${-chassis_length/2 + 0.054} 0 ${chassis_height + 0.01}" rpy="0 0 0"/>
+        <limit lower="-90"  upper="90"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 0 1"/>
+    </joint>
+    <link name="camera_frame">
+        <collision>
+            <geometry>
+                <box size="${camera_frame_length} ${camera_frame_width} ${camera_frame_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/camera_frame.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <xacro:inertial_box mass="0.01" x="${camera_frame_length}" y="${camera_frame_width}" z="${camera_frame_height}">
+            <origin xyz="0 0 ${camera_frame_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
     </link>
 
 </robot>
