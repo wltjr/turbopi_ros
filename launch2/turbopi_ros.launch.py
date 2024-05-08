@@ -62,6 +62,12 @@ def launch_setup(context: LaunchContext):
         arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
     )
 
+    position_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["position_controllers", "-c", "/controller_manager"],
+    )
+
     delayed_joint_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessStart(
             target_action=controller_manager,
@@ -76,11 +82,19 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_position_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[position_spawner],
+        )
+    )
+
     nodes = [
         controller_manager,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
+        delayed_position_spawner,
     ]
 
     return nodes
