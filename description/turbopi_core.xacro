@@ -164,7 +164,7 @@
         <parent link="chassis"/>
         <child link="camera_frame"/>
         <origin xyz="${-chassis_length/2 + 0.054} 0 ${chassis_height + 0.01}" rpy="0 0 0"/>
-        <limit lower="-90"  upper="90"  velocity="0.1"  effort="${limit_effort}"  />
+        <limit lower="-1"  upper="1"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 0 1"/>
     </joint>
     <link name="camera_frame">
@@ -189,8 +189,8 @@
         <parent link="camera_frame"/>
         <child link="camera"/>
         <origin xyz="-0.015 0 ${camera_frame_height * 0.4}" rpy="0 0 0"/>
-        <limit lower="-45"  upper="90"  velocity="0.1"  effort="${limit_effort}"  />
-        <axis xyz="0 0 1"/>
+        <limit lower="-0.5"  upper="1"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 1 0"/>
     </joint>
     <link name="camera">
         <collision>
