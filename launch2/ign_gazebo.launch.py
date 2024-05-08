@@ -74,6 +74,12 @@ def launch_setup(context: LaunchContext):
         arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
     )
 
+    position_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["position_controllers", "-c", "/controller_manager"],
+    )
+
     static_transform_publisher_odom = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -102,6 +108,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_position_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster,
+            on_exit=[position_spawner],
+        )
+    )
+
     nodes = [
         gazebo,
         create_entity,
@@ -110,6 +123,7 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner,
         delayed_static_transform_publisher_odom,
         delayed_diff_drive_spawner,
+        delayed_position_spawner,
     ]
 
     return nodes
