@@ -6,6 +6,10 @@
     <xacro:property name="limit_effort" value="100" />
     <xacro:property name="limit_velocity" value="10" />
 
+    <xacro:property name="camera_length" value="0.0635" />
+    <xacro:property name="camera_height" value="0.03175" />
+    <xacro:property name="camera_width" value="0.0333" />
+
     <xacro:property name="camera_frame_length" value="0.0254" />
     <xacro:property name="camera_frame_height" value="0.0333" />
     <xacro:property name="camera_frame_width" value="0.04445" />
@@ -177,6 +181,31 @@
         </visual>
         <xacro:inertial_box mass="0.01" x="${camera_frame_length}" y="${camera_frame_width}" z="${camera_frame_height}">
             <origin xyz="0 0 ${camera_frame_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <!-- Camera angles up/down -->
+    <joint name="camera_joint" type="revolute">
+        <parent link="camera_frame"/>
+        <child link="camera"/>
+        <origin xyz="-0.015 0 ${camera_frame_height * 0.4}" rpy="0 0 0"/>
+        <limit lower="-45"  upper="90"  velocity="0.1"  effort="${limit_effort}"  />
+        <axis xyz="0 0 1"/>
+    </joint>
+    <link name="camera">
+        <collision>
+            <geometry>
+                <box size="${camera_length} ${camera_width} ${camera_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/camera.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <xacro:inertial_box mass="0.01" x="${camera_length}" y="${camera_width}" z="${camera_height}">
+            <origin xyz="0 0 ${camera_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
