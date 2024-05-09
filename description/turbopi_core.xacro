@@ -18,6 +18,10 @@
     <xacro:property name="chassis_height" value="0.04" />
     <xacro:property name="chassis_width" value="0.094" />
 
+    <xacro:property name="lidar_length" value="0.12954" />
+    <xacro:property name="lidar_height" value="0.07874" />
+    <xacro:property name="lidar_width" value="0.09906" />
+
     <xacro:property name="mesh_scale" value="0.001 0.001 0.001" />
 
     <xacro:property name="spacer_offset_front" value="0.0203" />
@@ -268,6 +272,30 @@
         </visual>
         <xacro:inertial_box mass="0.01" x="${camera_length}" y="${camera_width}" z="${camera_height}">
             <origin xyz="0 0 ${camera_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <!-- 360 Lidar -->
+    <joint name="lidar_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="lidar"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${lidar_length/2 - 0.01} 0 0.0725" rpy="0 0 0"/>
+    </joint>
+    <link name="lidar">
+        <collision>
+            <geometry>
+                <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/rplidar.dae" scale="1 1 1" />
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <xacro:inertial_box mass="0.01" x="${lidar_length}" y="${lidar_width}" z="${chassis_height}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
