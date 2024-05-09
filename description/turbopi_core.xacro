@@ -20,6 +20,11 @@
 
     <xacro:property name="mesh_scale" value="0.001 0.001 0.001" />
 
+    <xacro:property name="spacer_offset_front" value="0.0203" />
+    <xacro:property name="spacer_offset_rear" value="${chassis_width - 0.0135}" />
+    <xacro:property name="spacer_offset_side" value="${chassis_width/2 - 0.0138}" />
+    <xacro:property name="spacer_offset_height" value="0.015" />
+
     <xacro:property name="wheel_gap" value="0.005" />
     <xacro:property name="wheel_length" value="0.03" />
     <xacro:property name="wheel_radius" value="0.0325" />
@@ -53,6 +58,62 @@
         <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
+    </link>
+
+    <joint name="spacer_1_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="spacer_1"/>
+        <origin xyz="${spacer_offset_front} ${spacer_offset_side} ${spacer_offset_height}" rpy="0 0 0"/>
+    </joint>
+    <link name="spacer_1">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="brass"/>
+        </visual>
+    </link>
+
+    <joint name="spacer_2_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="spacer_2"/>
+        <origin xyz="${spacer_offset_front} -${spacer_offset_side} ${spacer_offset_height}" rpy="0 0 0"/>
+    </joint>
+    <link name="spacer_2">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="brass"/>
+        </visual>
+    </link>
+
+    <joint name="spacer_3_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="spacer_3"/>
+        <origin xyz="${spacer_offset_rear} ${spacer_offset_side} ${spacer_offset_height}" rpy="0 0 0"/>
+    </joint>
+    <link name="spacer_3">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="brass"/>
+        </visual>
+    </link>
+
+    <joint name="spacer_4_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="spacer_4"/>
+        <origin xyz="${spacer_offset_rear} -${spacer_offset_side} ${spacer_offset_height}" rpy="0 0 0"/>
+    </joint>
+    <link name="spacer_4">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+            </geometry>
+            <material name="brass"/>
+        </visual>
     </link>
 
     <!-- Front Left Wheel -->
