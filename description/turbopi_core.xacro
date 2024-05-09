@@ -41,7 +41,7 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${wheel_radius + chassis_height/2 + 0.0065}" rpy="0 0 0"/>
     </joint>
     <link name="chassis">
         <collision>
