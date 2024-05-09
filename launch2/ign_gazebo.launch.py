@@ -15,6 +15,7 @@ def launch_setup(context: LaunchContext):
     filename = 'turbopi.urdf.xacro'
     pkg_name = 'turbopi_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
+    slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
     world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
@@ -52,6 +53,7 @@ def launch_setup(context: LaunchContext):
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         ],
     )
 
@@ -80,6 +82,21 @@ def launch_setup(context: LaunchContext):
         arguments=["position_controllers", "-c", "/controller_manager"],
     )
 
+    slam_toolbox_node = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        output='screen',
+        parameters=[ slam_params_file, {'use_sim_time': True} ],
+        remappings=[('/map', '/slam_toolbox/map'),],
+    )
+
+    static_transform_publisher_lidar = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "turbopi_ros/base_link/lidar_sensor"]
+    )
+
     static_transform_publisher_odom = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -94,10 +111,24 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_static_transform_publisher_lidar = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_lidar],
+        )
+    )
+
     delayed_static_transform_publisher_odom = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[static_transform_publisher_odom],
+        )
+    )
+
+    delayed_slam_toolbox_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[slam_toolbox_node],
         )
     )
 
@@ -121,7 +152,9 @@ def launch_setup(context: LaunchContext):
         bridge,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
+        delayed_slam_toolbox_node_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
     ]
