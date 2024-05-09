@@ -3,6 +3,8 @@
 This project aims to get all functionality of the TurboPi robot running on
 [ROS 2 Iron](https://docs.ros.org/en/iron/), along with an RPLidar for SLAM.
 
+![TurboPi in Gazebo](https://github.com/wltjr/turbopi_ros/assets/12835340/5c2e2cf6-8c80-49ee-b0a9-a5a6e4211558)
+
 Mesh files have been generously provided by Hiwonder and are their property.
 Mesh files are copyright Hiwonder. All Rights Reserved.
 
