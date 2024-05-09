@@ -249,7 +249,7 @@
     <joint name="camera_joint" type="revolute">
         <parent link="camera_frame"/>
         <child link="camera"/>
-        <origin xyz="-0.015 0 ${camera_frame_height * 0.4}" rpy="0 0 0"/>
+        <origin xyz="-0.015 0 ${camera_frame_height * 0.4}" rpy="${pi} ${pi} 0"/>
         <limit lower="-0.5"  upper="1"  velocity="0.1"  effort="${limit_effort}"  />
         <axis xyz="0 1 0"/>
     </joint>
@@ -260,6 +260,7 @@
             </geometry>
         </collision>
         <visual>
+            <origin xyz="0 0 0" rpy="${pi} ${pi} 0"/>
             <geometry>
                 <mesh filename="file://$(find turbopi_ros)/meshes/camera.dae" scale="${mesh_scale}" />
             </geometry>
