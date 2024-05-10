@@ -1,3 +1,9 @@
+/** Copyright 2024 William L Thomson Jr <w@wltjr.com>
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
+
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -12,11 +18,11 @@
 
 namespace turbopi
 {
-	I2C::I2C(uint8_t bus, int8_t address)
+	I2C::I2C(uint8_t minor, int8_t address)
 	{
-		_i2cbus = bus;
-		_i2caddr = address;
-		snprintf(busfile, sizeof(busfile), "/dev/i2c-%d", bus);
+		minor_ = minor;
+		address_ = address;
+		snprintf(busfile, sizeof(busfile), "/dev/i2c-%d", minor_);
 		openfd();
 	}
 
@@ -25,45 +31,47 @@ namespace turbopi
 		close(fd);
 	}
 
-	uint8_t I2C::readBytes(int8_t registerNumber, uint8_t bufferSize, int8_t &position)
+	uint8_t I2C::readBytes(int8_t register_number,
+                           uint8_t buffer_size,
+                           int8_t &value)
 	{
 		if (fd != -1)
 		{
-			int8_t buff[bufferSize];
+			int8_t buffer[buffer_size];
 
-			uint8_t writeBufferSize = 1;
-			int8_t writeBuffer[writeBufferSize] = {0};
-			writeBuffer[0] = registerNumber;
+			uint8_t write_buffer_size = 1;
+			int8_t write_buffer[write_buffer_size] = {0};
+			write_buffer[0] = register_number;
 
-			if (ioctl(fd, I2C_SLAVE, _i2caddr) < 0)
+			if (ioctl(fd, I2C_SLAVE, address_) < 0)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
-							 "I2C ioctl error slave 0x%x", _i2caddr);
+							 "I2C ioctl error slave 0x%x", address_);
 				return -1;
 			}
 
-			if (write(fd, writeBuffer, writeBufferSize) != writeBufferSize)
+			if (write(fd, write_buffer, write_buffer_size) != write_buffer_size)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():write] I2C slave 0x%x failed to write to register 0x%x\nError: %d - %s",
-							 _i2caddr, registerNumber, errno, strerror(errno));
+							 address_, register_number, errno, strerror(errno));
 				return (-1);
 			}
-			if (read(fd, buff, bufferSize) != bufferSize)
+			if (read(fd, buffer, buffer_size) != buffer_size)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():read] Could not read from I2C slave 0x%x, register 0x%x\nError: %d - %s",
-							 _i2caddr, registerNumber, errno, strerror(errno));
+							 address_, register_number, errno, strerror(errno));
 				return (-1);
 			}
 			else
 			{
-				position = 0;
-				for (int i = 0; i < bufferSize; i++)
+				value = 0;
+				for (int i = 0; i < buffer_size; i++)
 				{
-					position =  position + buff[i] ;
+					value =  value + buffer[i] ;
 					RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
-								"i2c Buffer #%i: %i", i, buff[i]);
+								"i2c Buffer #%i: %i", i, buffer[i]);
 				}
 			}
 		}
@@ -75,12 +83,12 @@ namespace turbopi
 		return (1);
 	}
 
-	uint8_t I2C::writeData(int8_t registerNumber, int8_t data[2])
+	uint8_t I2C::writeData(int8_t register_number, int8_t data[2])
 	{
 		if (fd != -1)
 		{
 			int8_t buff[2];
-			buff[0] = registerNumber + data[0];
+			buff[0] = register_number + data[0];
 			buff[1] = data[1];
 
 			int result = write(fd, buff, sizeof(buff));
@@ -88,13 +96,13 @@ namespace turbopi
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[writeData():write] Failed to write to I2C Slave 0x%x @ register 0x%x\nError: %d - %s",
-							 _i2caddr, registerNumber + data[0], errno, strerror(errno));
+							 address_, register_number + data[0], errno, strerror(errno));
 				return (-1);
 			}
 			else
 			{
 				RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
-							 "Wrote to I2C Slave 0x%x @ register 0x%x", _i2caddr, registerNumber);
+							 "Wrote to I2C Slave 0x%x @ register 0x%x", address_, register_number);
 			}
 		}
 		else
@@ -110,12 +118,12 @@ namespace turbopi
 		if ((fd = open(busfile, O_RDWR)) < 0)
 		{
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
-						 "Couldn't open I2C Bus %d [openfd():open %s]", _i2cbus, strerror(errno));
+						 "Couldn't open I2C Bus %d [openfd():open %s]", minor_, strerror(errno));
 		}
-		if (ioctl(fd, I2C_SLAVE, _i2caddr) < 0)
+		if (ioctl(fd, I2C_SLAVE, address_) < 0)
 		{
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
-						 "I2C slave %d failed [openfd():ioctl %s]", _i2caddr, strerror(errno));
+						 "I2C slave %d failed [openfd():ioctl %s]", address_, strerror(errno));
 		}
 	}
 }
