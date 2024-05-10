@@ -193,18 +193,18 @@ namespace turbopi_hardware_interface
         //     hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
             turbopi::Joint joint = turbopi_.getJoint(info_.joints[i].name);
 
-            if (joint.getActuatorType() == ACTUATOR_TYPE_MOTOR)
+            if (joint.getType() == TYPE_MOTOR)
             {
                 hw_positions_[i] = joint.readAngle();
 
                 std::ostringstream jointPositionStr;
                 jointPositionStr << hw_positions_[i];
                 // RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                //             "Joint: %s, position state: %.5f, velocity state: %.5f",
+                //             "Joint: %s, position state: %.5f,velocity state: %.5f",
                 //             info_.joints[i].name.c_str(),
                 //             hw_positions_[i],
                 //             hw_velocities_[i]);
-            }
+            } 
 
             turbopi_.setJoint(joint);
         }
@@ -232,7 +232,7 @@ namespace turbopi_hardware_interface
 
             hw_velocities_[i] = hw_commands_[i];
 
-            if (joint.getActuatorType() == 1)
+            if (joint.getType() == 1)
             { // servo
                 double previousEffort = joint.getPreviousEffort();
                 effort += previousEffort;
