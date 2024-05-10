@@ -1,3 +1,9 @@
+/** Copyright 2024 William L Thomson Jr <w@wltjr.com>
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
+
 #ifndef TURBOPI__TURBOPI_H
 #define TURBOPI__TURBOPI_H
 
@@ -9,18 +15,43 @@ extern const char* CLASS_NAME;
 
 namespace turbopi
 {
+    /**
+     * @brief Class that represents the total robot, all joints, sensors, etc.
+     */
 	class TurboPi
 	{
-		private:
 		public:
-			TurboPi();
-			~TurboPi();
-
 			Segment<5> base;
 			Segment<2> camera;
 
-			Joint getJoint(std::string jointName);
+            /**
+             * @brief Construct a new Robot object and initializes all joints,
+             *        sensors, etc
+             */
+			TurboPi();
+
+            /**
+             * @brief Destroy the Robot object, empty/unused
+             */
+			~TurboPi();
+
+            /**
+             * @brief Get a Joint object by name
+             *
+             * @param name name of the joint
+             * 
+             * @return Joint
+             */
+			Joint getJoint(std::string name);
+
+            /**
+             * @brief Get a Joint object by name
+             *
+             * @param joint a Joint object
+             */
 			void setJoint(turbopi::Joint joint);
+
+		private:
 	};
 }
 
