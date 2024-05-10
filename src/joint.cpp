@@ -1,3 +1,9 @@
+/** Copyright 2024 William L Thomson Jr <w@wltjr.com>
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
+
 #include <stdlib.h>
 #include <math.h>
 #include <stdexcept>
@@ -13,28 +19,24 @@ namespace turbopi
 	{
 	}
 
-	Joint::Joint(uint8_t motorId)
+	Joint::Joint(uint8_t id, uint8_t type)
 	{
-		setMotorId(motorId);
+		this->id_ = id;
+		this->type_ = type;
 	}
 
 	Joint::~Joint()
 	{
 	}
 
-	void Joint::setActuatorType(uint8_t actuatorType)
+	void Joint::setType(uint8_t type)
 	{
-		this->_actuatorType = actuatorType;
+		this->type_ = type;
 	}
 
-	uint8_t Joint::getMotorId()
+	uint8_t Joint::getId()
 	{
-		return this->_motorId;
-	}
-
-	void Joint::setMotorId(uint8_t motorId)
-	{
-		this->_motorId = motorId;
+		return this->id_;
 	}
 
 	double Joint::_filterAngle(double angle)
@@ -71,13 +73,13 @@ namespace turbopi
 
 	double Joint::readAngle()
 	{
-		if (_actuatorType == ACTUATOR_TYPE_MOTOR)
+		if (type_ == TYPE_MOTOR)
 		{
 			int8_t position;
 			const int TAU = M_PI + M_PI;
 
 			I2C i2cSlave = I2C(1, _getSlaveAddress());
-			uint8_t result = i2cSlave.readBytes(_motorId - 1 + MOTOR_ADDRESS, 1, position);
+			uint8_t result = i2cSlave.readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position);
 			if (result == 1)
 			{
 				// double angle = (position / sensorResolution * TAU);
@@ -99,7 +101,7 @@ namespace turbopi
 				return 0;
 			}
 		}
-		else if (_actuatorType == ACTUATOR_TYPE_SERVO)
+		else if (type_ == TYPE_SERVO)
 		{
 			return _previousEffort;
 		}
@@ -111,7 +113,7 @@ namespace turbopi
 
 	void Joint::actuate(double effort, uint8_t /*duration = 1*/)
 	{
-		if (_actuatorType == ACTUATOR_TYPE_MOTOR)
+		if (type_ == TYPE_MOTOR)
 		{
 			if (effort > 100.0)
 				effort = 100.0;
@@ -128,7 +130,7 @@ namespace turbopi
 			            "Result: [%i]; effort: [%f]; motor: %i, speed: %i",
 						result, effort, data[0], data[1]);
 		}
-		else if (_actuatorType == ACTUATOR_TYPE_SERVO)
+		else if (type_ == TYPE_SERVO)
 		{
 			if (effort != _previousEffort)
 			{
@@ -136,7 +138,7 @@ namespace turbopi
 				_prepareI2CWrite(data, effort);
 				int8_t slaveAddress = _getSlaveAddress();
 				I2C i2cSlave = I2C(1, slaveAddress);
-				uint8_t result = i2cSlave.writeData(_motorId + slaveAddress, data);
+				uint8_t result = i2cSlave.writeData(id_ + slaveAddress, data);
 				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
 				            "Result: [%i]; effort: [%f]; bytes: %i, %i",
 							result, effort, data[0], data[1]);
@@ -149,26 +151,26 @@ namespace turbopi
 	int8_t Joint::_getSlaveAddress()
 	{
 		// wheels
-		if (_motorId > 0 && _motorId <= 4)
+		if (id_ > 0 && id_ <= 4)
 		{
 			return BASE_SLAVE_ADDRESS;
 		}
 		// camera horizontal/vertical
-		else if (_motorId > 4 && _motorId <= 6)
+		else if (id_ > 4 && id_ <= 6)
 		{
 			return BASE_SLAVE_ADDRESS;
 		}
 		else
 		{
-			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Invalid MotorID: %i", _motorId);
+			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Invalid MotorID: %i", id_);
 			return -1;
 		}
 	}
 
-	void Joint::setServoLimits(uint8_t minValue, uint8_t maxValue)
+	void Joint::setLimits(uint8_t min, uint8_t max)
 	{
-		this->_minServoValue = minValue;
-		this->_maxServoValue = maxValue;
+		this->min_ = min;
+		this->max_ = max;
 	}
 
 	double Joint::getPreviousEffort()
@@ -176,9 +178,9 @@ namespace turbopi
 		return this->_previousEffort;
 	}
 
-	void Joint::_prepareI2CWrite(int8_t result[2], double effort)
+	void Joint::_prepareI2CWrite(int8_t addr_value[2], double effort)
 	{
-		if (_actuatorType == ACTUATOR_TYPE_MOTOR)
+		if (type_ == TYPE_MOTOR)
 		{
 			const int LOW = 70;
 			const int HIGH = 100;
@@ -208,24 +210,24 @@ namespace turbopi
 			}
 
 			// invert speeds for right side
-			if(_motorId & 1)
+			if(id_ & 1)
 				speed = -speed;
 
-			result[0] = _motorId - 1;
-			result[1] = speed;
+			addr_value[0] = id_ - 1;
+			addr_value[1] = speed;
 		}
-		else if (_actuatorType == ACTUATOR_TYPE_SERVO)
+		else if (type_ == TYPE_SERVO)
 		{
 			double magnitude = effort * 100.0;
-			uint8_t servoValue = floor(_minServoValue + ((_maxServoValue - _minServoValue) * (magnitude / 100.0)));
+			uint8_t value = floor(min_ + ((max_ - min_) * (magnitude / 100.0)));
 
-			result[0] = _motorId - 1;
-			result[1] = servoValue;
+			addr_value[0] = id_ - 1;
+			addr_value[1] = value;
 		}
 	}
 
-	int Joint::getActuatorType()
+	int Joint::getType()
 	{
-		return _actuatorType;
+		return type_;
 	}
 }
