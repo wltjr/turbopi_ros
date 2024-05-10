@@ -74,7 +74,6 @@ namespace turbopi_hardware_interface
         double hw_stop_sec_;
 
         turbopi::TurboPi turbopi_;
-        std::vector<double> hw_effort_;
         std::vector<double> hw_commands_;
         std::vector<double> hw_positions_;
         std::vector<double> hw_velocities_;
