@@ -1,3 +1,9 @@
+/** Copyright 2024 William L Thomson Jr <w@wltjr.com>
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
+
 #ifndef TURBOPI__JOINT_H
 #define TURBOPI__JOINT_H
 
@@ -7,49 +13,109 @@
 #define CAMERA_ADDRESS 21
 #define MOTOR_ADDRESS 31
 
-#define ACTUATOR_TYPE_NONE -1
-#define ACTUATOR_TYPE_MOTOR 0
-#define ACTUATOR_TYPE_SERVO 1
+#define TYPE_NONE -1
+#define TYPE_MOTOR 0
+#define TYPE_SERVO 1
 
 extern const char* CLASS_NAME;
 
 namespace turbopi
 {
+    /**
+     * @brief Class to hardware interface with and represent motors, servos,
+     *        and other joints connected to the robot
+     */
 	class Joint
 	{
-		private:
-			uint8_t _motorId = 0;
-			uint8_t _actuatorType = 0;
-			uint8_t _minServoValue = 0;
-			uint8_t _maxServoValue = 75;
-			int _angleReads = 0;
-			static const int _filterPrevious = 3;
-			double _previousEffort;
-			double _previousAngles[_filterPrevious];
-
-			double _filterAngle(double angle);
-			int8_t _getSlaveAddress();
-			void _prepareI2CRead(int8_t result[2]);
-			void _prepareI2CWrite(int8_t result[2], double effort);
-
 		public:
 			double sensorResolution = 1024;
 			double angleOffset = 0;
 			double readRatio = 1;
 			std::string name;
 
+            /**
+             * @brief Construct a new Joint object, empty/unused
+             */
 			Joint();
-			Joint(uint8_t motorId);
+
+            /**
+             * @brief Construct a new Joint object, primary means to create a
+             *        new joint with a read only id, USB serial number, and
+             *        actuator type.
+             * 
+             * @param id internal joint id, read only after creation
+             * @param type type of joint from DEFINES; motor, servo, etc
+             */
+			Joint(uint8_t id, uint8_t type);
+
+            /**
+             * @brief Destroy the Joint object, empty/unused
+             */
 			~Joint();
 
 			void actuate(double effort, uint8_t duration);
-			int getActuatorType();
-			uint8_t getMotorId();
-			double getPreviousEffort();
+
+            /**
+             * @brief Get the type of joint
+             * 
+             * @return int type of joint from DEFINES; motor, servo, etc
+             */
+			int getType();
+
+            /**
+             * @brief Get the type of joint
+             * 
+             * @return int internal joint id
+             */
+			uint8_t getId();
+
+	        double getPreviousEffort();
+
 			double readAngle();
-			void setMotorId(uint8_t motorId);
-			void setActuatorType(uint8_t actuatorType);
-			void setServoLimits(uint8_t minValue, uint8_t maxValue);
+
+            /**
+             * @brief Set the type of joint
+             * 
+             * @param type type of joint from DEFINES; motor, servo, etc
+             */
+			void setType(uint8_t type);
+
+            /**
+             * @brief Set the joint limits, minimum and maximum values
+             * 
+             * @param min   the minimum joint value
+             * @param max   the maximum joint value
+             */
+			void setLimits(uint8_t min, uint8_t max);
+
+		private:
+			int _angleReads = 0;
+			uint8_t id_ = 0;
+			uint8_t max_ = 75;
+			uint8_t min_ = 0;
+			uint8_t type_ = 0;
+			static const int _filterPrevious = 3;
+			double _previousEffort;
+			double _previousAngles[_filterPrevious];
+
+	        double _filterAngle(double angle);
+
+            /**
+             * @brief Get the I2C device slave address
+             * 
+             * @return int8_t I2C device slave address
+             */
+			int8_t _getSlaveAddress();
+
+            /**
+             * @brief Prepare the I2C address and value data buffer for read
+             */
+			void _prepareI2CRead(int8_t addr_value[2]);
+
+            /**
+             * @brief Prepare the I2C address and value data buffer for write
+             */
+			void _prepareI2CWrite(int8_t addr_value[2], double effort);
 	};
 }
 
