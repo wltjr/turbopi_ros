@@ -1,3 +1,9 @@
+/** Copyright 2024 William L Thomson Jr <w@wltjr.com>
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ */
+
 #include <stdexcept>
 
 #include "rclcpp/rclcpp.hpp"
@@ -10,27 +16,21 @@ namespace turbopi
 	TurboPi::TurboPi()
 	{
 		//base
+		base.joints[0] = Joint(1, TYPE_MOTOR);
 		base.joints[0].name = "front_left_wheel_joint";
-		base.joints[0].setActuatorType(ACTUATOR_TYPE_MOTOR);
-		base.joints[0].setMotorId(1);
+		base.joints[1] = Joint(2, TYPE_MOTOR);
 		base.joints[1].name = "front_right_wheel_joint";
-		base.joints[1].setActuatorType(ACTUATOR_TYPE_MOTOR);
-		base.joints[1].setMotorId(2);
+		base.joints[2] = Joint(3, TYPE_MOTOR);
 		base.joints[2].name = "rear_left_wheel_joint";
-		base.joints[2].setActuatorType(ACTUATOR_TYPE_MOTOR);
-		base.joints[2].setMotorId(3);
+		base.joints[3] = Joint(4, TYPE_MOTOR);
 		base.joints[3].name = "rear_right_wheel_joint";
-		base.joints[3].setActuatorType(ACTUATOR_TYPE_MOTOR);
-		base.joints[3].setMotorId(4);
 
 		//camera
-		camera.joints[0].name = "joint_camera_horizontal";
-		camera.joints[0].setActuatorType(ACTUATOR_TYPE_SERVO);
-		camera.joints[0].setMotorId(5);
+		camera.joints[0] = Joint(5, TYPE_SERVO);
+		camera.joints[0].name = "camera_frame_joint";
 		camera.joints[0].sensorResolution = 128;
-		camera.joints[1].name = "joint_camera_vertical";
-		camera.joints[1].setActuatorType(ACTUATOR_TYPE_SERVO);
-		camera.joints[1].setMotorId(6);
+		camera.joints[1] = Joint(6, TYPE_SERVO);
+		camera.joints[1].name = "camera_joint";
 		camera.joints[1].sensorResolution = 128;
 	}
 
