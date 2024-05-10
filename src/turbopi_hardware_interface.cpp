@@ -42,7 +42,6 @@ namespace turbopi_hardware_interface
         hw_stop_sec_ = std::stod(info_.hardware_parameters["hw_stop_duration_sec"]);
 
         // Resize vectors
-        hw_effort_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
@@ -151,7 +150,6 @@ namespace turbopi_hardware_interface
         {
             if (std::isnan(hw_positions_[i]))
             {
-                hw_effort_[i] = 0;
                 hw_positions_[i] = 0;
                 hw_velocities_[i] = 0;
                 hw_commands_[i] = 0;
