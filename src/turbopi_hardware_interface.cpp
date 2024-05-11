@@ -181,14 +181,8 @@ namespace turbopi_hardware_interface
     hardware_interface::return_type TurboPiSystemHardware::read(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
-        RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME), "Reading...");
-
         for (std::size_t i = 0; i < hw_velocities_.size(); i++)
         {
-        //     // Simulate TurboPi wheels's movement as a first-order system
-        //     // Update the joint status: this is a revolute joint without any limit.
-        //     // Simply integrates
-        //     hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
             turbopi::Joint joint = turbopi_.getJoint(info_.joints[i].name);
 
             if (joint.getType() == TYPE_MOTOR)
@@ -197,11 +191,12 @@ namespace turbopi_hardware_interface
 
                 std::ostringstream jointPositionStr;
                 jointPositionStr << hw_positions_[i];
-                // RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                //             "Joint: %s, position state: %.5f,velocity state: %.5f",
-                //             info_.joints[i].name.c_str(),
-                //             hw_positions_[i],
-                //             hw_velocities_[i]);
+                RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                            "Joint: %s, command %.5f, position state: %.5f, velocity state: %.5f",
+                            info_.joints[i].name.c_str(),
+                            hw_commands_[i],
+                            hw_positions_[i],
+                            hw_velocities_[i]);
             } 
 
             turbopi_.setJoint(joint);
@@ -213,39 +208,26 @@ namespace turbopi_hardware_interface
     hardware_interface::return_type turbopi_hardware_interface::TurboPiSystemHardware::write(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
-        RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME), "Writing...");
-
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
+            uint8_t duration = 1;
+
             turbopi::Joint joint = turbopi_.getJoint(info_.joints[i].name);
 
-            double effort = hw_commands_[i]; // hw_commands_effort_[i];
-            uint8_t duration = 1;            // 15;
-
-            // Simulate sending commands to the hardware
-            RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                         "Joint: %s, command %.5f",
-                        info_.joints[i].name.c_str(),
-                        hw_commands_[i]);
+            if (info_.joints[i].name.find("right_wheel") != std::string::npos)
+                hw_commands_[i] = -hw_commands_[i];
 
             hw_velocities_[i] = hw_commands_[i];
 
-            if (joint.getType() == 1)
-            { // servo
-                double previousEffort = joint.getPreviousEffort();
-                effort += previousEffort;
-            }
+            // Commands sent to hardware
+            RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                         "Joint: %s, command %.5f, position state: %.5f, velocity state: %.5f",
+                         info_.joints[i].name.c_str(),
+                         hw_commands_[i],
+                         hw_positions_[i],
+                         hw_velocities_[i]);
 
-            // RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-            //             "Joint: %s, Effort: %.5f, Duration: %d",
-            //             info_.joints[i].name.c_str(), effort, duration);
-            joint.actuate(effort, duration);
-
-            RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-                        "Joint: %s, position state: %.5f, velocity state: %.5f",
-                        info_.joints[i].name.c_str(),
-                        hw_positions_[i],
-                        hw_velocities_[i]);
+            joint.actuate(hw_commands_[i], duration);
         }
 
         return hardware_interface::return_type::OK;
