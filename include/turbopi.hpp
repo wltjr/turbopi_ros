@@ -9,6 +9,7 @@
 
 #include <sstream>
 
+#include "i2c.hpp"
 #include "segment.hpp"
 
 extern const char* CLASS_NAME;
@@ -52,6 +53,8 @@ namespace turbopi
 			void setJoint(turbopi::Joint joint);
 
 		private:
+            I2C i2c_;
+
 	};
 }
 
