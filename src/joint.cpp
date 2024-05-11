@@ -11,7 +11,6 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "joint.hpp"
-#include "i2c.hpp"
 
 namespace turbopi
 {
@@ -19,11 +18,12 @@ namespace turbopi
 	{
 	}
 
-	Joint::Joint(uint8_t id, uint8_t type)
-	{
-		this->id_ = id;
-		this->type_ = type;
-	}
+    Joint::Joint(uint8_t id, uint8_t type, I2C &i2c)
+    {
+        this->id_ = id;
+        this->type_ = type;
+        this->i2c_ = &i2c;
+    }
 
 	Joint::~Joint()
 	{
@@ -78,8 +78,7 @@ namespace turbopi
 			int8_t position;
 			const int TAU = M_PI + M_PI;
 
-			I2C i2cSlave = I2C(1, _getSlaveAddress());
-			uint8_t result = i2cSlave.readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position);
+			uint8_t result = i2c_->readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position);
 			if (result == 1)
 			{
 				// double angle = (position / sensorResolution * TAU);
@@ -123,9 +122,7 @@ namespace turbopi
 			int8_t data[2];
 
 			_prepareI2CWrite(data, effort);
-			int8_t slaveAddress = _getSlaveAddress();
-			I2C i2cSlave = I2C(1, slaveAddress);
-			uint8_t result = i2cSlave.writeData(MOTOR_ADDRESS, data);
+			uint8_t result = i2c_->writeData(MOTOR_ADDRESS, data);
 			RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
 			            "Result: [%i]; effort: [%f]; motor: %i, speed: %i",
 						result, effort, data[0], data[1]);
@@ -136,9 +133,7 @@ namespace turbopi
 			{
 				int8_t data[2];
 				_prepareI2CWrite(data, effort);
-				int8_t slaveAddress = _getSlaveAddress();
-				I2C i2cSlave = I2C(1, slaveAddress);
-				uint8_t result = i2cSlave.writeData(id_ + slaveAddress, data);
+				uint8_t result = i2c_->writeData(id_ + BASE_SLAVE_ADDRESS, data);
 				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
 				            "Result: [%i]; effort: [%f]; bytes: %i, %i",
 							result, effort, data[0], data[1]);
@@ -146,25 +141,6 @@ namespace turbopi
 		}
 
 		_previousEffort = effort;
-	}
-
-	int8_t Joint::_getSlaveAddress()
-	{
-		// wheels
-		if (id_ > 0 && id_ <= 4)
-		{
-			return BASE_SLAVE_ADDRESS;
-		}
-		// camera horizontal/vertical
-		else if (id_ > 4 && id_ <= 6)
-		{
-			return BASE_SLAVE_ADDRESS;
-		}
-		else
-		{
-			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Invalid MotorID: %i", id_);
-			return -1;
-		}
 	}
 
 	void Joint::setLimits(uint8_t min, uint8_t max)
