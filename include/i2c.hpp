@@ -22,6 +22,11 @@ namespace turbopi
 		public:
 
             /**
+             * @brief Construct a new I2C object, empty/unused
+             */
+            I2C();
+
+            /**
              * @brief Construct a new I2C object, handles initialization
              *
              * @param minor   I2C device minor number range 0-89
