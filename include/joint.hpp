@@ -9,6 +9,8 @@
 
 #include <sstream>
 
+#include "i2c.hpp"
+
 #define BASE_SLAVE_ADDRESS 0x7A
 #define CAMERA_ADDRESS 21
 #define MOTOR_ADDRESS 31
@@ -40,13 +42,13 @@ namespace turbopi
 
             /**
              * @brief Construct a new Joint object, primary means to create a
-             *        new joint with a read only id, USB serial number, and
-             *        actuator type.
+             *        new joint with a read only id, type, and i2c device
              * 
              * @param id internal joint id, read only after creation
              * @param type type of joint from DEFINES; motor, servo, etc
+             * @param i2c  i2c device for the joint
              */
-			Joint(uint8_t id, uint8_t type);
+			Joint(uint8_t id, uint8_t type, I2C &i2c);
 
             /**
              * @brief Destroy the Joint object, empty/unused
@@ -89,6 +91,7 @@ namespace turbopi
 			void setLimits(uint8_t min, uint8_t max);
 
 		private:
+            I2C *i2c_;
 			int _angleReads = 0;
 			uint8_t id_ = 0;
 			uint8_t max_ = 75;
@@ -99,13 +102,6 @@ namespace turbopi
 			double _previousAngles[_filterPrevious];
 
 	        double _filterAngle(double angle);
-
-            /**
-             * @brief Get the I2C device slave address
-             * 
-             * @return int8_t I2C device slave address
-             */
-			int8_t _getSlaveAddress();
 
             /**
              * @brief Prepare the I2C address and value data buffer for read
