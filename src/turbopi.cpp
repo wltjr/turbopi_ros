@@ -15,21 +15,23 @@ namespace turbopi
 {
 	TurboPi::TurboPi()
 	{
+        I2C i2c_ = I2C(1, BASE_SLAVE_ADDRESS);
+
 		//base
-		base.joints[0] = Joint(1, TYPE_MOTOR);
+		base.joints[0] = Joint(1, TYPE_MOTOR, i2c_);
 		base.joints[0].name = "front_left_wheel_joint";
-		base.joints[1] = Joint(2, TYPE_MOTOR);
+		base.joints[1] = Joint(2, TYPE_MOTOR, i2c_);
 		base.joints[1].name = "front_right_wheel_joint";
-		base.joints[2] = Joint(3, TYPE_MOTOR);
+		base.joints[2] = Joint(3, TYPE_MOTOR, i2c_);
 		base.joints[2].name = "rear_left_wheel_joint";
-		base.joints[3] = Joint(4, TYPE_MOTOR);
+		base.joints[3] = Joint(4, TYPE_MOTOR, i2c_);
 		base.joints[3].name = "rear_right_wheel_joint";
 
 		//camera
-		camera.joints[0] = Joint(5, TYPE_SERVO);
+		camera.joints[0] = Joint(5, TYPE_SERVO, i2c_);
 		camera.joints[0].name = "camera_frame_joint";
 		camera.joints[0].sensorResolution = 128;
-		camera.joints[1] = Joint(6, TYPE_SERVO);
+		camera.joints[1] = Joint(6, TYPE_SERVO, i2c_);
 		camera.joints[1].name = "camera_joint";
 		camera.joints[1].sensorResolution = 128;
 	}
