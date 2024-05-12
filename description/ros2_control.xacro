@@ -4,7 +4,7 @@
     <ros2_control name="ros2_control" type="system">
        <xacro:if value="${use_hardware == 'robot'}">
             <hardware>
-                <plugin>robot_hardware_interface/RobotSystemHardware</plugin>
+                <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
                 <param name="hw_start_duration_sec">1.0</param>
                 <param name="hw_stop_duration_sec">3.0</param>
             </hardware>
