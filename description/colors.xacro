@@ -10,7 +10,7 @@
   </material>
 
   <material name="brass">
-    <color rgba="0.71, 0.651, 0.259 1"/>
+    <color rgba="0.71 0.651 0.259 1"/>
   </material>
 
   <material name="green">
