@@ -58,7 +58,8 @@ namespace turbopi_hardware_interface
                 return hardware_interface::CallbackReturn::ERROR;
             }
 
-            if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
+            if (joint.name.find("wheel") != std::string::npos &&
+                joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
             {
                 RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
                              "Joint '%s' have %s command interfaces found. '%s' expected.",
@@ -68,7 +69,8 @@ namespace turbopi_hardware_interface
                 return hardware_interface::CallbackReturn::ERROR;
             }
 
-            if (joint.state_interfaces.size() != 2)
+            if (joint.name.find("wheel") != std::string::npos &&
+                joint.state_interfaces.size() != 2)
             {
                 RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
                              "Joint '%s' has %zu state interface. 2 expected.",
@@ -87,7 +89,8 @@ namespace turbopi_hardware_interface
                 return hardware_interface::CallbackReturn::ERROR;
             }
 
-            if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
+            if (joint.name.find("wheel") != std::string::npos &&
+                joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
             {
                 RCLCPP_FATAL(rclcpp::get_logger(CLASS_NAME),
                              "Joint '%s' have '%s' as second state interface. '%s' expected.",
@@ -110,10 +113,13 @@ namespace turbopi_hardware_interface
                 hardware_interface::StateInterface(info_.joints[i].name,
                                                    hardware_interface::HW_IF_POSITION,
                                                    &hw_positions_[i]));
-            state_interfaces.emplace_back(
-                hardware_interface::StateInterface(info_.joints[i].name,
-                                                   hardware_interface::HW_IF_VELOCITY,
-                                                   &hw_velocities_[i]));
+           if(info_.joints[i].name.find("wheel") != std::string::npos)
+           {
+                state_interfaces.emplace_back(
+                    hardware_interface::StateInterface(info_.joints[i].name,
+                                                       hardware_interface::HW_IF_VELOCITY,
+                                                       &hw_velocities_[i]));
+           }
         }
 
         return state_interfaces;
@@ -124,10 +130,20 @@ namespace turbopi_hardware_interface
         std::vector<hardware_interface::CommandInterface> command_interfaces;
         for (auto i = 0u; i < info_.joints.size(); i++)
         {
-            command_interfaces.emplace_back(
-                hardware_interface::CommandInterface(info_.joints[i].name,
-                                                     hardware_interface::HW_IF_VELOCITY,
-                                                     &hw_commands_[i]));
+            if (info_.joints[i].name.find("wheel") != std::string::npos)
+            {
+                command_interfaces.emplace_back(
+                    hardware_interface::CommandInterface(info_.joints[i].name,
+                                                        hardware_interface::HW_IF_VELOCITY,
+                                                        &hw_commands_[i]));
+            }
+            else
+            {
+                command_interfaces.emplace_back(
+                    hardware_interface::CommandInterface(info_.joints[i].name,
+                                                        hardware_interface::HW_IF_POSITION,
+                                                        &hw_commands_[i]));
+            }
         }
 
         return command_interfaces;
