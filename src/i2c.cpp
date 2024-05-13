@@ -18,6 +18,10 @@
 
 namespace turbopi
 {
+	I2C::I2C()
+	{
+    }
+
 	I2C::I2C(uint8_t minor, int8_t address)
 	{
 		minor_ = minor;
