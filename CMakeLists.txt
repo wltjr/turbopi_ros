@@ -46,15 +46,25 @@ endif()
 
 include_directories(include)
 
+# shared object libraries, lib*.so
+add_library(teleop_turbopi SHARED src/teleop_turbopi.cpp)
 add_library(turbopi_hardware_interface
   SHARED
   src/i2c.cpp
   src/joint.cpp
-  src/turbopi_hardware_interface.cpp
   src/turbopi.cpp
-)
+  src/turbopi_hardware_interface.cpp
+  )
+
+# executable binaries
+add_executable(teleop_turbopi_node src/teleop_turbopi_node.cpp)
+
+# add ROS dependencies
+ament_target_dependencies(teleop_turbopi ${INCLUDE_DEPENDS})
 ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
 
+# link executable binaries to shared object libraries
+target_link_libraries(teleop_turbopi_node teleop_turbopi)
 target_link_libraries(turbopi_hardware_interface)
 
 
@@ -71,12 +81,21 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS turbopi_hardware_interface
-  EXPORT turbopi_hardware_interface
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+set(INSTALL_TARGETS
+  teleop_turbopi
+  teleop_turbopi_node
+  turbopi_hardware_interface
 )
+
+foreach(target IN ITEMS ${INSTALL_TARGETS})
+  install(TARGETS ${target}
+    EXPORT ${target}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
+  )
+endforeach()
+
 ################################################################################
 # Macro for ament package
 ################################################################################
