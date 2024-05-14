@@ -15,7 +15,7 @@ namespace turbopi
 {
 	TurboPi::TurboPi()
 	{
-        I2C i2c_ = I2C(1, BASE_SLAVE_ADDRESS);
+        static I2C i2c_ = I2C(1, BASE_SLAVE_ADDRESS);
 
 		//base
 		base.joints[0] = Joint(1, TYPE_MOTOR, i2c_);
