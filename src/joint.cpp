@@ -112,50 +112,8 @@ namespace turbopi
 
 	void Joint::actuate(double effort, uint8_t /*duration = 1*/)
 	{
-		if (type_ == TYPE_MOTOR)
-		{
-			if (effort > 100.0)
-				effort = 100.0;
-			if (effort < -100.0)
-				effort = -100.0;
+		int8_t data[2];
 
-			int8_t data[2];
-
-			_prepareI2CWrite(data, effort);
-			uint8_t result = i2c_->writeData(MOTOR_ADDRESS, data);
-			RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-			            "Result: [%i]; effort: [%f]; motor: %i, speed: %i",
-						result, effort, data[0], data[1]);
-		}
-		else if (type_ == TYPE_SERVO)
-		{
-			if (effort != _previousEffort)
-			{
-				int8_t data[2];
-				_prepareI2CWrite(data, effort);
-				uint8_t result = i2c_->writeData(id_ + BASE_SLAVE_ADDRESS, data);
-				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-				            "Result: [%i]; effort: [%f]; bytes: %i, %i",
-							result, effort, data[0], data[1]);
-			}
-		}
-
-		_previousEffort = effort;
-	}
-
-	void Joint::setLimits(uint8_t min, uint8_t max)
-	{
-		this->min_ = min;
-		this->max_ = max;
-	}
-
-	double Joint::getPreviousEffort()
-	{
-		return this->_previousEffort;
-	}
-
-	void Joint::_prepareI2CWrite(int8_t addr_value[2], double effort)
-	{
 		if (type_ == TYPE_MOTOR)
 		{
 			const int LOW = 70;
@@ -164,7 +122,7 @@ namespace turbopi
 
 			if (effort > 100.0)
 				effort = 100.0;
-			if (effort < -100.0)
+			else if (effort < -100.0)
 				effort = -100.0;
 
 			int8_t speed = effort;
@@ -186,20 +144,46 @@ namespace turbopi
 			}
 
 			// invert speeds for right side
-			if(id_ & 1)
+			if(id_ & 1 && speed != 0)
 				speed = -speed;
 
-			addr_value[0] = id_ - 1;
-			addr_value[1] = speed;
+			data[0] = id_ - 1;
+			data[1] = speed;
+
+			uint8_t result = i2c_->writeData(MOTOR_ADDRESS, data);
+			RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
+			            "write: %i; effort: %f; motor: %i, speed: %i",
+						result, effort, data[0], data[1]);
 		}
 		else if (type_ == TYPE_SERVO)
 		{
-			double magnitude = effort * 100.0;
-			uint8_t value = floor(min_ + ((max_ - min_) * (magnitude / 100.0)));
+			if (effort != _previousEffort)
+			{
+                double magnitude = effort * 100.0;
+                uint8_t value = floor(min_ + ((max_ - min_) * (magnitude / 100.0)));
 
-			addr_value[0] = id_ - 1;
-			addr_value[1] = value;
+                data[0] = id_ - 1;
+                data[1] = value;
+
+				uint8_t result = i2c_->writeData(id_ + BASE_SLAVE_ADDRESS, data);
+				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
+				            "write: %i; effort: %f; bytes: %i, %i",
+							result, effort, data[0], data[1]);
+			}
 		}
+
+		_previousEffort = effort;
+	}
+
+	void Joint::setLimits(uint8_t min, uint8_t max)
+	{
+		this->min_ = min;
+		this->max_ = max;
+	}
+
+	double Joint::getPreviousEffort()
+	{
+		return this->_previousEffort;
 	}
 
 	int Joint::getType()
