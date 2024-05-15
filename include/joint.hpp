@@ -102,16 +102,6 @@ namespace turbopi
 			double _previousAngles[_filterPrevious];
 
 	        double _filterAngle(double angle);
-
-            /**
-             * @brief Prepare the I2C address and value data buffer for read
-             */
-			void _prepareI2CRead(int8_t addr_value[2]);
-
-            /**
-             * @brief Prepare the I2C address and value data buffer for write
-             */
-			void _prepareI2CWrite(int8_t addr_value[2], double effort);
 	};
 }
 
