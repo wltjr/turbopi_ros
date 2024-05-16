@@ -60,7 +60,7 @@ namespace turbopi
              * 
              * @return uint8_t          -1 for error or 0 for success
              */
-			uint8_t writeData(int8_t register_number, int8_t data[2]);
+			uint8_t writeData(int8_t register_number, uint8_t data[2]);
 
 		private:
 			char busfile[64];
