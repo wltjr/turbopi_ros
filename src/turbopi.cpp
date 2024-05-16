@@ -29,11 +29,13 @@ namespace turbopi
 
 		//camera
 		camera.joints[0] = Joint(5, TYPE_SERVO, i2c_);
-		camera.joints[0].name = "camera_frame_joint";
+		camera.joints[0].name = "camera_joint";
 		camera.joints[0].sensorResolution = 128;
+		camera.joints[0].setLimits(0, 115);
 		camera.joints[1] = Joint(6, TYPE_SERVO, i2c_);
-		camera.joints[1].name = "camera_joint";
+		camera.joints[1].name = "camera_frame_joint";
 		camera.joints[1].sensorResolution = 128;
+		camera.joints[1].setLimits(0, 180);
 	}
 
 	TurboPi::~TurboPi()
