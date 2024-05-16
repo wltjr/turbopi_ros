@@ -94,14 +94,14 @@ def launch_setup(context: LaunchContext):
             package='tf2_ros',
             executable='static_transform_publisher',
             arguments= ["--frame-id", "base_link",
-                        "--child-frame-id", "turbopi_ros/base_link/lidar_sensor"]
+                        "--child-frame-id", "turbopi/base_link/lidar_sensor"]
     )
 
     static_transform_publisher_odom = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             arguments= ["--frame-id", "base_link",
-                        "--child-frame-id", "turbopi_ros/odom"]
+                        "--child-frame-id", "turbopi/odom"]
     )
 
     delayed_joint_broad_spawner = RegisterEventHandler(
