@@ -112,7 +112,7 @@ namespace turbopi
 
 	void Joint::actuate(double effort, uint8_t /*duration = 1*/)
 	{
-		int8_t data[2];
+		uint8_t data[2];
 
 		if (type_ == TYPE_MOTOR)
 		{
@@ -125,7 +125,7 @@ namespace turbopi
 			else if (effort < -100.0)
 				effort = -100.0;
 
-			int8_t speed = effort;
+			uint8_t speed = effort;
 
 			// stick to 2 speeds low/high, motors need min ~35 to activate.
 			if(effort > 0)
@@ -159,16 +159,32 @@ namespace turbopi
 		{
 			if (effort != _previousEffort)
 			{
-                double magnitude = effort * 100.0;
-                uint8_t value = floor(min_ + ((max_ - min_) * (magnitude / 100.0)));
+                uint8_t angle = effort * 90 + 90;
+                uint8_t pulse = ((200 * angle) / 9) + 500;
+                uint8_t pulse_data[4];
 
-                data[0] = id_ - 1;
-                data[1] = value;
+                if (angle > 180)
+                    angle = (uint8_t)180;
+                else if (angle > max_)
+                    angle = max_;
 
-				uint8_t result = i2c_->writeData(id_ + BASE_SLAVE_ADDRESS, data);
+                data[0] = id_ - 5;
+                data[1] = angle;
+
+                pulse_data[0] = 1;
+                pulse_data[1] = (uint8_t)10;
+                pulse_data[2] = data[0];
+                pulse_data[3] = pulse;
+
+				uint8_t result = i2c_->writeData(CAMERA_ADDRESS, data);
 				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-				            "write: %i; effort: %f; bytes: %i, %i",
-							result, effort, data[0], data[1]);
+				            "write: %i; effort: %f; joint %s max %i servo: %i angle: %i°",
+							result, effort, name.c_str(), max_, data[0], data[1]);
+
+				result = i2c_->writeData(SERVO_ADDRESS_CMD, pulse_data);
+				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
+				            "write: %i; effort: %f; servo: %i time: %i pulse %i",
+							result, effort, pulse_data[2], pulse_data[1], pulse_data[3]);
 			}
 		}
 
