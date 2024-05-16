@@ -49,9 +49,9 @@ namespace teleop_turbopi
         pos_msg->data.resize(2);
 
         // camera left/right
-        if (joy_msg->axes[TurboPi::axes::RIGHT_JOY_X])
+        if (joy_msg->axes[TurboPi::axes::RIGHT_JOY_Y])
         {
-            pos_msg->data[0] = joy_msg->axes[TurboPi::axes::RIGHT_JOY_X];
+            pos_msg->data[0] = joy_msg->axes[TurboPi::axes::RIGHT_JOY_Y];
         }
         else
         {
@@ -60,9 +60,9 @@ namespace teleop_turbopi
         }
 
         // camera up/down
-        if (joy_msg->axes[TurboPi::axes::RIGHT_JOY_Y])
+        if (joy_msg->axes[TurboPi::axes::RIGHT_JOY_X])
         {
-            pos_msg->data[1] = joy_msg->axes[TurboPi::axes::RIGHT_JOY_Y];
+            pos_msg->data[1] = joy_msg->axes[TurboPi::axes::RIGHT_JOY_X];
         }
         else
         {
