@@ -39,64 +39,22 @@ namespace turbopi
 		return this->id_;
 	}
 
-	double Joint::_filterAngle(double angle)
-	{
-		_angleReads = _angleReads + 1;
-
-		// put value at front of array
-		for (int i = _filterPrevious - 1; i > 0; i--)
-		{
-			_previousAngles[i] = _previousAngles[i - 1];
-		}
-		_previousAngles[0] = angle;
-
-		int filterIterations = _filterPrevious;
-		if (_angleReads < _filterPrevious)
-		{
-			filterIterations = _angleReads;
-		}
-
-		double angleSum = 0;
-		for (int i = 0; i < filterIterations; i++)
-		{
-			angleSum = angleSum + _previousAngles[i];
-		}
-
-		double filterResult = angleSum / (filterIterations * 1.0);
-
-		// RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-		// 			"Joint: %s, Angle: %f, AngleSum: %f, FilterResult: %f, Iterations: %i",
-		// 			name.c_str(), angle, angleSum, filterResult, filterIterations);
-
-		return filterResult;
-	}
-
 	double Joint::readAngle()
 	{
 		if (type_ == TYPE_MOTOR)
 		{
 			int8_t position;
-			const int TAU = M_PI + M_PI;
 
 			uint8_t result = i2c_->readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position);
 			if (result == 1)
 			{
-				// double angle = (position / sensorResolution * TAU);
-				// angle = _filterAngle(angle);
-				// angle += angleOffset;
-				// if (angle > M_PI)
-				// 	angle -= TAU;
-				// if (angle < -M_PI)
-				// 	angle += TAU;
-				// angle *= readRatio;
-				// return angle;
 				return position;
 			}
 			else
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
-							 "I2C Read Error during joint position read.");
-				// throw std::runtime_error("I2C Read Error during joint position read. Exiting for safety.");
+							 "I2C Read Error during joint %s position read.",
+                             name.c_str());
 				return 0;
 			}
 		}
