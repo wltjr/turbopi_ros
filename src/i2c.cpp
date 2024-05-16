@@ -87,11 +87,11 @@ namespace turbopi
 		return (1);
 	}
 
-	uint8_t I2C::writeData(int8_t register_number, int8_t data[2])
+	uint8_t I2C::writeData(int8_t register_number, uint8_t data[2])
 	{
 		if (fd != -1)
 		{
-			int8_t buff[2];
+			uint8_t buff[2];
 			buff[0] = register_number + data[0];
 			buff[1] = data[1];
 
