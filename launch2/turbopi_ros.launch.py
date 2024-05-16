@@ -16,6 +16,7 @@ def launch_setup(context: LaunchContext):
 
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     sim = eval(context.perform_substitution(LaunchConfiguration('sim')).title())
+    camera_params_file = os.path.join(pkg_path, 'config', 'camera.yaml')
     controller_params = os.path.join(pkg_path, 'config', 'turbopi_controllers.yaml')
     xacro_file = os.path.join(pkg_path,'description',filename)
 
@@ -68,6 +69,12 @@ def launch_setup(context: LaunchContext):
         arguments=["position_controllers", "-c", "/controller_manager"],
     )
 
+    v4l2_camera_node = Node(
+        package='v4l2_camera',
+        executable='v4l2_camera_node',
+        parameters=[camera_params_file],
+    )
+
     delayed_joint_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessStart(
             target_action=controller_manager,
@@ -89,12 +96,20 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_v4l2_camera_node = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[v4l2_camera_node],
+        )
+    )
+
     nodes = [
         controller_manager,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
+        delayed_v4l2_camera_node,
     ]
 
     return nodes
