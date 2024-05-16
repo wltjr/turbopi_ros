@@ -93,16 +93,11 @@ namespace turbopi
 
 		private:
             I2C *i2c_;
-			int _angleReads = 0;
 			uint8_t id_ = 0;
 			uint8_t max_ = 75;
 			uint8_t min_ = 0;
 			uint8_t type_ = 0;
-			static const int _filterPrevious = 3;
 			double _previousEffort;
-			double _previousAngles[_filterPrevious];
-
-	        double _filterAngle(double angle);
 	};
 }
 
