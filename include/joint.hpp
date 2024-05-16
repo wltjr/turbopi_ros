@@ -14,6 +14,7 @@
 #define BASE_SLAVE_ADDRESS 0x7A
 #define CAMERA_ADDRESS 21
 #define MOTOR_ADDRESS 31
+#define SERVO_ADDRESS_CMD 40
 
 #define TYPE_NONE -1
 #define TYPE_MOTOR 0
