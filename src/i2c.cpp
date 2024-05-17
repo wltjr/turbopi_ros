@@ -41,11 +41,12 @@ namespace turbopi
 	{
 		if (fd != -1)
 		{
-			int8_t buffer[buffer_size];
+			std::vector<int8_t> buffer(buffer_size);
 
 			uint8_t write_buffer_size = 1;
-			int8_t write_buffer[write_buffer_size] = {0};
+			std::vector<int8_t>  write_buffer(write_buffer_size);
 			write_buffer[0] = register_number;
+            int8_t* buf = write_buffer.data();
 
 			if (ioctl(fd, I2C_SLAVE, address_) < 0)
 			{
@@ -54,14 +55,16 @@ namespace turbopi
 				return -1;
 			}
 
-			if (write(fd, write_buffer, write_buffer_size) != write_buffer_size)
+			if (write(fd, buf, write_buffer_size) != write_buffer_size)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():write] I2C slave 0x%x failed to write to register 0x%x\nError: %d - %s",
 							 address_, register_number, errno, strerror(errno));
 				return (-1);
 			}
-			if (read(fd, buffer, buffer_size) != buffer_size)
+
+            buf = buffer.data();
+			if (read(fd, buf, buffer_size) != buffer_size)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():read] Could not read from I2C slave 0x%x, register 0x%x\nError: %d - %s",
@@ -91,12 +94,12 @@ namespace turbopi
 	{
 		if (fd != -1)
 		{
-			uint8_t buff[2];
-			buff[0] = register_number + data[0];
-			buff[1] = data[1];
+			std::vector<uint8_t> buffer(2);
+			buffer[0] = register_number + data[0];
+			buffer[1] = data[1];
+            uint8_t* buf = buffer.data();
 
-			int result = write(fd, buff, sizeof(buff));
-			if (result != sizeof(buff))
+			if (write(fd, buf, buffer.size()) != (int)buffer.size())
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[writeData():write] Failed to write to I2C Slave 0x%x @ register 0x%x\nError: %d - %s",
