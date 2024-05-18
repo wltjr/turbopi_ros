@@ -50,11 +50,19 @@ def launch_setup(context: LaunchContext):
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
+            '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         ],
+    )
+
+    image_bridge = Node(
+        package='ros_gz_image',
+        executable='image_bridge',
+        arguments=['/camera'],
     )
 
     node_robot_state_publisher = Node(
@@ -90,6 +98,13 @@ def launch_setup(context: LaunchContext):
         remappings=[('/map', '/slam_toolbox/map'),],
     )
 
+    static_transform_publisher_camera = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "turbopi/base_link/camera"]
+    )
+
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -108,6 +123,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[joint_state_broadcaster],
+        )
+    )
+
+    delayed_static_transform_publisher_camera = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_camera],
         )
     )
 
@@ -150,8 +172,10 @@ def launch_setup(context: LaunchContext):
         gazebo,
         create_entity,
         bridge,
+        image_bridge,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
+        delayed_static_transform_publisher_camera,
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
