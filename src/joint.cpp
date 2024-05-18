@@ -39,11 +39,11 @@ namespace turbopi
 		return this->id_;
 	}
 
-	double Joint::readAngle()
+	double Joint::getValue()
 	{
 		if (type_ == TYPE_MOTOR)
 		{
-			int8_t position;
+			uint8_t position;
 
 			uint8_t result = i2c_->readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position);
 			if (result == 1)
