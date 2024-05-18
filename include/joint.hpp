@@ -56,6 +56,12 @@ namespace turbopi
              */
 			~Joint();
 
+            /**
+             * @brief Actuate the joint
+             * 
+             * @param effort    the effort of the actuation, speed, position, etc
+             * @param duration  the duration of the effort
+             */
 			void actuate(double effort, uint8_t duration);
 
             /**
@@ -68,13 +74,18 @@ namespace turbopi
             /**
              * @brief Get the type of joint
              * 
-             * @return int internal joint id
+             * @return uint8_t internal joint id
              */
 			uint8_t getId();
 
 	        double getPreviousEffort();
 
-			double readAngle();
+            /**
+             * @brief Get the joints curent value
+             * 
+             * @return double internal joint id
+             */
+			double getValue();
 
             /**
              * @brief Set the type of joint
