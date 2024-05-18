@@ -203,10 +203,8 @@ namespace turbopi_hardware_interface
 
             if (joint.getType() == TYPE_MOTOR)
             {
-                hw_positions_[i] = joint.readAngle();
+                hw_positions_[i] = joint.getValue();
 
-                std::ostringstream jointPositionStr;
-                jointPositionStr << hw_positions_[i];
                 RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
                             "Joint: %s, command %.5f, position state: %.5f, velocity state: %.5f",
                             info_.joints[i].name.c_str(),
