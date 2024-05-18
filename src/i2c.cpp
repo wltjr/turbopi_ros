@@ -22,7 +22,7 @@ namespace turbopi
 	{
     }
 
-	I2C::I2C(uint8_t minor, int8_t address)
+	I2C::I2C(uint8_t minor, uint8_t address)
 	{
 		minor_ = minor;
 		address_ = address;
@@ -35,18 +35,18 @@ namespace turbopi
 		close(fd);
 	}
 
-	uint8_t I2C::readBytes(int8_t register_number,
+	uint8_t I2C::readBytes(uint8_t register_number,
                            uint8_t buffer_size,
-                           int8_t &value)
+                           uint8_t &value)
 	{
 		if (fd != -1)
 		{
-			std::vector<int8_t> buffer(buffer_size);
+			std::vector<uint8_t> buffer(buffer_size);
 
 			uint8_t write_buffer_size = 1;
-			std::vector<int8_t>  write_buffer(write_buffer_size);
+			std::vector<uint8_t>  write_buffer(write_buffer_size);
 			write_buffer[0] = register_number;
-            int8_t* buf = write_buffer.data();
+            uint8_t* buf = write_buffer.data();
 
 			if (ioctl(fd, I2C_SLAVE, address_) < 0)
 			{
@@ -90,7 +90,7 @@ namespace turbopi
 		return (1);
 	}
 
-	uint8_t I2C::writeData(int8_t register_number, uint8_t data[2])
+	uint8_t I2C::writeData(uint8_t register_number, uint8_t data[2])
 	{
 		if (fd != -1)
 		{
