@@ -32,7 +32,7 @@ namespace turbopi
              * @param minor   I2C device minor number range 0-89
              * @param address I2C slave address
              */
-			I2C(uint8_t minor, int8_t address);
+			I2C(uint8_t minor, uint8_t address);
 
             /**
              * @brief Destroy the I2C object, closes device handle
@@ -48,9 +48,9 @@ namespace turbopi
              * 
              * @return uint8_t          -1 for error or 0 for success
              */
-			uint8_t readBytes(int8_t register_number,
+			uint8_t readBytes(uint8_t register_number,
                               uint8_t buffer_size,
-                              int8_t &value);
+                              uint8_t &value);
 
             /**
              * @brief Write data to I2C component via register number
@@ -60,12 +60,12 @@ namespace turbopi
              * 
              * @return uint8_t          -1 for error or 0 for success
              */
-			uint8_t writeData(int8_t register_number, uint8_t data[2]);
+			uint8_t writeData(uint8_t register_number, uint8_t data[2]);
 
 		private:
 			char busfile[64];
 			int fd;
-			int8_t minor_;
+			uint8_t minor_;
 			uint8_t address_;
 
             /**
