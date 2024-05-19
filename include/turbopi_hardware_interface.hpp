@@ -42,6 +42,11 @@ namespace turbopi_hardware_interface
     public:
         RCLCPP_SHARED_PTR_DEFINITIONS(TurboPiSystemHardware)
 
+        /**
+         * @brief Destroy the TurboPiSystemHardware object, call on_deactivate
+         */
+        ~TurboPiSystemHardware();
+
         TURBOPI_PUBLIC
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareInfo &info) override;
