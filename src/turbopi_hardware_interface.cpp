@@ -27,6 +27,11 @@
 
 namespace turbopi_hardware_interface
 {
+    TurboPiSystemHardware::~TurboPiSystemHardware()
+    {
+        on_deactivate(rclcpp_lifecycle::State());
+    }
+
     hardware_interface::CallbackReturn TurboPiSystemHardware::on_init(
         const hardware_interface::HardwareInfo &info)
     {
