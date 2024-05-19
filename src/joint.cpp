@@ -74,36 +74,27 @@ namespace turbopi
 
 		if (type_ == TYPE_MOTOR)
 		{
-			const int LOW = 70;
-			const int HIGH = 100;
-			const int THRESHOLD = 30;
+            int8_t speed = 0;
 
-			if (effort > 100.0)
-				effort = 100.0;
-			else if (effort < -100.0)
-				effort = -100.0;
+            if(floor(effort) != 0)
+            {
+                const int8_t LOW = 50;
 
-			uint8_t speed = effort;
+                speed = ceil(effort) / 31 * 100;
 
-			// stick to 2 speeds low/high, motors need min ~35 to activate.
-			if(effort > 0)
-			{
-				if(effort < THRESHOLD)
-					speed = LOW;
-				else
-					speed = HIGH;
-			}
-			else if(effort < 0)
-			{
-				if(effort > -THRESHOLD)
-					speed = -LOW;
-				else
-					speed = -HIGH;
-			}
+                if (speed > 100)
+                    speed = 100;
+                else if (speed < -100)
+                    speed = -100;
+                else if(speed > 0 && speed < LOW)
+                    speed = LOW;
+                else if(speed < 0 && speed > -LOW)
+                    speed = -LOW;
 
-			// invert speeds for right side
-			if(id_ & 1 && speed != 0)
-				speed = -speed;
+                // invert speeds for right side
+                if(id_ & 1)
+                    speed = -speed;
+            }
 
 			data[0] = id_ - 1;
 			data[1] = speed;
