@@ -3,11 +3,13 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction, RegisterEventHandler
-from launch.event_handlers import OnProcessExit, OnProcessStart
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, LogInfo, OpaqueFunction, RegisterEventHandler
+from launch.event_handlers import OnProcessExit, OnProcessStart, OnShutdown
 from launch.launch_context import LaunchContext
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+
+import subprocess
 
 def launch_setup(context: LaunchContext):
 
@@ -77,6 +79,18 @@ def launch_setup(context: LaunchContext):
         # remappings=[('/map', '/slam_toolbox/map'),],
     )
 
+    start_lidar = ExecuteProcess(
+        cmd=[
+            [
+                FindExecutable(name="ros2"),
+                " service call ",
+                "/start_motor ",
+                "std_srvs/srv/Empty",
+            ]
+        ],
+        shell=True,
+    )
+
     v4l2_camera_node = Node(
         package='v4l2_camera',
         executable='v4l2_camera_node',
@@ -107,7 +121,7 @@ def launch_setup(context: LaunchContext):
     delayed_slam_toolbox_node_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_broad_spawner,
-            on_exit=[slam_toolbox_node],
+            on_exit=[start_lidar, slam_toolbox_node],
         )
     )
 
@@ -115,6 +129,17 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=joint_broad_spawner,
             on_exit=[v4l2_camera_node],
+        )
+    )
+
+    stop_lidar_on_shutdown = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=slam_toolbox_node,
+            on_exit=[
+                LogInfo(msg='Stopping lidar'),
+                OpaqueFunction(function=stop_lidar),
+                LogInfo(msg='Stopped lidar'),
+            ],
         )
     )
 
@@ -126,9 +151,15 @@ def launch_setup(context: LaunchContext):
         delayed_position_spawner,
         delayed_slam_toolbox_node_spawner,
         delayed_v4l2_camera_node,
+        stop_lidar_on_shutdown,
     ]
 
     return nodes
+
+
+def stop_lidar(context: LaunchContext):
+    subprocess.run("ros2 service call /stop_motor std_srvs/srv/Empty", shell=True)
+
 
 def generate_launch_description():
     # Declare arguments
