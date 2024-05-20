@@ -17,6 +17,7 @@ def launch_setup(context: LaunchContext):
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     sim = eval(context.perform_substitution(LaunchConfiguration('sim')).title())
     camera_params_file = os.path.join(pkg_path, 'config', 'camera.yaml')
+    slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
     controller_params = os.path.join(pkg_path, 'config', 'turbopi_controllers.yaml')
     xacro_file = os.path.join(pkg_path,'description',filename)
 
@@ -69,6 +70,13 @@ def launch_setup(context: LaunchContext):
         arguments=["position_controllers", "-c", "/controller_manager"],
     )
 
+    slam_toolbox_node = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        parameters=[ slam_params_file, {'use_sim_time': True} ],
+        # remappings=[('/map', '/slam_toolbox/map'),],
+    )
+
     v4l2_camera_node = Node(
         package='v4l2_camera',
         executable='v4l2_camera_node',
@@ -96,6 +104,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_slam_toolbox_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[slam_toolbox_node],
+        )
+    )
+
     delayed_v4l2_camera_node = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_broad_spawner,
@@ -109,6 +124,7 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
+        delayed_slam_toolbox_node_spawner,
         delayed_v4l2_camera_node,
     ]
 
