@@ -41,6 +41,14 @@
 
     <link name="base_link"></link>
 
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+    </joint>
+    <link name="base_footprint">
+        <parent link="base_link"/>
+    </link>
+
     <!-- Main Body/Chassis -->
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
