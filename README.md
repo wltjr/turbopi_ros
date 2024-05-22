@@ -113,6 +113,7 @@ Credits and thanks for resources used in this repository, some code and/or proje
 
 - Articulated Robotics - 
   [Making a Mobile Robot with ROS](https://articulatedrobotics.xyz/mobile-robot-full-list/)
+- Linux I2C - [Implementing I2C device drivers in userspace](https://www.kernel.org/doc/html/latest/i2c/dev-interface.html)
 - ROS 2 Control Demos -
   [example 2](https://github.com/ros-controls/ros2_control_demos)
 - Slate Robotics - 
