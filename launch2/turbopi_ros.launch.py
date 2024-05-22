@@ -95,6 +95,7 @@ def launch_setup(context: LaunchContext):
         package='v4l2_camera',
         executable='v4l2_camera_node',
         parameters=[camera_params_file],
+        remappings=[('/image_raw', '/camera'),],
     )
 
     delayed_joint_broad_spawner = RegisterEventHandler(
