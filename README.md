@@ -46,19 +46,49 @@ ros2 launch turbopi_ros turbopi_ros.launch.py
 ```
 
 ## Robot Human Controllers
-There are presently two ways to control the robot using [teleop twist joy](https://github.com/ros2/teleop_twist_joy) and [keyboard](https://github.com/ros2/teleop_twist_keyboard)
+The primary way to control the robot is using telop_turbopi which is intended to
+be used with a [DUALSHOCK™4](https://www.playstation.com/en-us/accessories/dualshock-4-wireless-controller/) wireless controller.
 
-### Gamepad
-Run the following command to invoke the controller for the gamepad. Presently using a Logitech F310, which works with the `xbox` configuration. 
+
+### DUALSHOCK™4
+Run the following command to invoke the controller for the DUALSHOCK™4 wireless
+controller.
+```bash
+ros2 launch turbopi_ros gamepad.launch.py
+```
+
+#### Button Layout
+The primary buttons are the left joystick for driving/movement and the right
+joystick for the attached camera. All other buttons are not mapped or in use
+at this time.
+
+<img align="left" alt="Drawing of DUALSHOCK™4" src="https://manuals.playstation.net/document/imgps4/other_basic_018.jpg" />
+
+| Button | Action |
+| ------------- | ------------- |
+| A | Unused  |
+| B | Unused  |
+| C | Unused  |
+| D | Unused  |
+| E | Unused  |
+| F | Unused  |
+| G | Unused  |
+| H | Camera - tilt up/down, pan left/right |
+| I | Unused  |
+| J | Unused  |
+| K | Driving - forward/backward, turn left/right |
+
+### Alternatives
+There are presently alternative two ways to control the robot using [teleop twist joy](https://github.com/ros2/teleop_twist_joy) and [keyboard](https://github.com/ros2/teleop_twist_keyboard). However, they only support robot movement and do not control camera or other peripherals, they just use `/cmd_vel` topic.
+
+#### Gamepad
+Run the following command to invoke the controller for the gamepad. Sample 
+command is  using a Logitech F310, which works with the `xbox` configuration. 
 ```bash
 ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'
 ```
 
-#### Button Layout
-Movement is done using the D-Pad and the X and Right Trigger button combinations. Press either X or Right Trigger, and then use the D-Pad to move forward, backward, and turn left and right.
-![Picture of Logitech F310](https://gm0.org/en/latest/_images/logitech-f310.png)
-
-### Keyboard
+#### Keyboard
 Run the following command to invoke the controller for the keyboard, which will present a interface for controlling the robot in the same terminal the command is run within.
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
