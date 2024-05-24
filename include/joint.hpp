@@ -32,8 +32,6 @@ namespace turbopi
 	{
 		public:
 			double sensorResolution = 1024;
-			double angleOffset = 0;
-			double readRatio = 1;
 			std::string name;
 
             /**
