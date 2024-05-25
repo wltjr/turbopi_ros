@@ -65,7 +65,7 @@ namespace turbopi
              * @param index          device index
              * @param rgb            rgb color
              */
-            uint8_t setPixelColor(uint8_t index, uint8_t rgb);
+            uint8_t setPixelColor(uint8_t index, uint32_t rgb);
 
             /**
              * @brief Set sensor pixel color
@@ -77,7 +77,7 @@ namespace turbopi
 		private:
 			I2C *i2c_;
             uint8_t i2c_address_;
-            uint8_t pixels[2] = {0};
+            uint32_t pixels[2] = {0};
             uint8_t rgb_mode_ = 2;
 
 	};
