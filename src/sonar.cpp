@@ -17,7 +17,7 @@ namespace turbopi
     Sonar::Sonar(uint8_t i2c_dev, uint8_t i2c_address)
     {
         i2c_address_ = i2c_address;
-        I2C i2c = I2C(i2c_dev, i2c_address_);
+        static I2C i2c = I2C(i2c_dev, i2c_address_);
         i2c_ = &i2c;
     }
 
