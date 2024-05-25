@@ -71,6 +71,11 @@ namespace turbopi
 
     void Sonar::setRGBMode(uint8_t mode)
     {
+		uint8_t data[2];
+
+        data[0] = 2;
+        data[1] = mode;
+        uint8_t result = i2c_->writeData(i2c_address_, data);
         rgb_mode_ = mode;
     }
 
