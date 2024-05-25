@@ -6,6 +6,8 @@
 
 #include "sonar.hpp"
 
+const char* CLASS_NAME = "Sonar";
+
 namespace turbopi
 {
     Sonar::Sonar()
@@ -40,12 +42,12 @@ namespace turbopi
     {
         if (index != 0 && index != 1)
             return {0,0,0};
-        return {((pixels[index] >> 16) & 0xFF),
-                ((pixels[index] >> 8) & 0xFF),
-                (pixels[index] & 0xFF)};
+        return {(uint8_t)((pixels[index] >> 16) & 0xFF),
+                (uint8_t)((pixels[index] >> 8) & 0xFF),
+                (uint8_t)((pixels[index]) & 0xFF)};
     }
 
-    uint8_t Sonar::setPixelColor(uint8_t index, uint8_t rgb)
+    uint8_t Sonar::setPixelColor(uint8_t index, uint32_t rgb)
     {
         if (index != 0 && index != 1)
             return 0;
