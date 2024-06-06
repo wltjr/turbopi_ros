@@ -55,15 +55,15 @@ namespace turbopi
         uint8_t start_reg = (index == 0) ? 3:6;
 		uint8_t data[2];
 
-        data[0] = start_reg;
+        data[0] = 0;
         data[1] = (uint8_t)(0xFF & (rgb >> 16));
-        uint8_t result = i2c_->writeData(i2c_address_, data);
-        data[0] = start_reg+1;
+        uint8_t result = i2c_->writeData(start_reg, data);
+        data[0] = 0;
         data[1] = (uint8_t)(0xFF & (rgb >> 8));
-        result = i2c_->writeData(i2c_address_, data);
-        data[0] = start_reg+2;
+        result = i2c_->writeData(start_reg+1, data);
+        data[0] = 0;
         data[1] = (uint8_t)(0xFF & rgb);
-        result = i2c_->writeData(i2c_address_, data);
+        result = i2c_->writeData(start_reg+2, data);
         pixels[index] = rgb;
 
         return result;
@@ -73,9 +73,9 @@ namespace turbopi
     {
 		uint8_t data[2];
 
-        data[0] = 2;
+        data[0] = 0;
         data[1] = mode;
-        uint8_t result = i2c_->writeData(i2c_address_, data);
+        uint8_t result = i2c_->writeData(2, data);
         rgb_mode_ = mode;
     }
 
