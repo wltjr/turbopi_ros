@@ -29,11 +29,8 @@ namespace turbopi
     {
         uint8_t distance = 255;
 
-        uint8_t result = i2c_->readBytes(i2c_address_, 2, distance);
-        if (result != 1)
-		{
+        if (i2c_->readBytes(0, 1, distance))
             distance = 0;
-        }
 
         return distance;
     }
