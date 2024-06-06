@@ -47,25 +47,30 @@ endif()
 include_directories(include)
 
 # shared object libraries, lib*.so
+add_library(i2c SHARED src/i2c.cpp)
+add_library(sonar SHARED src/sonar.cpp)
 add_library(teleop_turbopi SHARED src/teleop_turbopi.cpp)
 add_library(turbopi_hardware_interface
   SHARED
-  src/i2c.cpp
   src/joint.cpp
   src/turbopi.cpp
   src/turbopi_hardware_interface.cpp
   )
 
 # executable binaries
+add_executable(test_sonar src/tests/test_sonar.cpp)
 add_executable(teleop_turbopi_node src/teleop_turbopi_node.cpp)
 
 # add ROS dependencies
+ament_target_dependencies(i2c ${INCLUDE_DEPENDS})
 ament_target_dependencies(teleop_turbopi ${INCLUDE_DEPENDS})
 ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
+target_link_libraries(sonar i2c)
 target_link_libraries(teleop_turbopi_node teleop_turbopi)
-target_link_libraries(turbopi_hardware_interface)
+target_link_libraries(test_sonar i2c sonar)
+target_link_libraries(turbopi_hardware_interface i2c)
 
 
 ################################################################################
@@ -82,6 +87,7 @@ install(
 )
 
 set(INSTALL_TARGETS
+  i2c
   teleop_turbopi
   teleop_turbopi_node
   turbopi_hardware_interface
