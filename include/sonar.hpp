@@ -13,6 +13,8 @@
 
 #include "i2c.hpp"
 
+#define SONAR_ADDRESS 0x77
+
 // classname used in logging output
 extern const char *CLASS_NAME;
 
