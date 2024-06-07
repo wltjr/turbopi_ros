@@ -117,7 +117,7 @@ namespace turbopi
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Device File not available. Aborting write");
 			return (-1);
 		}
-		return 0;
+		return (1);
 	}
 
 	void I2C::openfd()
