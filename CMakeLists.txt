@@ -58,8 +58,9 @@ add_library(turbopi_hardware_interface
   )
 
 # executable binaries
-add_executable(test_sonar src/tests/test_sonar.cpp)
+add_executable(sonar_node src/sonar_node.cpp)
 add_executable(teleop_turbopi_node src/teleop_turbopi_node.cpp)
+add_executable(test_sonar src/tests/test_sonar.cpp)
 
 # add ROS dependencies
 ament_target_dependencies(i2c ${INCLUDE_DEPENDS})
@@ -68,6 +69,7 @@ ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
 target_link_libraries(sonar i2c)
+target_link_libraries(sonar_node sonar)
 target_link_libraries(teleop_turbopi_node teleop_turbopi)
 target_link_libraries(test_sonar i2c sonar)
 target_link_libraries(turbopi_hardware_interface i2c)
@@ -88,6 +90,8 @@ install(
 
 set(INSTALL_TARGETS
   i2c
+  sonar
+  sonar_node
   teleop_turbopi
   teleop_turbopi_node
   turbopi_hardware_interface
