@@ -79,6 +79,12 @@ def launch_setup(context: LaunchContext):
         # remappings=[('/map', '/slam_toolbox/map'),],
     )
 
+    sonar_node = Node(
+        package='turbopi_ros',
+        executable='sonar_node',
+        parameters=[],
+    )
+
     start_lidar = ExecuteProcess(
         cmd=[
             [
@@ -126,6 +132,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_sonar_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=joint_broad_spawner,
+            on_start=[sonar_node],
+        )
+    )
+
     delayed_v4l2_camera_node = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_broad_spawner,
@@ -151,6 +164,7 @@ def launch_setup(context: LaunchContext):
         delayed_diff_drive_spawner,
         delayed_position_spawner,
         delayed_slam_toolbox_node_spawner,
+        delayed_sonar_node_spawner,
         delayed_v4l2_camera_node,
         stop_lidar_on_shutdown,
     ]
