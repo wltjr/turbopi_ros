@@ -37,9 +37,9 @@ namespace turbopi
         msg->header.stamp = rclcpp::Time(0, 0, this->get_clock()->get_clock_type());
         msg->header.frame_id = "sonar";
         msg->radiation_type = sensor_msgs::msg::Range::ULTRASOUND;
-        msg->field_of_view = 0;
-        msg->min_range = 10;
-        msg->max_range = 5000;
+        msg->field_of_view = 0.2617994; // 15°
+        msg->min_range = 0.02;
+        msg->max_range = 4;
         msg->range = sonar_->getDistance();
 
         publisher_sonar_->publish(std::move(msg));
