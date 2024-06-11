@@ -48,6 +48,7 @@ include_directories(include)
 
 # shared object libraries, lib*.so
 add_library(i2c SHARED src/i2c.cpp)
+add_library(infrared SHARED src/infrared.cpp)
 add_library(sonar SHARED src/sonar.cpp)
 add_library(teleop_turbopi SHARED src/teleop_turbopi.cpp)
 add_library(turbopi_hardware_interface
@@ -60,6 +61,7 @@ add_library(turbopi_hardware_interface
 # executable binaries
 add_executable(sonar_node src/sonar_node.cpp)
 add_executable(teleop_turbopi_node src/teleop_turbopi_node.cpp)
+add_executable(test_infrared src/tests/test_infrared.cpp)
 add_executable(test_sonar src/tests/test_sonar.cpp)
 
 # add ROS dependencies
@@ -68,9 +70,11 @@ ament_target_dependencies(teleop_turbopi ${INCLUDE_DEPENDS})
 ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
+target_link_libraries(infrared i2c)
 target_link_libraries(sonar i2c)
 target_link_libraries(sonar_node sonar)
 target_link_libraries(teleop_turbopi_node teleop_turbopi)
+target_link_libraries(test_infrared i2c infrared)
 target_link_libraries(test_sonar i2c sonar)
 target_link_libraries(turbopi_hardware_interface i2c)
 
