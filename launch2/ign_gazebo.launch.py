@@ -72,12 +72,6 @@ def launch_setup(context: LaunchContext):
         parameters=[robot_description],
     )
 
-    diff_drive_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["diff_drive_controller", "-c", "/controller_manager"],
-    )
-
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
@@ -154,13 +148,6 @@ def launch_setup(context: LaunchContext):
         )
     )
 
-    delayed_diff_drive_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster,
-            on_exit=[diff_drive_spawner],
-        )
-    )
-
     delayed_position_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster,
@@ -179,7 +166,6 @@ def launch_setup(context: LaunchContext):
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
-        delayed_diff_drive_spawner,
         delayed_position_spawner,
     ]
 
