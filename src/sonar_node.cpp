@@ -17,7 +17,7 @@ namespace turbopi
     SonarNode::SonarNode(const rclcpp::NodeOptions &options)
         : Node("sonar", options)
     {
-        static Sonar sonar = Sonar(1, SONAR_ADDRESS);
+        static auto sonar = Sonar(1, SONAR_ADDRESS);
         sonar_ = &sonar;
 
         // publish to /sonar topic
