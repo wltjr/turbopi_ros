@@ -1,4 +1,7 @@
 # TurboPi ROS
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=plastic)](https://github.com/wltjr/turbopi_ros/blob/master/LICENSE.txt)
+![Build Status](https://github.com/wltjr/turbopi_ros/actions/workflows/docker_build.yml/badge.svg)
+[![Code Quality](https://sonarcloud.io/api/project_badges/measure?project=wltjr_turbopi_ros&metric=alert_status)](https://sonarcloud.io/dashboard?id=wltjr_turbopi_ros)
 
 This project aims to get all functionality of the TurboPi robot running on
 [ROS 2 Iron](https://docs.ros.org/en/iron/), along with an RPLidar for SLAM.
