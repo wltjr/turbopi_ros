@@ -17,7 +17,7 @@ namespace turbopi
     InfraredNode::InfraredNode(const rclcpp::NodeOptions &options)
         : Node("infrared", options)
     {
-        static Infrared infrared = Infrared(1, INFRARED_ADDRESS);
+        static auto infrared = Infrared(1, INFRARED_ADDRESS);
         infrared_ = &infrared;
 
         // publish to /infrared topic
@@ -35,8 +35,6 @@ namespace turbopi
         auto msg = std::make_unique<std_msgs::msg::UInt8MultiArray>();
         msg->data.resize(4);
 
-        // msg->header.stamp = rclcpp::Time(0, 0, this->get_clock()->get_clock_type());
-        // msg->header.frame_id = "infrared";
         auto values = infrared_->getValues();
         msg->data.assign(values.begin(), values.end());
 
