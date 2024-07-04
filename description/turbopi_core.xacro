@@ -292,7 +292,7 @@
         <parent link="chassis"/>
         <child link="sonar"/>
         <axis xyz="0 0 1"/>
-        <origin xyz="-${chassis_length/2 - sonar_length*0.8} 0 ${sonar_height/5}" rpy="0 0 0"/>
+        <origin xyz="-${chassis_length/2 - sonar_length*0.8} 0 ${sonar_height/5}" rpy="${pi} ${pi} 0"/>
     </joint>
     <link name="sonar">
         <collision>
@@ -301,6 +301,7 @@
             </geometry>
         </collision>
         <visual>
+            <origin xyz="0 0 0" rpy="${pi} ${pi} 0"/>
             <geometry>
                 <mesh filename="file://$(find turbopi_ros)/meshes/sonar.dae" scale="${mesh_scale}" />
             </geometry>
