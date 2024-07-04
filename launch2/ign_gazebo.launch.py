@@ -56,6 +56,7 @@ def launch_setup(context: LaunchContext):
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/sonar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         ],
     )
 
@@ -113,6 +114,13 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "turbopi/odom"]
     )
 
+    static_transform_publisher_sonar = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "turbopi/base_link/sonar_sensor"]
+    )
+
     delayed_joint_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
@@ -141,6 +149,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_static_transform_publisher_sonar = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_sonar],
+        )
+    )
+
     delayed_slam_toolbox_node_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
@@ -165,6 +180,7 @@ def launch_setup(context: LaunchContext):
         delayed_static_transform_publisher_camera,
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
+        delayed_static_transform_publisher_sonar,
         delayed_slam_toolbox_node_spawner,
         delayed_position_spawner,
     ]
