@@ -7,13 +7,11 @@ namespace turbopi
 {
 	template <int T> class Segment
 	{
-		private:
-
 		public:
-			Joint joints[T];
+			std::array<Joint, T> joints;
 
-			Segment() { };
-			~Segment() { };
+			Segment() = default;
+			~Segment() = default;
 			int size() const { return T; }
 	};
 }
