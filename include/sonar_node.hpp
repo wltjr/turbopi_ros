@@ -25,7 +25,7 @@ namespace turbopi
              *
              * @param options node options passed at startup
              */
-            SonarNode(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
+            explicit SonarNode(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
 
             /**
              * @brief Callback function for publisher fired when messages
