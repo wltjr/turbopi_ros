@@ -27,7 +27,7 @@ namespace teleop_turbopi
             /**
              * @brief DPad and Joystick axes on the DualShock 4 gamepad
              */
-            enum axes
+            enum class axes: int
             {
                 LEFT_JOY_X,
                 LEFT_JOY_Y,
@@ -42,7 +42,7 @@ namespace teleop_turbopi
             /**
              * @brief Buttons on the DualShock 4 gamepad
              */
-            enum buttons
+            enum class buttons: int
             {
                 SQUARE,
                 X,
@@ -65,7 +65,7 @@ namespace teleop_turbopi
              * 
              * @param options node options passed at startup
              */
-            TurboPi(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
+            explicit TurboPi(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
 
             /**
              * @brief Destroy the Teleop TurboPi object
