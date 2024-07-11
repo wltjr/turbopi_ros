@@ -14,20 +14,16 @@ const char* CLASS_NAME = "Infrared";
 
 namespace turbopi
 {
-    Infrared::Infrared()
-    {
-    }
+    Infrared::Infrared() = default;
  
-    Infrared::Infrared(uint8_t i2c_dev, uint8_t i2c_address)
+    Infrared::Infrared(uint8_t i2c_dev, uint8_t i2c_address) :
+        i2c_address_(i2c_address)
     {
-        i2c_address_ = i2c_address;
-        static I2C i2c = I2C(i2c_dev, i2c_address_);
+        static auto i2c = I2C(i2c_dev, i2c_address_);
         i2c_ = &i2c;
     }
 
-    Infrared::~Infrared()
-    {
-    }
+    Infrared::~Infrared() = default;
 
     std::array<uint8_t, 4> Infrared::getValues()
     {
@@ -49,6 +45,7 @@ namespace turbopi
                 case 0x2e: values = {0,0,(uint8_t)1,(uint8_t)1}; break; // sensor 3-4
                 case 0x2c: values = {0,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 2-4
                 case 0x2b: values = {(uint8_t)1,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 1-4
+                default: break;
             }
         }
 
