@@ -14,20 +14,14 @@
 
 namespace turbopi
 {
-	Joint::Joint()
+	Joint::Joint() = default;
+
+    Joint::Joint(uint8_t id, uint8_t type, I2C &i2c) :
+        i2c_(&i2c), id_(id), type_(type)
 	{
 	}
 
-    Joint::Joint(uint8_t id, uint8_t type, I2C &i2c)
-    {
-        this->id_ = id;
-        this->type_ = type;
-        this->i2c_ = &i2c;
-    }
-
-	Joint::~Joint()
-	{
-	}
+	Joint::~Joint() = default;
 
 	void Joint::setType(uint8_t type)
 	{
@@ -69,7 +63,7 @@ namespace turbopi
 
 	void Joint::actuate(double effort, uint8_t /*duration = 1*/)
 	{
-		uint8_t data[2];
+		std::array<uint8_t, 2> data;
 
 		if (type_ == TYPE_MOTOR)
 		{
@@ -109,7 +103,7 @@ namespace turbopi
 			{
                 uint8_t angle = effort * 90 + 90;
                 uint8_t pulse = ((200 * angle) / 9) + 500;
-                uint8_t pulse_data[4];
+                std::array<uint8_t, 2> pulse_data;
 
                 if (angle > 180)
                     angle = (uint8_t)180;
