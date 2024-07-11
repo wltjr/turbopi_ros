@@ -10,20 +10,16 @@ const char* CLASS_NAME = "Sonar";
 
 namespace turbopi
 {
-    Sonar::Sonar()
-    {
-    }
+    Sonar::Sonar() = default;
  
-    Sonar::Sonar(uint8_t i2c_dev, uint8_t i2c_address)
+    Sonar::Sonar(uint8_t i2c_dev, uint8_t i2c_address) :
+        i2c_address_(i2c_address)
     {
-        i2c_address_ = i2c_address;
         static I2C i2c = I2C(i2c_dev, i2c_address_);
         i2c_ = &i2c;
     }
 
-    Sonar::~Sonar()
-    {
-    }
+    Sonar::~Sonar() = default;
 
     int Sonar::getDistance()
     {
@@ -50,7 +46,7 @@ namespace turbopi
             return 0;
 
         uint8_t start_reg = (index == 0) ? 3:6;
-		uint8_t data[2];
+		std::array<uint8_t, 2> data;
 
         data[0] = 0;
         data[1] = (uint8_t)(0xFF & (rgb >> 16));
@@ -68,7 +64,7 @@ namespace turbopi
 
     void Sonar::setRGBMode(uint8_t mode)
     {
-		uint8_t data[2];
+		std::array<uint8_t, 2> data;
 
         data[0] = 0;
         data[1] = mode;
