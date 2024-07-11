@@ -6,11 +6,9 @@
 
 #include <sys/ioctl.h>
 #include <errno.h>
-#include <stdio.h>
+#include <format>
 #include <fcntl.h>
-#include <unistd.h>
 #include <linux/i2c-dev.h>
-#include <syslog.h>
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -18,15 +16,12 @@
 
 namespace turbopi
 {
-	I2C::I2C()
-	{
-    }
+	I2C::I2C() = default;
 
-	I2C::I2C(uint8_t minor, uint8_t address)
+	I2C::I2C(uint8_t minor, uint8_t address) :
+		minor_(minor), address_(address)
 	{
-		minor_ = minor;
-		address_ = address;
-		snprintf(busfile, sizeof(busfile), "/dev/i2c-%d", minor_);
+		std::format_to_n(busfile, sizeof(busfile), "/dev/i2c-{}", minor_);
 		openfd();
 	}
 
@@ -46,7 +41,7 @@ namespace turbopi
 			uint8_t write_buffer_size = 1;
 			std::vector<uint8_t>  write_buffer(write_buffer_size);
 			write_buffer[0] = register_number;
-            uint8_t* buf = write_buffer.data();
+			uint8_t* buf = write_buffer.data();
 
 			if (ioctl(fd, I2C_SLAVE, address_) < 0)
 			{
@@ -60,7 +55,7 @@ namespace turbopi
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():write] I2C slave 0x%x failed to write to register 0x%x\nError: %d - %s",
 							 address_, register_number, errno, strerror(errno));
-				return (-1);
+				return -1;
 			}
 
             buf = buffer.data();
@@ -69,7 +64,7 @@ namespace turbopi
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[readBytes():read] Could not read from I2C slave 0x%x, register 0x%x\nError: %d - %s",
 							 address_, register_number, errno, strerror(errno));
-				return (-1);
+				return -1;
 			}
 			else
 			{
@@ -85,26 +80,25 @@ namespace turbopi
 		else
 		{
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Device File not available. Aborting read");
-			return (-1);
+			return -1;
 		}
-		return (1);
+		return 1;
 	}
 
-	uint8_t I2C::writeData(uint8_t register_number, uint8_t data[2])
+	uint8_t I2C::writeData(uint8_t register_number, std::array<uint8_t, 2> data)
 	{
 		if (fd != -1)
 		{
-			std::vector<uint8_t> buffer(2);
-			buffer[0] = register_number + data[0];
-			buffer[1] = data[1];
-            uint8_t* buf = buffer.data();
+			data[0] = register_number + data[0];
+			uint8_t* buf = data.data();
+			ssize_t size = data.size();
 
-			if (write(fd, buf, buffer.size()) != (int)buffer.size())
+			if (write(fd, buf, size) != size)
 			{
 				RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 							 "[writeData():write] Failed to write to I2C Slave 0x%x @ register 0x%x\nError: %d - %s",
 							 address_, register_number + data[0], errno, strerror(errno));
-				return (-1);
+				return -1;
 			}
 			else
 			{
@@ -115,9 +109,9 @@ namespace turbopi
 		else
 		{
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME), "Device File not available. Aborting write");
-			return (-1);
+			return -1;
 		}
-		return (1);
+		return 1;
 	}
 
 	void I2C::openfd()
