@@ -79,7 +79,7 @@ namespace turbopi
 		private:
 			I2C *i2c_;
             uint8_t i2c_address_;
-            uint32_t pixels[2] = {0};
+            std::array<uint32_t, 2> pixels = {0};
             uint8_t rgb_mode_ = 2;
 
 	};
