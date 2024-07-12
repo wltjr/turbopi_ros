@@ -105,7 +105,7 @@
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find turbopi_ros)/config/turbopi_controllers.yaml</parameters>
         </plugin>
-        <plugin filename="libignition-gazebo-diff-drive-system.so" name="ignition::gazebo::systems::DiffDrive">
+        <plugin filename="libgz-sim8-diff-drive-system.so" name="gz::sim::systems::DiffDrive">
             <left_joint>front_left_wheel_joint</left_joint>
             <left_joint>rear_left_wheel_joint</left_joint>
             <right_joint>front_right_wheel_joint</right_joint>
@@ -122,7 +122,7 @@
             <odom_topic>odom</odom_topic>
             <tf_topic>tf</tf_topic>
         </plugin>
-        <plugin filename="libignition-gazebo6-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+        <plugin filename="libgz-sim8-sensors-system.so" name="gz::sim::systems::Sensors">
             <render_engine>ogre2</render_engine>
         </plugin>
     </gazebo>
