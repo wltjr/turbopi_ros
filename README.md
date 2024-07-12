@@ -4,7 +4,7 @@
 [![Code Quality](https://sonarcloud.io/api/project_badges/measure?project=wltjr_turbopi_ros&metric=alert_status)](https://sonarcloud.io/dashboard?id=wltjr_turbopi_ros)
 
 This project aims to get all functionality of the TurboPi robot running on
-[ROS 2 Iron](https://docs.ros.org/en/iron/), along with an RPLidar for SLAM.
+[ROS 2 Jazzy](https://docs.ros.org/en/jazzy/), along with an RPLidar for SLAM.
 
 ![TurboPi in Gazebo](https://github.com/wltjr/turbopi_ros/assets/12835340/5c2e2cf6-8c80-49ee-b0a9-a5a6e4211558)
 
@@ -12,9 +12,9 @@ Mesh files have been generously provided by Hiwonder and are their property.
 Mesh files are copyright Hiwonder. All Rights Reserved.
 
 ## Environment Preparation
-The following assumes you have installed all the necessary ROS 2 Iron packages, and have sourced the installation before running any `ros2` commands.
+The following assumes you have installed all the necessary ROS 2 Jazzy packages, and have sourced the installation before running any `ros2` commands.
 ```bash
-source /opt/ros/iron/setup.bash
+source /opt/ros/jazzy/setup.bash
 ```
 
 You may want to have your development user environment do this on login via `~/.bashrc` file; add that command to the end of that file.
