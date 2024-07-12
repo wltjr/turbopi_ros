@@ -11,9 +11,9 @@ jobs:
           - name: Run the build process inside Docker container
             uses: addnab/docker-run-action@v3
             with:
-                image: ospreyrobotics/docker-ros2-iron-gz-rviz2:latest
+                image: unfrobotics/docker-ros2-jazzy:latest
                 options: -v ${{ github.workspace }}:/opt/ros_ws/src/turbopi_ros
                 run: |
-                    . /opt/ros/iron/setup.sh
+                    . /opt/ros/jazzy/setup.sh
                     cd /opt/ros_ws/
                     colcon build --symlink-install --packages-select  turbopi_ros
