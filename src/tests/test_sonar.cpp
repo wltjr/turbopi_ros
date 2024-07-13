@@ -13,7 +13,7 @@
  */
 int main()
 {
-    turbopi::Sonar sonar = turbopi::Sonar(1, 0x77);
+    auto sonar = turbopi::Sonar(1, 0x77);
     std::cout << "Distance " << sonar.getDistance() << std::endl;
     sonar.setRGBMode(0);
     sonar.setPixelColor(0,16711680); // #FF0000 - red
