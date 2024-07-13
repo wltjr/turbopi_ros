@@ -22,9 +22,7 @@ namespace teleop_turbopi
             "joy", rclcpp::QoS(10), std::bind(&TurboPi::joyCallback, this, _1));
     }
 
-    TurboPi::~TurboPi()
-    {
-    }
+    TurboPi::~TurboPi() = default;
 
     void TurboPi::joyCallback(const sensor_msgs::msg::Joy::SharedPtr joy_msg)
     {
