@@ -4,6 +4,8 @@
  *  you may not use this file except in compliance with the License.
  */
 
+#include "rclcpp/rclcpp.hpp"
+
 #include "sonar.hpp"
 
 const char* CLASS_NAME = "Sonar";
@@ -15,7 +17,7 @@ namespace turbopi
     Sonar::Sonar(uint8_t i2c_dev, uint8_t i2c_address) :
         i2c_address_(i2c_address)
     {
-        static I2C i2c = I2C(i2c_dev, i2c_address_);
+        static auto i2c = I2C(i2c_dev, i2c_address_);
         i2c_ = &i2c;
     }
 
@@ -42,21 +44,34 @@ namespace turbopi
 
     uint8_t Sonar::setPixelColor(uint8_t index, uint32_t rgb)
     {
+        uint8_t result;
+        uint8_t start_reg;
+        std::array<uint8_t, 2> data;
+
         if (index != 0 && index != 1)
             return 0;
 
-        uint8_t start_reg = (index == 0) ? 3:6;
-		std::array<uint8_t, 2> data;
+        start_reg = (index == 0) ? 3:6;
 
         data[0] = 0;
         data[1] = (uint8_t)(0xFF & (rgb >> 16));
-        uint8_t result = i2c_->writeData(start_reg, data);
-        data[0] = 0;
+        result = i2c_->writeData(start_reg, data);
+        if (!result)
+            RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
+                        "set pixel color write error on blue: %i", data[1]);
+
         data[1] = (uint8_t)(0xFF & (rgb >> 8));
         result = i2c_->writeData(start_reg+1, data);
-        data[0] = 0;
+        if (!result)
+            RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
+                        "set pixel color write error on green: %i", data[1]);
+
         data[1] = (uint8_t)(0xFF & rgb);
         result = i2c_->writeData(start_reg+2, data);
+        if (!result)
+            RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
+                        "set pixel color write error on red: %i", data[1]);
+
         pixels[index] = rgb;
 
         return result;
@@ -64,12 +79,17 @@ namespace turbopi
 
     void Sonar::setRGBMode(uint8_t mode)
     {
-		std::array<uint8_t, 2> data;
+        uint8_t result;
+        std::array<uint8_t, 2> data;
 
         data[0] = 0;
         data[1] = mode;
-        uint8_t result = i2c_->writeData(2, data);
-        rgb_mode_ = mode;
+        result = i2c_->writeData(2, data);
+        if (result)
+            rgb_mode_ = mode;
+        else
+            RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
+                        "change mode write error: %i", data[1]);
     }
 
 }
