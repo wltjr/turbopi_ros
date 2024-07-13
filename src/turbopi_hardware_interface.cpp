@@ -25,6 +25,10 @@
 #include "turbopi_hardware_interface.hpp"
 #include "turbopi.hpp"
 
+#include "pluginlib/class_list_macros.hpp"
+PLUGINLIB_EXPORT_CLASS(turbopi_hardware_interface::TurboPiSystemHardware,
+                       hardware_interface::SystemInterface)
+
 namespace turbopi_hardware_interface
 {
     TurboPiSystemHardware::~TurboPiSystemHardware()
@@ -251,6 +255,3 @@ namespace turbopi_hardware_interface
 
 }
 
-#include "pluginlib/class_list_macros.hpp"
-PLUGINLIB_EXPORT_CLASS(turbopi_hardware_interface::TurboPiSystemHardware,
-                       hardware_interface::SystemInterface)
