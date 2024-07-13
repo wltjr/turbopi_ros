@@ -13,7 +13,7 @@
  */
 int main()
 {
-    turbopi::Infrared infrared = turbopi::Infrared(1, INFRARED_ADDRESS);
+    auto infrared = turbopi::Infrared(1, INFRARED_ADDRESS);
 
     while (true)
     {
