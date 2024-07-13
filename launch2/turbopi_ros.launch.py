@@ -13,6 +13,7 @@ import subprocess
 
 def launch_setup(context: LaunchContext):
 
+    CM = "/controller_manager"
     pkg_name = 'turbopi_ros'
     filename = 'turbopi.urdf.xacro'
 
@@ -57,26 +58,25 @@ def launch_setup(context: LaunchContext):
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["diff_drive_controller", "-c", "/controller_manager"],
+        arguments=["diff_drive_controller", "-c", CM],
     )
 
     joint_broad_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
+        arguments=["joint_state_broadcaster", "-c", CM],
     )
 
     position_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["position_controllers", "-c", "/controller_manager"],
+        arguments=["position_controllers", "-c", CM],
     )
 
     slam_toolbox_node = Node(
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
         parameters=[ slam_params_file, {'use_sim_time': True} ],
-        # remappings=[('/map', '/slam_toolbox/map'),],
     )
 
     infrared_node = Node(
