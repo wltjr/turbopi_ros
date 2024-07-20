@@ -10,7 +10,7 @@
 #include <inttypes.h>
 
 // classname used in logging output
-extern const char *CLASS_NAME;
+extern char const* CLASS_NAME;
 
 namespace turbopi
 {
@@ -63,8 +63,8 @@ namespace turbopi
 			uint8_t writeData(uint8_t register_number,  std::array<uint8_t, 2> data);
 
 		private:
-			char busfile[64];
 			int fd;
+			std::string busfile;
 			uint8_t minor_;
 			uint8_t address_;
 
