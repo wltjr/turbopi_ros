@@ -21,7 +21,7 @@ namespace turbopi
 	I2C::I2C(uint8_t minor, uint8_t address) :
 		minor_(minor), address_(address)
 	{
-		std::format_to_n(busfile, sizeof(busfile), "/dev/i2c-{}", minor_);
+		busfile = std::format("/dev/i2c-{}", minor_);
 		openfd();
 	}
 
@@ -116,7 +116,7 @@ namespace turbopi
 
 	void I2C::openfd()
 	{
-		if ((fd = open(busfile, O_RDWR)) < 0)
+		if ((fd = open(busfile.c_str(), O_RDWR)) < 0)
 		{
 			RCLCPP_ERROR(rclcpp::get_logger(CLASS_NAME),
 						 "Couldn't open I2C Bus %d [openfd():open %s]", minor_, strerror(errno));
