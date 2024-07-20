@@ -43,17 +43,14 @@ namespace turbopi
              * 
              * @return Joint
              */
-			Joint getJoint(std::string name);
+			Joint getJoint(std::string const & name);
 
             /**
              * @brief Get a Joint object by name
              *
              * @param joint a Joint object
              */
-			void setJoint(turbopi::Joint joint);
-
-		private:
-            I2C i2c_;
+			void setJoint(turbopi::Joint const & joint);
 
 	};
 }
