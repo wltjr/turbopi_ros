@@ -15,7 +15,7 @@ namespace turbopi
 {
 	TurboPi::TurboPi()
 	{
-        static I2C i2c_ = I2C(1, BASE_SLAVE_ADDRESS);
+        static auto i2c_ = I2C(1, BASE_SLAVE_ADDRESS);
 
 		//base
 		base.joints[0] = Joint(1, TYPE_MOTOR, i2c_);
@@ -38,12 +38,9 @@ namespace turbopi
 		camera.joints[1].setLimits(0, 180);
 	}
 
-	TurboPi::~TurboPi()
-	{
+	TurboPi::~TurboPi() = default;
 
-	}
-
-	Joint TurboPi::getJoint(std::string jointName)
+	Joint TurboPi::getJoint(std::string const & jointName)
 	{
 		int numJointsBase = sizeof(base.joints) / sizeof(base.joints[0]);
 		for (int i = 0; i < numJointsBase; i++)
@@ -63,10 +60,12 @@ namespace turbopi
 			}
 		}
 
-		throw std::runtime_error("Could not find joint with name " + jointName);
+		std::cout << "Could not find joint with name " << jointName << std::endl;
+
+		return Joint();
 	}
 
-	void TurboPi::setJoint(Joint joint)
+	void TurboPi::setJoint(Joint const & joint)
 	{
 		bool foundJoint = false;
 
@@ -91,9 +90,7 @@ namespace turbopi
 		}
 
 		if (foundJoint == false)
-		{
-			throw std::runtime_error("Could not find joint with name " + joint.name);
-		}
+		    std::cout << "Could not find joint with name " << joint.name << std::endl;
 	}
 
 }
