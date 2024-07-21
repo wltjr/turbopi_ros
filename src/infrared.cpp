@@ -10,7 +10,7 @@
 
 #include "infrared.hpp"
 
-const char* CLASS_NAME = "Infrared";
+char const* const CLASS_NAME = "Infrared";
 
 namespace turbopi
 {
