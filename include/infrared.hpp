@@ -15,7 +15,7 @@
 #define INFRARED_ADDRESS 0x78
 
 // classname used in logging output
-extern const char *CLASS_NAME;
+extern char const* const CLASS_NAME;
 
 namespace turbopi
 {
