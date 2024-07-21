@@ -8,7 +8,7 @@
 
 #include "sonar.hpp"
 
-const char* CLASS_NAME = "Sonar";
+char const* const CLASS_NAME = "Sonar";
 
 namespace turbopi
 {
