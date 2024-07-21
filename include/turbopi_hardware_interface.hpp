@@ -33,7 +33,7 @@
 #include "turbopi.hpp"
 #include "visibility_control.h"
 
-const char* CLASS_NAME = "TurboPiSystemHardware";
+char const* const CLASS_NAME = "TurboPiSystemHardware";
 
 namespace turbopi_hardware_interface
 {
