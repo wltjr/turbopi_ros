@@ -20,7 +20,7 @@
 #define TYPE_MOTOR 0
 #define TYPE_SERVO 1
 
-extern const char* CLASS_NAME;
+extern char const* const CLASS_NAME;
 
 namespace turbopi
 {
