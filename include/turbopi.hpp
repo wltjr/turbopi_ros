@@ -12,7 +12,7 @@
 #include "i2c.hpp"
 #include "segment.hpp"
 
-extern const char* CLASS_NAME;
+extern char const* const CLASS_NAME;
 
 namespace turbopi
 {
