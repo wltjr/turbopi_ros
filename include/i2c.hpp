@@ -10,7 +10,7 @@
 #include <inttypes.h>
 
 // classname used in logging output
-extern char const* CLASS_NAME;
+extern char const* const CLASS_NAME;
 
 namespace turbopi
 {
