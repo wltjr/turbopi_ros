@@ -12,7 +12,7 @@
 
 #include "i2c.hpp"
 
-#define INFRARED_ADDRESS 0x78
+const uint8_t INFRARED_ADDRESS = 0x78;
 
 // classname used in logging output
 extern char const* const CLASS_NAME;
