@@ -11,14 +11,14 @@
 
 #include "i2c.hpp"
 
-#define BASE_SLAVE_ADDRESS 0x7A
-#define CAMERA_ADDRESS 21
-#define MOTOR_ADDRESS 31
-#define SERVO_ADDRESS_CMD 40
+const uint8_t BASE_SLAVE_ADDRESS = 0x7A;
+const uint8_t CAMERA_ADDRESS = 21;
+const uint8_t MOTOR_ADDRESS = 31;
+const uint8_t SERVO_ADDRESS_CMD = 40;
 
-#define TYPE_NONE -1
-#define TYPE_MOTOR 0
-#define TYPE_SERVO 1
+const uint8_t TYPE_NONE = -1;
+const uint8_t TYPE_MOTOR = 0;
+const uint8_t TYPE_SERVO = 1;
 
 extern char const* const CLASS_NAME;
 
