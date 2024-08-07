@@ -28,6 +28,7 @@
     <xacro:property name="sonar_height" value="0.0254" />
     <xacro:property name="sonar_width" value="0.0508" />
 
+    <xacro:property name="spacer_mesh_file" value="file://$(find turbopi_ros)/meshes/spacer.stl" />
     <xacro:property name="spacer_offset_front" value="0.0203" />
     <xacro:property name="spacer_offset_rear" value="${chassis_width - 0.0135}" />
     <xacro:property name="spacer_offset_side" value="${chassis_width/2 - 0.0138}" />
@@ -84,7 +85,7 @@
     <link name="spacer_1">
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+                <mesh filename="${spacer_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="brass"/>
         </visual>
@@ -98,7 +99,7 @@
     <link name="spacer_2">
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+                <mesh filename="${spacer_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="brass"/>
         </visual>
@@ -112,7 +113,7 @@
     <link name="spacer_3">
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+                <mesh filename="${spacer_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="brass"/>
         </visual>
@@ -126,7 +127,7 @@
     <link name="spacer_4">
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/spacer.dae" scale="${mesh_scale}" />
+                <mesh filename="${spacer_mesh_file}" scale="${mesh_scale}" />
             </geometry>
             <material name="brass"/>
         </visual>
