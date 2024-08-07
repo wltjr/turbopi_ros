@@ -249,7 +249,7 @@
         </collision>
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/camera_frame.dae" scale="${mesh_scale}" />
+                <mesh filename="file://$(find turbopi_ros)/meshes/camera_frame.stl" scale="${mesh_scale}" />
             </geometry>
             <material name="white"/>
         </visual>
