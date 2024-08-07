@@ -300,7 +300,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="${pi} ${pi} 0"/>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/sonar.dae" scale="${mesh_scale}" />
+                <mesh filename="file://$(find turbopi_ros)/meshes/sonar.stl" scale="${mesh_scale}" />
             </geometry>
             <material name="white"/>
         </visual>
