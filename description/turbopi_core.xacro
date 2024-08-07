@@ -67,7 +67,7 @@
         </collision>
         <visual>
             <geometry>
-                <mesh filename="file://$(find turbopi_ros)/meshes/chassis.dae" scale="${mesh_scale}" />
+                <mesh filename="file://$(find turbopi_ros)/meshes/chassis.stl" scale="${mesh_scale}" />
             </geometry>
             <material name="white"/>
         </visual>
