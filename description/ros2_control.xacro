@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="ros2_control" params="use_hardware">
     <ros2_control name="ros2_control" type="system">
-       <xacro:if value="${use_hardware == 'robot'}">
-            <hardware>
-                <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
-                <param name="hw_start_duration_sec">1.0</param>
-                <param name="hw_stop_duration_sec">3.0</param>
-            </hardware>
-        </xacro:if>
-        <xacro:if value="${use_hardware == 'mock'}">
-            <hardware>
-                <plugin>mock_components/GenericSystem</plugin>
-                <param name="calculate_dynamics">true</param>
-            </hardware>
-        </xacro:if>
-        <xacro:if value="${use_hardware == 'ign_gazebo'}">
-            <hardware>
-                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-            </hardware>
-        </xacro:if>
+        <xacro:macro name="ros2_control" params="use_hardware">
+            <xacro:if value="${use_hardware == 'robot'}">
+                <hardware>
+                    <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
+                    <param name="hw_start_duration_sec">1.0</param>
+                    <param name="hw_stop_duration_sec">3.0</param>
+                </hardware>
+            </xacro:if>
+            <xacro:if value="${use_hardware == 'mock'}">
+                <hardware>
+                    <plugin>mock_components/GenericSystem</plugin>
+                    <param name="calculate_dynamics">true</param>
+                </hardware>
+            </xacro:if>
+            <xacro:if value="${use_hardware == 'ign_gazebo'}">
+                <hardware>
+                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+                </hardware>
+            </xacro:if>
+        </xacro:macro>
         <joint name="front_left_wheel_joint">
             <command_interface name="velocity" />
             <state_interface name="position">
@@ -56,24 +57,27 @@
                 <param name="initial_value">0.0</param>
             </state_interface>
         </joint>
-        <joint name="camera_joint">
-            <command_interface name="position">
-                <param name="min">-0.5</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-        </joint>
-        <joint name="camera_frame_joint">
-            <command_interface name="position">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-        </joint>
+        <xacro:macro name="style" params="use_style">
+            <xacro:if value="${use_style == 'default'}">
+                <joint name="camera_joint">
+                    <command_interface name="position">
+                        <param name="min">-0.5</param>
+                        <param name="max">1</param>
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">0</param>
+                    </state_interface>
+                </joint>
+                <joint name="camera_frame_joint">
+                    <command_interface name="position">
+                        <param name="min">-1</param>
+                        <param name="max">1</param>
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">0</param>
+                    </state_interface>
+                </joint>
+            </xacro:if>
+        </xacro:macro>
     </ros2_control>
-  </xacro:macro>
 </robot>
