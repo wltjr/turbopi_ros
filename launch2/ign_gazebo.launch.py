@@ -12,6 +12,7 @@ from launch_ros.actions import Node
 
 def launch_setup(context: LaunchContext):
 
+    custom = eval(context.perform_substitution(LaunchConfiguration('custom')).title())
     filename = 'turbopi.urdf.xacro'
     pkg_name = 'turbopi_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
@@ -27,6 +28,9 @@ def launch_setup(context: LaunchContext):
             xacro_file,
             " ",
             "use_hardware:=ign_gazebo",
+            " ",
+            "use_style:=",
+            "3d" if custom else "default",
             " ",
         ]
     )
@@ -176,11 +180,19 @@ def launch_setup(context: LaunchContext):
         bridge,
         image_bridge,
         node_robot_state_publisher,
-        delayed_joint_broad_spawner,
-        delayed_static_transform_publisher_camera,
+        delayed_joint_broad_spawner
+    ]
+
+    # Enable features for s
+    if not custom:
+        nodes += [
+            delayed_static_transform_publisher_camera,
+            delayed_static_transform_publisher_sonar,
+        ]
+
+    nodes += [
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
-        delayed_static_transform_publisher_sonar,
         delayed_slam_toolbox_node_spawner,
         delayed_position_spawner,
     ]
@@ -190,6 +202,13 @@ def launch_setup(context: LaunchContext):
 def generate_launch_description():
     # Declare arguments
     declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "custom",
+            default_value="False",
+            description="Run customized 3d camera vs sonar with 2d camera.",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "world",
