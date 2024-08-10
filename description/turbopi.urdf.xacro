@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
 	<xacro:arg name="use_hardware" default="robot" />
+	<xacro:arg name="use_style" default="default" />
 
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
@@ -9,6 +10,7 @@
 	<xacro:include filename="ros2_control.xacro" />
 
 	<xacro:ros2_control use_hardware="$(arg use_hardware)"/>
+	<xacro:style use_style="$(arg use_style)"/>
 
     <xacro:macro name="gazebo" params="use_hardware">
       <xacro:if value="${use_hardware == 'ign_gazebo'}">
