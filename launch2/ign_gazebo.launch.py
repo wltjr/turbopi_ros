@@ -30,7 +30,7 @@ def launch_setup(context: LaunchContext):
             "use_hardware:=ign_gazebo",
             " ",
             "use_style:=",
-            "3d" if custom else "default",
+            "depth" if custom else "default",
             " ",
         ]
     )
@@ -104,6 +104,13 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "turbopi/base_link/camera"]
     )
 
+    static_transform_publisher_depth_camera = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "base_link",
+                        "--child-frame-id", "turbopi/base_link/depth_camera"]
+    )
+
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -136,6 +143,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[static_transform_publisher_camera],
+        )
+    )
+
+    delayed_static_transform_publisher_depth_camera = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_depth_camera],
         )
     )
 
@@ -183,8 +197,10 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner
     ]
 
-    # Enable features for s
-    if not custom:
+    # Enable features for custom robot style 3d depth camera or 2d camera & sonar
+    if custom:
+        nodes += [ delayed_static_transform_publisher_depth_camera ]
+    else:
         nodes += [
             delayed_static_transform_publisher_camera,
             delayed_static_transform_publisher_sonar,
