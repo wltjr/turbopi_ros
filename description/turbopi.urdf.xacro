@@ -9,8 +9,9 @@
 	<xacro:include filename="turbopi_core.xacro" />
 	<xacro:include filename="ros2_control.xacro" />
 
-	<xacro:ros2_control use_hardware="$(arg use_hardware)"/>
-	<xacro:style use_style="$(arg use_style)"/>
+	<xacro:ros2_control use_hardware="$(arg use_hardware)"
+                        use_style="$(arg use_style)" />
+	<xacro:style use_style="$(arg use_style)" />
 
     <xacro:macro name="gazebo" params="use_hardware">
       <xacro:if value="${use_hardware == 'ign_gazebo'}">
@@ -18,6 +19,6 @@
       </xacro:if>
     </xacro:macro>
 
-    <xacro:gazebo use_hardware="$(arg use_hardware)"/>
+    <xacro:gazebo use_hardware="$(arg use_hardware)" />
 
 </robot>
