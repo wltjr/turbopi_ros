@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <ros2_control name="ros2_control" type="system">
-        <xacro:macro name="ros2_control" params="use_hardware">
+    <xacro:macro name="ros2_control" params="use_hardware use_style">
+        <ros2_control name="ros2_control" type="system">
             <xacro:if value="${use_hardware == 'robot'}">
                 <hardware>
                     <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
@@ -20,44 +20,42 @@
                     <plugin>gz_ros2_control/GazeboSimSystem</plugin>
                 </hardware>
             </xacro:if>
-        </xacro:macro>
-        <joint name="front_left_wheel_joint">
-            <command_interface name="velocity" />
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-            <state_interface name="velocity">
-                <param name="initial_value">0.0</param>
-            </state_interface>
-        </joint>
-        <joint name="front_right_wheel_joint">
-            <command_interface name="velocity" />
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-            <state_interface name="velocity">
-                <param name="initial_value">0.0</param>
-            </state_interface>
-        </joint>
-        <joint name="rear_left_wheel_joint">
-            <command_interface name="velocity" />
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-            <state_interface name="velocity">
-                <param name="initial_value">0.0</param>
-            </state_interface>
-        </joint>
-        <joint name="rear_right_wheel_joint">
-            <command_interface name="velocity" />
-            <state_interface name="position">
-                <param name="initial_value">0</param>
-            </state_interface>
-            <state_interface name="velocity">
-                <param name="initial_value">0.0</param>
-            </state_interface>
-        </joint>
-        <xacro:macro name="style" params="use_style">
+            <joint name="front_left_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position">
+                    <param name="initial_value">0</param>
+                </state_interface>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="front_right_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position">
+                    <param name="initial_value">0</param>
+                </state_interface>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="rear_left_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position">
+                    <param name="initial_value">0</param>
+                </state_interface>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="rear_right_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position">
+                    <param name="initial_value">0</param>
+                </state_interface>
+                <state_interface name="velocity">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
             <xacro:if value="${use_style == 'default'}">
                 <joint name="camera_joint">
                     <command_interface name="position">
@@ -78,6 +76,6 @@
                     </state_interface>
                 </joint>
             </xacro:if>
-        </xacro:macro>
-    </ros2_control>
+        </ros2_control>
+    </xacro:macro>
 </robot>
