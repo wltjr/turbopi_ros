@@ -18,6 +18,10 @@
     <xacro:property name="chassis_height" value="0.04" />
     <xacro:property name="chassis_width" value="0.094" />
 
+    <xacro:property name="depth_camera_length" value="0.165" />
+    <xacro:property name="depth_camera_height" value="0.40" />
+    <xacro:property name="depth_camera_width" value="0.48" />
+
     <xacro:property name="lidar_length" value="0.12954" />
     <xacro:property name="lidar_height" value="0.07874" />
     <xacro:property name="lidar_width" value="0.09906" />
@@ -311,6 +315,34 @@
                 </xacro:inertial_box>
             </link>
         </xacro:if>
+
+        <xacro:if value="${use_style == 'depth'}">
+            <!-- 3D Depth Camera -->
+            <joint name="depth_camera_joint" type="fixed">
+                <parent link="chassis"/>
+                <child link="depth_camera"/>
+                <axis xyz="0 0 1"/>
+                <origin xyz="${chassis_length/2 - 0.054} 0 ${chassis_height}" rpy="0 0 0"/>
+            </joint>
+            <link name="depth_camera">
+                <!-- Causes floating? -->
+                <!-- <collision>
+                    <geometry>
+                        <box size="${depth_camera_length} ${depth_camera_width} ${depth_camera_height}"/>
+                    </geometry>
+                </collision> -->
+                <visual>
+                    <geometry>
+                        <mesh filename="file://$(find turbopi_ros)/meshes/astra_s_depth_camera.stl" scale="${mesh_scale}" />
+                    </geometry>
+                    <material name="white"/>
+                </visual>
+                <xacro:inertial_box mass="0.02" x="${depth_camera_length}" y="${depth_camera_width}" z="${depth_camera_height}">
+                    <origin xyz="0 0 ${depth_camera_height/2}" rpy="0 0 0"/>
+                </xacro:inertial_box>
+            </link>
+        </xacro:if>
+
     </xacro:macro>
 
     <!-- 360 Lidar -->
