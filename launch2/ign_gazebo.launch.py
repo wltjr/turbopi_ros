@@ -204,13 +204,13 @@ def launch_setup(context: LaunchContext):
         nodes += [
             delayed_static_transform_publisher_camera,
             delayed_static_transform_publisher_sonar,
+            delayed_position_spawner,
         ]
 
     nodes += [
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_slam_toolbox_node_spawner,
-        delayed_position_spawner,
     ]
 
     return nodes
