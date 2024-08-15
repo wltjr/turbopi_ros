@@ -197,19 +197,19 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner
     ]
 
-    # Enable features for custom robot style 3d depth camera or 2d camera & sonar
+    # Enable features for custom robot style 3d depth camera or 2d camera
     if custom:
         nodes += [ delayed_static_transform_publisher_depth_camera ]
     else:
         nodes += [
             delayed_static_transform_publisher_camera,
-            delayed_static_transform_publisher_sonar,
             delayed_position_spawner,
         ]
 
     nodes += [
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
+        delayed_static_transform_publisher_sonar,
         delayed_slam_toolbox_node_spawner,
     ]
 
