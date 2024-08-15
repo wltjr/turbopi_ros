@@ -289,31 +289,6 @@
                     <origin xyz="0 0 ${camera_height/2}" rpy="0 0 0"/>
                 </xacro:inertial_box>
             </link>
-
-            <!-- Sonar -->
-            <joint name="sonar_joint" type="fixed">
-                <parent link="chassis"/>
-                <child link="sonar"/>
-                <axis xyz="0 0 1"/>
-                <origin xyz="${chassis_length/2 - sonar_length*0.8} 0 ${sonar_height/5}" rpy="0 0 0"/>
-            </joint>
-            <link name="sonar">
-                <collision>
-                    <geometry>
-                        <box size="${sonar_length} ${sonar_width} ${sonar_height}"/>
-                    </geometry>
-                </collision>
-                <visual>
-                    <origin xyz="0 0 0" rpy="0 0 0"/>
-                    <geometry>
-                        <mesh filename="file://$(find turbopi_ros)/meshes/sonar.stl" scale="${mesh_scale}" />
-                    </geometry>
-                    <material name="white"/>
-                </visual>
-                <xacro:inertial_box mass="0.01" x="${sonar_length}" y="${sonar_width}" z="${sonar_height}">
-                    <origin xyz="0 0 0" rpy="0 0 0"/>
-                </xacro:inertial_box>
-            </link>
         </xacro:if>
 
         <xacro:if value="${use_style == 'depth'}">
@@ -344,6 +319,31 @@
         </xacro:if>
 
     </xacro:macro>
+
+    <!-- Sonar -->
+    <joint name="sonar_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="sonar"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${chassis_length/2 - sonar_length*0.8} 0 ${sonar_height/5}" rpy="0 0 0"/>
+    </joint>
+    <link name="sonar">
+        <collision>
+            <geometry>
+                <box size="${sonar_length} ${sonar_width} ${sonar_height}"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find turbopi_ros)/meshes/sonar.stl" scale="${mesh_scale}" />
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <xacro:inertial_box mass="0.01" x="${sonar_length}" y="${sonar_width}" z="${sonar_height}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
 
     <!-- 360 Lidar -->
     <joint name="lidar_joint" type="fixed">
