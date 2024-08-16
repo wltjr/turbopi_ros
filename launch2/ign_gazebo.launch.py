@@ -221,7 +221,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "custom",
-            default_value="False",
+            default_value="True",
             description="Run customized 3d camera vs sonar with 2d camera.",
         )
     )
