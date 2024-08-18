@@ -1,0 +1,16 @@
+[Unit]
+Description="ROS 2 RPLidar Service"
+
+[Service]
+Environment="HOME=/home/ubuntu/"
+Environment="LD_LIBRARY_PATH=/home/ubuntu/ros2_ws/install/lib:/opt/ros/jazzy/lib"
+Environment="PYTHONPATH=/home/ubuntu/ros2_ws/install/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages/"
+Environment="AMENT_PREFIX_PATH=/home/ubuntu/ros2_ws/install:/opt/ros/jazzy"
+#User=ubuntu
+
+ExecStart=/opt/ros/jazzy/bin/ros2 launch rplidar_ros rplidar.launch.py
+ExecStartPost=/bin/sleep 10
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
