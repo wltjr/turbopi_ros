@@ -50,24 +50,35 @@ def launch_setup(context: LaunchContext):
                         arguments=['-topic', '/robot_description',
                                     '-entity', 'robot'],
                         output='screen')
+    
+    bridge_args = [
+        '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+        '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+        '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+        '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+        '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+        '/sonar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+    ]
+    if custom:
+        bridge_args += [
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+        ]
+
+
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=[
-            '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
-            '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
-            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-            '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
-            '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-            '/sonar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-        ],
+        arguments=bridge_args,
     )
+
+    image_bridge_args = ['/camera']
+    if custom:
+        image_bridge_args += ['/depth_camera']
 
     image_bridge = Node(
         package='ros_gz_image',
         executable='image_bridge',
-        arguments=['/camera'],
+        arguments=image_bridge_args,
     )
 
     node_robot_state_publisher = Node(
