@@ -1,0 +1,19 @@
+[Unit]
+Description="ROS 2 RPLidar Motor Stop Service"
+Requires=ros2_rplidar.service
+After=ros2_rplidar.service
+After=turbopi.service
+PartOf=ros2_rplidar.service
+
+[Service]
+Environment="HOME=/home/ubuntu/"
+Environment="LD_LIBRARY_PATH=/home/ubuntu/ros2_ws/install/lib:/opt/ros/jazzy/lib"
+Environment="PYTHONPATH=/home/ubuntu/ros2_ws/install/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages/"
+Environment="AMENT_PREFIX_PATH=/home/ubuntu/ros2_ws/install:/opt/ros/jazzy"
+#User=ubuntu
+
+ExecStart=/opt/ros/jazzy/bin/ros2 service call /stop_motor std_srvs/srv/Empty
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
