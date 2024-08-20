@@ -12,6 +12,7 @@ from launch_ros.actions import Node
 
 def launch_setup(context: LaunchContext):
 
+    CM = "/controller_manager"
     custom = eval(context.perform_substitution(LaunchConfiguration('custom')).title())
     filename = 'turbopi.urdf.xacro'
     pkg_name = 'turbopi_ros'
@@ -45,12 +46,14 @@ def launch_setup(context: LaunchContext):
                     }.items(),
                 )
 
-    create_entity = Node(package='ros_gz_sim',
-                        executable='create',
-                        arguments=['-topic', '/robot_description',
-                                    '-entity', 'robot'],
-                        output='screen')
-    
+    create_entity = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=['-topic', '/robot_description',
+                    '-entity', 'robot'],
+        output='screen'
+    )
+
     bridge_args = [
         '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
         '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
@@ -65,7 +68,6 @@ def launch_setup(context: LaunchContext):
         bridge_args += [
             '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
         ]
-
 
     bridge = Node(
         package='ros_gz_bridge',
@@ -93,13 +95,13 @@ def launch_setup(context: LaunchContext):
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "-c", "/controller_manager"],
+        arguments=["joint_state_broadcaster", "-c", CM],
     )
 
     position_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["position_controllers", "-c", "/controller_manager"],
+        arguments=["position_controllers", "-c", CM],
     )
 
     slam_toolbox_node = Node(
@@ -207,7 +209,7 @@ def launch_setup(context: LaunchContext):
         bridge,
         image_bridge,
         node_robot_state_publisher,
-        delayed_joint_broad_spawner
+        delayed_joint_broad_spawner,
     ]
 
     # Enable features for custom robot style 3d depth camera or 2d camera
