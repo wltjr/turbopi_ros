@@ -55,7 +55,9 @@ def launch_setup(context: LaunchContext):
         '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
         '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
         '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+        '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',
         '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+        '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
         '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         '/sonar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
     ]
