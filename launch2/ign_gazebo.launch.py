@@ -33,6 +33,8 @@ def launch_setup(context: LaunchContext):
             "use_style:=",
             "depth" if custom else "default",
             " ",
+            "use_version:=",
+            "6" if os.path.isdir("/opt/ros/iron/") else "8",
         ]
     )
     robot_description = {'robot_description': robot_description_content}
