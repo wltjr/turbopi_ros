@@ -3,6 +3,7 @@
 
 	<xacro:arg name="use_hardware" default="robot" />
 	<xacro:arg name="use_style" default="default" />
+	<xacro:arg name="use_version" default="8" />
 
 	<xacro:include filename="colors.xacro" />
 	<xacro:include filename="inertial_macros.xacro" />
@@ -16,6 +17,7 @@
     <xacro:macro name="gazebo" params="use_hardware">
       <xacro:if value="${use_hardware == 'ign_gazebo'}">
 	    <xacro:include filename="gazebo_plugins.xacro" />
+        <xacro:plugins use_version="$(arg use_version)" />
       </xacro:if>
     </xacro:macro>
 
