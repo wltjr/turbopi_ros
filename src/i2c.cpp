@@ -6,7 +6,6 @@
 
 #include <sys/ioctl.h>
 #include <errno.h>
-#include <format>
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
 
@@ -21,7 +20,7 @@ namespace turbopi
 	I2C::I2C(uint8_t minor, uint8_t address) :
 		minor_(minor), address_(address)
 	{
-		busfile = std::format("/dev/i2c-{}", minor_);
+		busfile = "/dev/i2c-" + std::to_string(minor_);
 		openfd();
 	}
 
