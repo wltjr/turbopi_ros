@@ -138,7 +138,7 @@ def launch_setup(context: LaunchContext):
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments= ["--frame-id", "base_link",
+            arguments= ["--frame-id", "lidar",
                         "--child-frame-id", "turbopi/base_link/lidar_sensor"]
     )
 
