@@ -114,6 +114,13 @@ def launch_setup(context: LaunchContext):
         remappings=[('/map', '/slam_toolbox/map'),],
     )
 
+    static_transform_publisher_base_link = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "turbopi/base_link",
+                        "--child-frame-id", "base_link"]
+    )
+
     static_transform_publisher_camera = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -153,6 +160,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[joint_state_broadcaster],
+        )
+    )
+
+    delayed_static_transform_publisher_base_link = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_base_link],
         )
     )
 
@@ -224,6 +238,7 @@ def launch_setup(context: LaunchContext):
         ]
 
     nodes += [
+        delayed_static_transform_publisher_base_link,
         delayed_static_transform_publisher_lidar,
         delayed_static_transform_publisher_odom,
         delayed_static_transform_publisher_sonar,
