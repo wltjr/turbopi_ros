@@ -123,14 +123,14 @@ def launch_setup(context: LaunchContext):
     static_transform_publisher_camera = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments= ["--frame-id", "base_link",
+            arguments= ["--frame-id", "camera",
                         "--child-frame-id", "turbopi/base_link/camera"]
     )
 
     static_transform_publisher_depth_camera = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments= ["--frame-id", "base_link",
+            arguments= ["--frame-id", "depth_camera",
                         "--child-frame-id", "turbopi/base_link/depth_camera"]
     )
 
@@ -144,7 +144,7 @@ def launch_setup(context: LaunchContext):
     static_transform_publisher_sonar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments= ["--frame-id", "base_link",
+            arguments= ["--frame-id", "sonar",
                         "--child-frame-id", "turbopi/base_link/sonar_sensor"]
     )
 
