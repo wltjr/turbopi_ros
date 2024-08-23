@@ -51,8 +51,7 @@ def launch_setup(context: LaunchContext):
     create_entity = Node(
         package='ros_gz_sim',
         executable='create',
-        arguments=['-topic', '/robot_description',
-                    '-entity', 'robot'],
+        arguments=['-topic', '/robot_description'],
         output='screen'
     )
 
