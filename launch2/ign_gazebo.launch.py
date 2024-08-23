@@ -141,13 +141,6 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "turbopi/base_link/lidar_sensor"]
     )
 
-    static_transform_publisher_odom = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments= ["--frame-id", "base_link",
-                        "--child-frame-id", "turbopi/odom"]
-    )
-
     static_transform_publisher_sonar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -187,13 +180,6 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[static_transform_publisher_lidar],
-        )
-    )
-
-    delayed_static_transform_publisher_odom = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=create_entity,
-            on_exit=[static_transform_publisher_odom],
         )
     )
 
@@ -239,7 +225,6 @@ def launch_setup(context: LaunchContext):
     nodes += [
         delayed_static_transform_publisher_base_link,
         delayed_static_transform_publisher_lidar,
-        delayed_static_transform_publisher_odom,
         delayed_static_transform_publisher_sonar,
         delayed_slam_toolbox_node_spawner,
     ]
