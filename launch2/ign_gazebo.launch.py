@@ -105,12 +105,16 @@ def launch_setup(context: LaunchContext):
         arguments=["position_controllers", "-c", CM],
     )
 
-    slam_toolbox_node = Node(
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        output='screen',
-        parameters=[ slam_params_file, {'use_sim_time': True} ],
-        remappings=[('/map', '/slam_toolbox/map'),],
+    slam_toolbox_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            os.path.join(get_package_share_directory('slam_toolbox'),
+                        'launch'),
+                        '/online_async_launch.py'
+        ]),
+        launch_arguments={
+            'use_sim_time': 'true',
+            'slam_params_file' : slam_params_file,
+        }.items(),
     )
 
     static_transform_publisher_base_link = Node(
