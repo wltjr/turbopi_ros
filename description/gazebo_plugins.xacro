@@ -102,8 +102,6 @@
     <xacro:macro name="plugins" params="use_version">
         <gazebo>
             <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                <robot_param>robot_description</robot_param>
-                <robot_param_node>robot_state_publisher</robot_param_node>
                 <parameters>$(find turbopi_ros)/config/turbopi_controllers.yaml</parameters>
             </plugin>
             <plugin filename="libgz-sim${use_version}-diff-drive-system.so" name="gz::sim::systems::DiffDrive">
@@ -115,8 +113,6 @@
                 <wheel_radius>0.192</wheel_radius>
                 <wheels_per_side>2</wheels_per_side>
                 <odom_publish_frequency>10</odom_publish_frequency>
-                <odom_frame_id>odom</odom_frame_id>
-                <base_frame_id> base_link</base_frame_id>
                 <enable_odom_tf>true</enable_odom_tf>
                 <use_stamped_vel>false</use_stamped_vel>
                 <topic>cmd_vel</topic>
