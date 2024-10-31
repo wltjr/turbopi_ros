@@ -93,12 +93,6 @@ def launch_setup(context: LaunchContext):
         parameters=[robot_description],
     )
 
-    joint_state_broadcaster = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster", "-c", CM],
-    )
-
     position_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -152,13 +146,6 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "turbopi/base_link/sonar_sensor"]
     )
 
-    delayed_joint_broad_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=create_entity,
-            on_exit=[joint_state_broadcaster],
-        )
-    )
-
     delayed_static_transform_publisher_base_link = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
@@ -203,7 +190,7 @@ def launch_setup(context: LaunchContext):
 
     delayed_position_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster,
+            target_action=create_entity,
             on_exit=[position_spawner],
         )
     )
@@ -214,7 +201,6 @@ def launch_setup(context: LaunchContext):
         bridge,
         image_bridge,
         node_robot_state_publisher,
-        delayed_joint_broad_spawner,
     ]
 
     # Enable features for custom robot style 3d depth camera or 2d camera
