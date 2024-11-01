@@ -18,6 +18,7 @@ def launch_setup(context: LaunchContext):
     pkg_name = 'turbopi_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
     slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
+    dtl_params_file = os.path.join(pkg_path, 'config', 'depthimage_to_laserscan.yaml')
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
     world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
@@ -97,6 +98,14 @@ def launch_setup(context: LaunchContext):
         package="controller_manager",
         executable="spawner",
         arguments=["position_controllers", "-c", CM],
+    )
+
+    depthimage_to_laserscan_node = Node(
+        package='depthimage_to_laserscan',
+        executable='depthimage_to_laserscan_node',
+        name='depthimage_to_laserscan',
+        remappings=[ ('scan', '/depth/scan'), ],
+        parameters=[dtl_params_file]
     )
 
     slam_toolbox_node = IncludeLaunchDescription(
@@ -181,6 +190,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_depthimage_to_laserscan_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[depthimage_to_laserscan_node],
+        )
+    )
+
     delayed_slam_toolbox_node_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
@@ -205,7 +221,10 @@ def launch_setup(context: LaunchContext):
 
     # Enable features for custom robot style 3d depth camera or 2d camera
     if custom:
-        nodes += [ delayed_static_transform_publisher_depth_camera ]
+        nodes += [ 
+            delayed_static_transform_publisher_depth_camera,
+            delayed_depthimage_to_laserscan_node_spawner,
+        ]
     else:
         nodes += [
             delayed_static_transform_publisher_camera,
