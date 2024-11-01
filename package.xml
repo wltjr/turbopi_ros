@@ -16,6 +16,7 @@
   <build_depend>controller_manager</build_depend>
   <build_depend>joint_limits</build_depend>
 
+  <exec_depend>depthimage_to_laserscan</exec_depend>
   <exec_depend>joy_linux</exec_depend>
   <exec_depend>joy_teleop</exec_depend>
   <exec_depend>rplidar_ros</exec_depend>
