@@ -149,6 +149,13 @@ def launch_setup(context: LaunchContext):
                         "--child-frame-id", "turbopi/base_link/depth_camera"]
     )
 
+    static_transform_publisher_laser = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments= ["--frame-id", "chassis",
+                        "--child-frame-id", "laser"]
+    )
+
     static_transform_publisher_lidar = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -181,6 +188,13 @@ def launch_setup(context: LaunchContext):
         event_handler=OnProcessExit(
             target_action=create_entity,
             on_exit=[static_transform_publisher_depth_camera],
+        )
+    )
+
+    delayed_static_transform_publisher_laser = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[static_transform_publisher_laser],
         )
     )
 
@@ -238,6 +252,7 @@ def launch_setup(context: LaunchContext):
     if custom:
         nodes += [ 
             delayed_static_transform_publisher_depth_camera,
+            delayed_static_transform_publisher_laser,
             delayed_depthimage_to_laserscan_node_spawner,
             delayed_pointcloud_to_laserscan_node_spawner,
         ]
