@@ -18,6 +18,7 @@
 
   <exec_depend>depthimage_to_laserscan</exec_depend>
   <exec_depend>pointcloud_to_laserscan</exec_depend>
+  <exec_depend>ros2_laser_scan_merger</exec_depend>
   <exec_depend>joy_linux</exec_depend>
   <exec_depend>joy_teleop</exec_depend>
   <exec_depend>rplidar_ros</exec_depend>
