@@ -20,6 +20,7 @@ def launch_setup(context: LaunchContext):
     slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
     dtl_params_file = os.path.join(pkg_path, 'config', 'depthimage_to_laserscan.yaml')
     ptl_params_file = os.path.join(pkg_path, 'config', 'pointcloud_to_laserscan.yaml')
+    rlsm_params_file = os.path.join(pkg_path, 'config', 'ros2_laser_scan_merger.yaml')
     world_file = context.perform_substitution(LaunchConfiguration('world')) + '.world'
     world = os.path.join(pkg_path,'worlds', world_file)
     xacro_file = os.path.join(pkg_path,'description',filename)
@@ -114,6 +115,15 @@ def launch_setup(context: LaunchContext):
         package='pointcloud_to_laserscan',
         executable='pointcloud_to_laserscan_node',
         parameters=[ptl_params_file]
+    )
+
+    ros2_laser_scan_merger_node = Node(
+        package='ros2_laser_scan_merger',
+        executable='ros2_laser_scan_merger',
+        parameters=[rlsm_params_file],
+        output='screen',
+        respawn=True,
+        respawn_delay=2
     )
 
     slam_toolbox_node = IncludeLaunchDescription(
@@ -226,6 +236,13 @@ def launch_setup(context: LaunchContext):
         )
     )
 
+    delayed_ros2_laser_scan_merger_node_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=create_entity,
+            on_exit=[ros2_laser_scan_merger_node],
+        )
+    )
+
     delayed_slam_toolbox_node_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=create_entity,
@@ -255,6 +272,7 @@ def launch_setup(context: LaunchContext):
             delayed_static_transform_publisher_laser,
             delayed_depthimage_to_laserscan_node_spawner,
             delayed_pointcloud_to_laserscan_node_spawner,
+            delayed_ros2_laser_scan_merger_node_spawner,
         ]
     else:
         nodes += [
