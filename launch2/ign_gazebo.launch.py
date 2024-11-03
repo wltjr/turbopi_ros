@@ -68,20 +68,24 @@ def launch_setup(context: LaunchContext):
         '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         '/sonar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
     ]
+
+    bridge_remappings = []
     if custom:
         bridge_args += [
             '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
         ]
+        bridge_remappings += [ ('/scan', '/laser/scan'),
+                               ('/camera_info', '/depth_camera_info'), ]
+        image_bridge_args = ['/depth_camera']
+    else:
+        image_bridge_args = ['/camera']
 
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=bridge_args,
+        remappings=bridge_remappings,
     )
-
-    image_bridge_args = ['/camera']
-    if custom:
-        image_bridge_args += ['/depth_camera']
 
     image_bridge = Node(
         package='ros_gz_image',
