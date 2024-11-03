@@ -1,0 +1,35 @@
+/ros2_laser_scan_merger:
+  ros__parameters:
+    flip1: false
+    flip2: false
+    inverse1: false
+    inverse2: false
+    laser1Alpha: 0.0
+    laser1AngleMax: 360.0
+    laser1AngleMin: -360.0
+    laser1B: 0
+    laser1G: 0
+    laser1R: 255
+    laser1XOff: 0.0
+    laser1YOff: 0.0
+    laser1ZOff: 0.0
+    laser2Alpha: 180.0
+    laser2AngleMax: 180.0
+    laser2AngleMin: -180.0
+    laser2B: 255
+    laser2G: 0
+    laser2R: 0
+    laser2XOff: 0.0
+    laser2YOff: 0.0
+    laser2ZOff: 0.0
+    pointCloudTopic: cloud_in
+    pointCloudFrameId: turbopi/base_link/lidar_sensor
+    qos_overrides./parameter_events.publisher.depth: 1000
+    # qos_overrides./parameter_events.publisher.durability: volatile
+    # qos_overrides./parameter_events.publisher.history: keep_last
+    qos_overrides./parameter_events.publisher.reliability: best_effort
+    scanTopic1: /laser/scan
+    scanTopic2: /depth/scan
+    show1: true
+    show2: true
+    use_sim_time: true
