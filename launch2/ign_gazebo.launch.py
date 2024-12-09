@@ -110,7 +110,7 @@ def launch_setup(context: LaunchContext):
         package='depthimage_to_laserscan',
         executable='depthimage_to_laserscan_node',
         name='depthimage_to_laserscan',
-        remappings=[ ('scan', '/depth/scan'), ],
+        remappings=[ ('/depth', '/depth_camera'), ('/scan', '/depth/scan'), ],
         parameters=[dtl_params_file]
     )
 
