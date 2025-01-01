@@ -100,7 +100,8 @@ wireless controller.
 
 ### DUALSHOCK™4
 Run the following command to invoke the controller for the DUALSHOCK™4 wireless
-controller.
+controller. This can be done within the robot, or on a remote system running a
+docker container or locally installed.
 ```bash
 ros2 launch turbopi_ros gamepad.launch.py
 ```
@@ -167,7 +168,7 @@ Credits and thanks for resources used in this repository, some code and/or
 project structure, go to the following:
 
 - Articulated Robotics - 
-  [Making a Mobile Robot with ROS](https://articulatedrobotics.xyz/mobile-robot-full-list/)
+  [Making a Mobile Robot with ROS](https://articulatedrobotics.xyz/tutorials/)
 - Linux I2C - [Implementing I2C device drivers in userspace](https://www.kernel.org/doc/html/latest/i2c/dev-interface.html)
 - ROS 2 Control Demos -
   [example 2](https://github.com/ros-controls/ros2_control_demos)
