@@ -46,10 +46,42 @@ source ~/ros2_ws/install/setup.bash
 ```
 
 ## Run
-To run on the actual hardware run the following command in your ros2 workspace; ex `~/ros2_ws/`.
+There are several launchers that are used to run parts of the project, some are
+used together, some stand-alone, some for simulation and the robot. They are all
+run from your ros2 workspace; ex `~/ros2_ws/`.
 ```bash
 ros2 launch turbopi_ros turbopi_ros.launch.py
 ```
+
+- [gamepad.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/gamepad.launch.py) -
+Start the gamepad node for remote operation, teleop; run in container, local, or
+remote.
+- [ign_gazebo.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/ign_gazebo.launch.py) -
+Start a simulated TurboPi in Gazebo; run in container or desktop/laptop.
+- [nav2.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/nav2.launch.py) -
+Start the Nav 2 stack, used with both hardware and simulation.
+- [turbopi_ros.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/turbopi_ros.launch.py) -
+Start ROS 2 with hardware support for TurboPi on robot hardware.
+
+### Docker Containers
+Three docker containers have been made to aid primarily in development, but the
+first can be used on actual hardware.
+
+- [docker-ros2-jazzy](https://github.com/UNF-Robotics/docker-ros2-jazzy) -
+Base headless container used in CI/CD and can be used on hardware with slight
+overhead.
+- [docker-ros2-jazzy-gz-rviz2](https://github.com/UNF-Robotics/docker-ros2-jazzy-gz-rviz2) -
+Base X11 graphical container used for simulation has Gazebo and RViz2, intended
+for desktop/laptop; contains prior.
+- [docker-ros2-jazzy-gz-rviz2](https://github.com/wltjr/docker-ros2-jazzy-gz-rviz2-turbopi) -
+Main development container used for development, simulation, etc. intended for
+desktop/laptop; contains prior two.
+
+The first container is primarily used for CI/CD. The second one is not directly
+used. For most purposes, the last container is the primary one to use, outside
+of running on the actual robot. Which is advised to do outside of a docker
+container to avoid the minimal overhead.
+
 
 ## Robot Human Controllers
 The primary way to control the robot is using telop_turbopi which is intended to
