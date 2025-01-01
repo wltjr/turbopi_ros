@@ -156,6 +156,11 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
   ![Picture of Hiwonder TurboPi](https://github.com/wltjr/turbopi_ros/assets/12835340/81dd585b-5b98-43b2-b532-ddd4233721ce)
 
+- [Orbbec Astra S](https://www.orbbec.com/products/structured-light-camera/astra-series/) -
+  [Amazon](https://www.amazon.com/gp/product/B0C2H4QL5F/)
+
+  ![Picture of Orbbec Astra S](https://github.com/user-attachments/assets/08dc402d-9d05-453e-9a04-c889ad56a590)
+
 - [Slamtec RPlidar A1](https://www.slamtec.ai/home/rplidar_a1/) -
   [Amazon](https://www.amazon.com/dp/B07TJW5SXF/)
 
