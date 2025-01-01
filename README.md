@@ -9,7 +9,21 @@ The project is a work in progress, used to learn ROS 2, as well as for upcoming
 research work into SLAM, navigation without GPS or Compass, dynamic path planning
 with encountering unknown newly discovered obstacles, and other research topics.
 
-![TurboPi in Gazebo](https://github.com/wltjr/turbopi_ros/assets/12835340/5c2e2cf6-8c80-49ee-b0a9-a5a6e4211558)
+Work is underway to customize the default TurboPi, replacing the 2DOF camera
+with a Orbbec Astra S 3D Depth Camera. This will be done in a manner that
+supports both, and work has already be done for simulation of both. A 2D
+360&#176; RP LiDAR A1 has been added to both.
+
+<table style="padding:10px">
+  <tr>
+    <td> 
+      <img src="https://github.com/user-attachments/assets/7a3572b8-a915-4015-9751-5b90ae2336e1" alt="TurboPi in Gazebo" width="265px" height="255px" >
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/92f3f31c-802f-4783-b9ac-52aefce8a10d" alt="Custom TurboPi in Gazebo" width="265px" height="255px" >
+    </td>
+  </tr>
+</table>
 
 Mesh files have been generously provided by Hiwonder and are their property.
 Mesh files are copyright Hiwonder. All Rights Reserved.
