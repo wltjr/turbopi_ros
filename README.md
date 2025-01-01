@@ -5,6 +5,9 @@
 
 This project aims to get all functionality of the TurboPi robot running on
 [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/), along with an RPLidar for SLAM.
+The project is a work in progress, used to learn ROS 2, as well as for upcoming
+research work into SLAM, navigation without GPS or Compass, dynamic path planning
+with encountering unknown newly discovered obstacles, and other research topics.
 
 ![TurboPi in Gazebo](https://github.com/wltjr/turbopi_ros/assets/12835340/5c2e2cf6-8c80-49ee-b0a9-a5a6e4211558)
 
