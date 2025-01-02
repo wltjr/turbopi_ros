@@ -18,6 +18,9 @@ namespace turbopi
         : Node("sonar", options)
     {
         static auto sonar = Sonar(1, SONAR_ADDRESS);
+        sonar.setRGBMode(0);
+        sonar.setPixelColor(0,0); // #000000 - black/off
+        sonar.setPixelColor(1,0);
         sonar_ = &sonar;
 
         // publish to /sonar topic
