@@ -1,0 +1,22 @@
+[Unit]
+Description="ROS 2 TurboPi Hardware Service"
+Requires=ros2_rplidar.service
+After=ros2_rplidar.service
+
+[Service]
+Environment="HOME=/home/ubuntu/"
+Environment="LD_LIBRARY_PATH=/home/ubuntu/ros2_ws/install/turbopi_ros/lib:/opt/ros/jazzy/lib"
+Environment="PYTHONPATH=/opt/ros/jazzy/lib/python3.12/site-packages/"
+Environment="AMENT_PREFIX_PATH=/home/ubuntu/ros2_ws/install/turbopi_ros:/opt/ros/jazzy"
+WorkingDirectory=/home/ubuntu/ros2_ws/
+#User=ubuntu
+
+ExecStart=/bin/bash -c 'source /home/ubuntu/ros2_ws/install/setup.bash; /opt/ros/jazzy/bin/ros2 launch turbopi_ros turbopi_ros.launch.py'
+ExecStopPost=systemctl start ros2_rplidar_motor_stop.service
+RemainAfterExit=no
+Restart=on-failure
+RestartSec=2s
+
+
+[Install]
+WantedBy=multi-user.target
