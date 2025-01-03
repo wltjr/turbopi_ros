@@ -36,11 +36,11 @@ namespace turbopi
     {
         if (type_ == TYPE_MOTOR)
         {
-            uint8_t position;
+            std::vector<uint8_t> data(1);
 
-            if (i2c_->readBytes(id_ - 1 + MOTOR_ADDRESS, 1, position))
+            if (i2c_->readBytes(id_ - 1 + MOTOR_ADDRESS, 1, data))
             {
-                return position;
+                return data[0];
             }
             else
             {
