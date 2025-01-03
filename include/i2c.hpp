@@ -8,6 +8,7 @@
 #define TURBOPI__I2C_H
 
 #include <inttypes.h>
+#include <vector>
 
 // classname used in logging output
 extern char const* const CLASS_NAME;
@@ -44,13 +45,13 @@ namespace turbopi
              *
              * @param register_number   I2C register number
              * @param buffer_size       read bytes buffer size
-             * @param value             the value of bytes read
+             * @param buffer            a vector of bytes read
              * 
              * @return uint8_t          -1 for error or 0 for success
              */
 			uint8_t readBytes(uint8_t register_number,
                               uint8_t buffer_size,
-                              uint8_t &value);
+                              std::vector<uint8_t> &buffer);
 
             /**
              * @brief Write data to I2C component via register number
