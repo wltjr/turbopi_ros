@@ -31,12 +31,10 @@ namespace turbopi
 
 	uint8_t I2C::readBytes(uint8_t register_number,
                            uint8_t buffer_size,
-                           uint8_t &value)
+                           std::vector<uint8_t> &buffer)
 	{
 		if (fd != -1)
 		{
-			std::vector<uint8_t> buffer(buffer_size);
-
 			uint8_t write_buffer_size = 1;
 			std::vector<uint8_t>  write_buffer(write_buffer_size);
 			write_buffer[0] = register_number;
@@ -67,10 +65,8 @@ namespace turbopi
 			}
 			else
 			{
-				value = 0;
 				for (int i = 0; i < buffer_size; i++)
 				{
-					value =  value + buffer[i] ;
 					RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
 								"i2c Buffer #%i: %i", i, buffer[i]);
 				}
