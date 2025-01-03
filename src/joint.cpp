@@ -93,9 +93,9 @@ namespace turbopi
 			data[1] = speed;
 
 			uint8_t result = i2c_->writeData(MOTOR_ADDRESS, data);
-			RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-			            "write: %i; effort: %f; motor: %i, speed: %i",
-						result, effort, data[0], data[1]);
+            RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                         "write: %i; effort: %f; motor: %i, speed: %i",
+                         result, effort, data[0], data[1]);
 		}
 		else if (type_ == TYPE_SERVO)
 		{
@@ -119,14 +119,14 @@ namespace turbopi
                 pulse_data[3] = pulse;
 
 				uint8_t result = i2c_->writeData(CAMERA_ADDRESS, data);
-				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-				            "write: %i; effort: %f; joint %s max %i servo: %i angle: %i°",
-							result, effort, name.c_str(), max_, data[0], data[1]);
+                RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                             "write: %i; effort: %f; joint %s max %i servo: %i angle: %i°",
+                             result, effort, name.c_str(), max_, data[0], data[1]);
 
 				result = i2c_->writeData(SERVO_ADDRESS_CMD, pulse_data);
-				RCLCPP_INFO(rclcpp::get_logger(CLASS_NAME),
-				            "write: %i; effort: %f; servo: %i time: %i pulse %i",
-							result, effort, pulse_data[2], pulse_data[1], pulse_data[3]);
+                RCLCPP_DEBUG(rclcpp::get_logger(CLASS_NAME),
+                             "write: %i; effort: %f; servo: %i time: %i pulse %i",
+                             result, effort, pulse_data[2], pulse_data[1], pulse_data[3]);
 			}
 		}
 
