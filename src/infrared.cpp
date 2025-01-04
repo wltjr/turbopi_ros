@@ -32,17 +32,17 @@ namespace turbopi
         {
             switch (data[0])
             {
-                case 0x39: values = {(uint8_t)1,0,0,0}; break; // sensor 1
-                case 0x38: values = {0,(uint8_t)1,0,0}; break; // sensor 2
-                case 0x36: values = {0,0,(uint8_t)1,0}; break; // sensor 3
-                case 0x32: values = {0,0,0,(uint8_t)1}; break; // sensor 4
+                case 0x07: values = {(uint8_t)1,0,0,0}; break; // sensor 1 - 0111
+                case 0x0B: values = {0,(uint8_t)1,0,0}; break; // sensor 2 - 1011
+                case 0x0D: values = {0,0,(uint8_t)1,0}; break; // sensor 3 - 1101
+                case 0x0E: values = {0,0,0,(uint8_t)1}; break; // sensor 4 - 1110
 
-                case 0x37: values = {(uint8_t)1,(uint8_t)1,0,0}; break; // sensor 1-2
-                case 0x34: values = {0,(uint8_t)1,(uint8_t)1,0}; break; // sensor 2-3
-                case 0x33: values = {(uint8_t)1,(uint8_t)1,(uint8_t)1,0}; break; // sensor 1-3
-                case 0x2e: values = {0,0,(uint8_t)1,(uint8_t)1}; break; // sensor 3-4
-                case 0x2c: values = {0,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 2-4
-                case 0x2b: values = {(uint8_t)1,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 1-4
+                case 0x03: values = {(uint8_t)1,(uint8_t)1,0,0}; break; // sensor 1-2 - 0011
+                case 0x09: values = {0,(uint8_t)1,(uint8_t)1,0}; break; // sensor 2-3 - 1001
+                case 0x0C: values = {0,0,(uint8_t)1,(uint8_t)1}; break; // sensor 3-4 - 1100
+                case 0x01: values = {(uint8_t)1,(uint8_t)1,(uint8_t)1,0}; break; // sensor 1-3 - 0001
+                case 0x08: values = {0,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 2-4 - 1000
+                case 0x00: values = {(uint8_t)1,(uint8_t)1,(uint8_t)1,(uint8_t)1}; break; // sensor 1-4 - 0000
                 default: break;
             }
         }
