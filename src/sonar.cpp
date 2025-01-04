@@ -25,12 +25,18 @@ namespace turbopi
 
     int Sonar::getDistance()
     {
+        int distance;
         std::vector<uint8_t> data(2);
 
         if (!i2c_->readBytes(0, 2, data))
-            return 0;
+            distance = 0;
 
-        return (data[1] << 8) | data[0];
+        distance = (data[1] << 8) | data[0];
+
+        if (distance > 5000)
+            distance = 5000;
+
+        return distance;
     }
 
     std::array<uint8_t, 3> Sonar::getPixelColor(uint8_t index)
