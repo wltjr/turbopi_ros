@@ -4,8 +4,6 @@
  *  you may not use this file except in compliance with the License.
  */
 
-#include <bitset>
-#include <iomanip>
 #include <iostream>
 
 #include "infrared.hpp"
@@ -27,12 +25,12 @@ namespace turbopi
 
     std::array<uint8_t, 4> Infrared::getValues()
     {
-        uint8_t value = 0;
+        std::vector<uint8_t> data(1);
         std::array<uint8_t, 4> values = {0,0,0,0};
 
-        if (i2c_->readBytes(0x01, 2, value))
+        if (i2c_->readBytes(0x01, 1, data))
         {
-            switch (value)
+            switch (data[0])
             {
                 case 0x39: values = {(uint8_t)1,0,0,0}; break; // sensor 1
                 case 0x38: values = {0,(uint8_t)1,0,0}; break; // sensor 2
