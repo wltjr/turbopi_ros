@@ -55,6 +55,7 @@ add_library(turbopi_hardware_interface
 )
 
 # executable binaries
+add_executable(battery_node src/battery_node.cpp)
 add_executable(infrared_node src/infrared_node.cpp)
 add_executable(sonar_node src/sonar_node.cpp)
 add_executable(teleop_turbopi_node src/teleop_turbopi_node.cpp)
@@ -69,6 +70,7 @@ ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
 
 # link executable binaries to shared object libraries
 target_link_libraries(battery i2c)
+target_link_libraries(battery_node i2c battery)
 target_link_libraries(infrared i2c)
 target_link_libraries(infrared_node i2c infrared)
 target_link_libraries(sonar i2c)
@@ -97,6 +99,7 @@ install(
 set(INSTALL_TARGETS
     i2c
     battery
+    battery_node
     infrared
     infrared_node
     sonar
