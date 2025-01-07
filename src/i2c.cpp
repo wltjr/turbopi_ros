@@ -20,7 +20,7 @@ namespace turbopi
 	I2C::I2C(uint8_t minor, uint8_t address) :
 		minor_(minor), address_(address)
 	{
-		busfile = "/dev/i2c-" + std::to_string(minor_);
+		busfile = std::format("/dev/i2c-{}", minor_);
 		openfd();
 	}
 
