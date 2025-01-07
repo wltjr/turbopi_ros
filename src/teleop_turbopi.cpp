@@ -36,8 +36,8 @@ namespace teleop_turbopi
         auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
 
         // set wheel velocity
-        cmd_vel_msg->linear.x = joy_msg->axes[static_cast<int>(TurboPi::axes::LEFT_JOY_Y)];
-        cmd_vel_msg->angular.z = joy_msg->axes[static_cast<int>(TurboPi::axes::LEFT_JOY_X)];
+        cmd_vel_msg->linear.x = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_Y)];
+        cmd_vel_msg->angular.z = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_X)];
 
         // publish velocities
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
@@ -49,7 +49,7 @@ namespace teleop_turbopi
         // camera left/right
         if (joy_msg->axes[static_cast<int>(TurboPi::axes::RIGHT_JOY_Y)])
         {
-            pos_msg->data[0] = joy_msg->axes[static_cast<int>(TurboPi::axes::RIGHT_JOY_Y)];
+            pos_msg->data[0] = joy_msg->axes[std::to_underlying(TurboPi::axes::RIGHT_JOY_Y)];
         }
         else
         {
@@ -60,7 +60,7 @@ namespace teleop_turbopi
         // camera up/down
         if (joy_msg->axes[static_cast<int>(TurboPi::axes::RIGHT_JOY_X)])
         {
-            pos_msg->data[1] = joy_msg->axes[static_cast<int>(TurboPi::axes::RIGHT_JOY_X)];
+            pos_msg->data[1] = joy_msg->axes[std::to_underlying(TurboPi::axes::RIGHT_JOY_X)];
         }
         else
         {
