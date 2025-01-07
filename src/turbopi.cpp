@@ -42,7 +42,7 @@ namespace turbopi
 
 	Joint TurboPi::getJoint(std::string const & jointName)
 	{
-		int numJointsBase = sizeof(base.joints) / sizeof(base.joints[0]);
+		int numJointsBase = base.joints.size();
 		for (int i = 0; i < numJointsBase; i++)
 		{
 			if (base.joints[i].name == jointName)
@@ -51,7 +51,7 @@ namespace turbopi
 			}
 		}
 
-		int numJointsCamera = sizeof(camera.joints) / sizeof(camera.joints[0]);
+		int numJointsCamera = camera.joints.size();
 		for (int i = 0; i < numJointsCamera; i++)
 		{
 			if (camera.joints[i].name == jointName)
@@ -69,7 +69,7 @@ namespace turbopi
 	{
 		bool foundJoint = false;
 
-		int numJointsBase = sizeof(base.joints) / sizeof(base.joints[0]);
+		int numJointsBase = base.joints.size();
 		for (int i = 0; i < numJointsBase; i++)
 		{
 			if (base.joints[i].name == joint.name)
@@ -79,7 +79,7 @@ namespace turbopi
 			}
 		}
 
-		int numJointsCamera = sizeof(camera.joints) / sizeof(camera.joints[0]);
+		int numJointsCamera = camera.joints.size();
 		for (int i = 0; i < numJointsCamera; i++)
 		{
 			if (camera.joints[i].name == joint.name)
