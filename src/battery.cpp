@@ -36,24 +36,26 @@ namespace turbopi
         {
             std::time_t now = std::chrono::system_clock::to_time_t(
                 std::chrono::system_clock::now());
-            if (std::difftime(now, previous) >= 1)
+
+            if (std::difftime(now, previous) < 1)
             {
-                previous = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) + 1;
-
-                while (data[1] == 255)
-                {
-                    if (!i2c_->readBytes(0, 2, data))
-                    {
-                        data[0] = 0;
-                        data[1] = 0;
-                    }
-                }
-
-                voltages += (float)((data[1] << 8) | data[0]);
-                count++;
-            }
-            else
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                continue;
+            }
+
+            previous = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) + 1;
+
+            while (data[1] == 255)
+            {
+                if (!i2c_->readBytes(0, 2, data))
+                {
+                    data[0] = 0;
+                    data[1] = 0;
+                }
+            }
+
+            voltages += (float)((data[1] << 8) | data[0]);
+            count++;
         }
 
         // return avg of 3 / 1000
