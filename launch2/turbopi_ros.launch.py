@@ -18,6 +18,7 @@ def launch_setup(context: LaunchContext):
     filename = 'turbopi.urdf.xacro'
 
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
+    lidar = eval(context.perform_substitution(LaunchConfiguration('lidar')).title())
     sim = eval(context.perform_substitution(LaunchConfiguration('sim')).title())
     camera_params_file = os.path.join(pkg_path, 'config', 'camera.yaml')
     slam_params_file = os.path.join(pkg_path, 'config', 'slam_toolbox.yaml')
@@ -183,12 +184,16 @@ def launch_setup(context: LaunchContext):
         delayed_joint_broad_spawner,
         delayed_diff_drive_spawner,
         delayed_position_spawner,
-        delayed_slam_toolbox_node_spawner,
         delayed_infrared_node_spawner,
         delayed_sonar_node_spawner,
         delayed_v4l2_camera_node,
-        stop_lidar_on_shutdown,
     ]
+
+    if lidar:
+        nodes += [
+            delayed_slam_toolbox_node_spawner,
+            stop_lidar_on_shutdown,
+        ]
 
     return nodes
 
@@ -200,6 +205,13 @@ def stop_lidar(context: LaunchContext):
 def generate_launch_description():
     # Declare arguments
     declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "lidar",
+            default_value="False",
+            description="Start with lidar hardware",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim",
