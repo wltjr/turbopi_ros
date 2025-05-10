@@ -95,7 +95,7 @@ overhead.
 - [docker-ros2-jazzy-gz-rviz2](https://github.com/UNF-Robotics/docker-ros2-jazzy-gz-rviz2) -
 Base X11 graphical container used for simulation has Gazebo and RViz2, intended
 for desktop/laptop; contains prior.
-- [docker-ros2-jazzy-gz-rviz2](https://github.com/wltjr/docker-ros2-jazzy-gz-rviz2-turbopi) -
+- [docker-ros2-jazzy-gz-rviz2-turbopi](https://github.com/wltjr/docker-ros2-jazzy-gz-rviz2-turbopi) -
 Main development container used for development, simulation, etc. intended for
 desktop/laptop; contains prior two.
 
