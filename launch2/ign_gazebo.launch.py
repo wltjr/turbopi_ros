@@ -13,7 +13,7 @@ from launch_ros.actions import Node
 def launch_setup(context: LaunchContext):
 
     CM = "/controller_manager"
-    custom = eval(context.perform_substitution(LaunchConfiguration('custom')).title())
+    depth = eval(context.perform_substitution(LaunchConfiguration('depth')).title())
     filename = 'turbopi.urdf.xacro'
     pkg_name = 'turbopi_ros'
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
@@ -34,7 +34,7 @@ def launch_setup(context: LaunchContext):
             "use_hardware:=ign_gazebo",
             " ",
             "use_style:=",
-            "depth" if custom else "default",
+            "depth" if depth else "default",
             " ",
             "use_version:=",
             "6" if os.path.isdir("/opt/ros/iron/") else "8",
@@ -70,7 +70,7 @@ def launch_setup(context: LaunchContext):
     ]
 
     bridge_remappings = []
-    if custom:
+    if depth:
         bridge_args += [
             '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
         ]
@@ -270,7 +270,7 @@ def launch_setup(context: LaunchContext):
     ]
 
     # Enable features for custom robot style 3d depth camera or 2d camera
-    if custom:
+    if depth:
         nodes += [ 
             delayed_static_transform_publisher_depth_camera,
             delayed_static_transform_publisher_laser,
@@ -298,7 +298,7 @@ def generate_launch_description():
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
-            "custom",
+            "depth",
             default_value="True",
             description="Run customized 3d camera vs sonar with 2d camera.",
         )
