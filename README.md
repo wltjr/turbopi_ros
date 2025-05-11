@@ -80,7 +80,7 @@ Start the gamepad node for remote operation, teleop; run in container, local, or
 remote.
 - [ign_gazebo.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/ign_gazebo.launch.py) -
 Start a simulated TurboPi in Gazebo; run in container or desktop/laptop.
-  - `custom:=False` - Run customized 3d camera vs sonar with 2d camera (default `True`).
+  - `depth:=False` - Run customized 3d camera vs sonar with 2d camera (default `True`).
   - `world:=playground` - The world the robot will be spawned within (default `none`).
 - [nav2.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/nav2.launch.py) -
 Start the Nav 2 stack, used with both hardware and simulation.
