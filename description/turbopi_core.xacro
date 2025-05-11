@@ -229,8 +229,8 @@
         </xacro:inertial_cylinder>
     </link>
 
-    <xacro:macro name="style" params="use_style">
-        <xacro:if value="${use_style == 'default'}">
+    <xacro:macro name="camera" params="use_camera">
+        <xacro:if value="${use_camera == 'default'}">
             <!-- Camera frame turns left/right -->
             <joint name="camera_frame_joint" type="revolute">
                 <parent link="chassis"/>
@@ -283,7 +283,7 @@
             </link>
         </xacro:if>
 
-        <xacro:if value="${use_style == 'depth'}">
+        <xacro:if value="${use_camera == 'depth'}">
             <!-- 3D Depth Camera -->
             <joint name="depth_camera_joint" type="fixed">
                 <parent link="chassis"/>
