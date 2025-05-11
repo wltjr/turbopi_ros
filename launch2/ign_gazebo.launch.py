@@ -33,7 +33,7 @@ def launch_setup(context: LaunchContext):
             " ",
             "use_hardware:=ign_gazebo",
             " ",
-            "use_style:=",
+            "use_camera:=",
             "depth" if depth else "default",
             " ",
             "use_version:=",
