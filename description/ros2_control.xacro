@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="ros2_control" params="use_hardware use_style">
+    <xacro:macro name="ros2_control" params="use_hardware use_camera">
         <ros2_control name="ros2_control" type="system">
             <xacro:if value="${use_hardware == 'robot'}">
                 <hardware>
@@ -56,7 +56,7 @@
                     <param name="initial_value">0.0</param>
                 </state_interface>
             </joint>
-            <xacro:if value="${use_style == 'default'}">
+            <xacro:if value="${use_camera == 'default'}">
                 <joint name="camera_joint">
                     <command_interface name="position">
                         <param name="min">-0.5</param>
