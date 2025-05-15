@@ -1,4 +1,5 @@
 # TurboPi ROS
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=plastic)](https://github.com/wltjr/turbopi_ros/blob/master/LICENSE.txt)
 ![Build Status](https://github.com/wltjr/turbopi_ros/actions/workflows/docker_build.yml/badge.svg)
 [![Code Quality](https://sonarcloud.io/api/project_badges/measure?project=wltjr_turbopi_ros&metric=alert_status)](https://sonarcloud.io/dashboard?id=wltjr_turbopi_ros)
@@ -33,8 +34,10 @@ Mesh files have been generously provided by Hiwonder and are their property.
 Mesh files are copyright Hiwonder. All Rights Reserved.
 
 ## Environment Preparation
+
 The following assumes you have installed all the necessary ROS 2 Jazzy packages,
 and have sourced the installation before running any `ros2` commands.
+
 ```bash
 source /opt/ros/jazzy/setup.bash
 ```
@@ -47,34 +50,41 @@ purposes, to build this project, etc; ex `~/ros2_ws/`. The following will refer
 to that directory, and directories created within.
 
 ## Download
+
 Download and unpack or clone this repositories contents into your ros2
 workspace; ex `~/ros2_ws/src/turbopi_ros`.
 
-
 ## Build and Install
+
 Building is done using colcon which will invoke cmake and run the necessary
 commands. Run the following command in your ros2 workspace; ex `~/ros2_ws/`.
+
 ```bash
 colcon build --symlink-install --packages-select  turbopi_ros
 ```
 
 ### Source install
+
 Make sure to run the following command after install and login. Run the
 following command in your ros2 workspace; ex `~/ros2_ws/`.
+
 ```bash
 source install/setup.bash
 ```
 
 You may want to have your development user environment do this on login via
 `~/.bashrc` file; add the following to the end of that file.
+
 ```bash
 source ~/ros2_ws/install/setup.bash
 ```
 
 ## Run
+
 There are several launchers that are used to run parts of the project, some are
 used together, some stand-alone, some for simulation and the robot. They are all
 run from your ros2 workspace; ex `~/ros2_ws/`.
+
 ```bash
 ros2 launch turbopi_ros turbopi_ros.launch.py
 ```
@@ -96,6 +106,7 @@ optional arguments (default `False`).
   - `sim:=True` - Use simulated hardware
 
 ### Docker Containers
+
 Three docker containers have been made to aid primarily in development, but the
 first can be used on actual hardware.
 
@@ -114,23 +125,25 @@ used. For most purposes, the last container is the primary one to use, outside
 of running on the actual robot. Which is advised to do outside of a docker
 container to avoid the minimal overhead.
 
-
 ## Robot Human Controllers
+
 The primary way to control the robot is using telop_turbopi which is intended to
 be used with a
 [DUALSHOCK™4](https://www.playstation.com/en-us/accessories/dualshock-4-wireless-controller/)
 wireless controller.
 
-
 ### DUALSHOCK™4
+
 Run the following command to invoke the controller for the DUALSHOCK™4 wireless
 controller. This can be done within the robot, or on a remote system running a
 docker container or locally installed.
+
 ```bash
 ros2 launch turbopi_ros gamepad.launch.py
 ```
 
 #### Button Layout
+
 The primary buttons are the left joystick for driving/movement and the right
 joystick for the attached camera. All other buttons are not mapped or in use
 at this time.
@@ -152,6 +165,7 @@ at this time.
 | K | Driving - forward/backward, turn left/right |
 
 ### Alternatives
+
 There are presently alternative two ways to control the robot using
 [teleop twist joy](https://github.com/ros2/teleop_twist_joy) and
 [keyboard](https://github.com/ros2/teleop_twist_keyboard). However, they only
@@ -159,22 +173,26 @@ support robot movement and do not control camera or other peripherals, they just
  use `/cmd_vel` topic.
 
 #### Gamepad
-Run the following command to invoke the controller for the gamepad. Sample 
-command is  using a Logitech F310, which works with the `xbox` configuration. 
+
+Run the following command to invoke the controller for the gamepad. Sample
+command is  using a Logitech F310, which works with the `xbox` configuration.
+
 ```bash
 ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'
 ```
 
 #### Keyboard
+
 Run the following command to invoke the controller for the keyboard, which will
 present a interface for controlling the robot in the same terminal the command
 is run within.
+
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
-
 ## Hardware
+
 - [Hiwonder TurboPi](https://www.hiwonder.com/products/turbopi?variant=40112905388119) - 
   [Amazon](https://www.amazon.com/dp/B0BTTH8WD2)
 
@@ -190,9 +208,8 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
   ![Picture of Slamtec RPlidar A1](https://github.com/wltjr/turbopi_ros/assets/12835340/9f7b9688-b600-42d9-8b1b-c3a834252112)
 
-
-
 ## Credits
+
 Credits and thanks for resources used in this repository, some code and/or
 project structure, go to the following:
 
