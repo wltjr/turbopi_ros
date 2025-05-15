@@ -25,6 +25,10 @@ supports both, and work has already be done for simulation of both. A 2D
   </tr>
 </table>
 
+[![2024-12-06 Turbopi_ROS Autonomous Nav & Obstacle Avoidance](https://github.com/user-attachments/assets/5d47b4ba-92f1-48ec-8ad1-7371701c17a7)](https://github.com/user-attachments/assets/161aecaf-2058-4035-a6cc-9e89406dbd6d)
+
+Video demonstration of Autonomous Navigation and Obstacle avoidance.
+
 Mesh files have been generously provided by Hiwonder and are their property.
 Mesh files are copyright Hiwonder. All Rights Reserved.
 
