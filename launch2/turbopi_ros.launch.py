@@ -80,6 +80,12 @@ def launch_setup(context: LaunchContext):
         parameters=[ slam_params_file, {'use_sim_time': True} ],
     )
 
+    battery_monitor_node = Node(
+        package='turbopi_ros',
+        executable='battery_monitor_node',
+        parameters=[],
+    )
+
     battery_node = Node(
         package='turbopi_ros',
         executable='battery_node',
@@ -178,6 +184,7 @@ def launch_setup(context: LaunchContext):
     )
 
     nodes = [
+        battery_monitor_node,
         battery_node,
         controller_manager,
         node_robot_state_publisher,
