@@ -34,10 +34,9 @@ namespace turbopi
         // take avg of 3 readings
         for (int count = 0; count < 3;)
         {
-            std::time_t now = std::chrono::system_clock::to_time_t(
-                std::chrono::system_clock::now());
-
-            if (std::difftime(now, previous) < 1)
+            if (std::time_t now = std::chrono::system_clock::to_time_t(
+                    std::chrono::system_clock::now());
+                std::difftime(now, previous) < 1)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 continue;
