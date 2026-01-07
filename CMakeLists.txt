@@ -55,6 +55,7 @@ add_library(turbopi_hardware_interface
 )
 
 # executable binaries
+add_executable(battery_monitor_node src/battery_monitor_node.cpp)
 add_executable(battery_node src/battery_node.cpp)
 add_executable(infrared_node src/infrared_node.cpp)
 add_executable(sonar_node src/sonar_node.cpp)
@@ -64,6 +65,7 @@ add_executable(test_infrared src/tests/test_infrared.cpp)
 add_executable(test_sonar src/tests/test_sonar.cpp)
 
 # add ROS dependencies
+ament_target_dependencies(battery_monitor_node ${INCLUDE_DEPENDS})
 ament_target_dependencies(i2c ${INCLUDE_DEPENDS})
 ament_target_dependencies(teleop_turbopi ${INCLUDE_DEPENDS})
 ament_target_dependencies(turbopi_hardware_interface ${INCLUDE_DEPENDS})
@@ -99,6 +101,7 @@ install(
 set(INSTALL_TARGETS
     i2c
     battery
+    battery_monitor_node
     battery_node
     infrared
     infrared_node
