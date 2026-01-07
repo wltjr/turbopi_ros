@@ -26,9 +26,8 @@ namespace turbopi
     int Sonar::getDistance()
     {
         int distance = 0;
-        std::vector<uint8_t> data(2);
 
-        if (i2c_->readBytes(0, 2, data))
+        if (std::vector<uint8_t> data(2); i2c_->readBytes(0, 2, data))
             distance = (data[1] << 8) | data[0];
 
         if (distance > 5000)
