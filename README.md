@@ -105,6 +105,9 @@ optional arguments (default `False`).
   - `lidar:=True` - Enable optional hardware lidar support (RPLidar)
   - `sim:=True` - Use simulated hardware
 
+  Note: This must be run as the `root` user, udev rules for other users are not
+  working at this time; a I2C/SMBus issue.
+
 ### Docker Containers
 
 Three docker containers have been made to aid primarily in development, but the
