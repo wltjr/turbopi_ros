@@ -31,7 +31,6 @@
 #include "rclcpp_lifecycle/state.hpp"
 
 #include "turbopi.hpp"
-#include "visibility_control.h"
 
 char const* const CLASS_NAME = "TurboPiSystemHardware";
 
@@ -47,29 +46,22 @@ namespace turbopi_hardware_interface
          */
         ~TurboPiSystemHardware();
 
-        TURBOPI_PUBLIC
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareComponentInterfaceParams &params) override;
 
-        TURBOPI_PUBLIC
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-        TURBOPI_PUBLIC
         std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-        TURBOPI_PUBLIC
         hardware_interface::CallbackReturn on_activate(
             const rclcpp_lifecycle::State &previous_state) override;
 
-        TURBOPI_PUBLIC
         hardware_interface::CallbackReturn on_deactivate(
             const rclcpp_lifecycle::State &previous_state) override;
 
-        TURBOPI_PUBLIC
         hardware_interface::return_type read(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-        TURBOPI_PUBLIC
         hardware_interface::return_type write(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
