@@ -37,9 +37,9 @@ namespace turbopi_hardware_interface
     }
 
     hardware_interface::CallbackReturn TurboPiSystemHardware::on_init(
-        const hardware_interface::HardwareInfo &info)
+         const hardware_interface::HardwareComponentInterfaceParams &params)
     {
-        if (hardware_interface::SystemInterface::on_init(info) !=
+        if (hardware_interface::SystemInterface::on_init(params) !=
             hardware_interface::CallbackReturn::SUCCESS)
         {
             return hardware_interface::CallbackReturn::ERROR;
