@@ -14,6 +14,7 @@ def launch_setup(context: LaunchContext):
 
     CM = "/controller_manager"
     depth = eval(context.perform_substitution(LaunchConfiguration('depth')).title())
+    drive = context.perform_substitution(LaunchConfiguration('drive'))
     lidar = eval(context.perform_substitution(LaunchConfiguration('lidar')).title())
     filename = 'turbopi.urdf.xacro'
     pkg_name = 'turbopi_ros'
@@ -33,6 +34,9 @@ def launch_setup(context: LaunchContext):
             xacro_file,
             " ",
             "use_hardware:=ign_gazebo",
+            " ",
+            "use_drive:=",
+            drive,
             " ",
             "use_camera:=",
             "depth" if depth else "default",
@@ -313,6 +317,13 @@ def generate_launch_description():
             "depth",
             default_value="True",
             description="Run customized 3d camera vs sonar with 2d camera.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "drive",
+            default_value="diff",
+            description="Drive system diff or mecanum.",
         )
     )
     declared_arguments.append(
