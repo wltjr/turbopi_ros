@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="turbopi">
 
+	<xacro:arg name="use_drive" default="diff" />
 	<xacro:arg name="use_hardware" default="robot" />
 	<xacro:arg name="use_camera" default="default" />
 	<xacro:arg name="use_lidar" default="default" />
@@ -19,7 +20,8 @@
     <xacro:macro name="gazebo" params="use_hardware">
       <xacro:if value="${use_hardware == 'ign_gazebo'}">
 	    <xacro:include filename="gazebo_plugins.xacro" />
-        <xacro:plugins use_version="$(arg use_version)" />
+        <xacro:plugins use_drive="$(arg use_drive)"
+                       use_version="$(arg use_version)" />
       </xacro:if>
     </xacro:macro>
 
