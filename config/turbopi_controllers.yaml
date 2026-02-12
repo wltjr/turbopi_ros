@@ -8,6 +8,9 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    mecanum_drive_controller:
+      type: mecanum_drive_controller/MecanumDriveController
+
     position_controllers:
       type: position_controllers/JointGroupPositionController
 
@@ -25,6 +28,27 @@ diff_drive_controller:
     enable_odom_tf: true
 
     use_stamped_vel: false
+
+mecanum_drive_controller:
+  ros__parameters:
+    reference_timeout: 0.9
+
+    front_left_wheel_command_joint_name:  "front_left_wheel_joint"
+    front_right_wheel_command_joint_name: "front_right_wheel_joint"
+    rear_left_wheel_command_joint_name:   "rear_left_wheel_joint"
+    rear_right_wheel_command_joint_name:  "rear_right_wheel_joint"
+
+    kinematics:
+      base_frame_offset: { x: 0.0, y: 0.0, theta: 0.0 }
+      wheels_radius: 0.0325
+      sum_of_robot_center_projection_on_X_Y_axis: 1.0
+
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+    enable_odom_tf: true
+    use_stamped_vel: false
+    twist_covariance_diagonal: [0.0, 7.0, 14.0, 21.0, 28.0, 35.0]
+    pose_covariance_diagonal: [0.0, 6.0, 12.0, 18.0, 24.0, 30.0]
 
 position_controllers:
   ros__parameters:
