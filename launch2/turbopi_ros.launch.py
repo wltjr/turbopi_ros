@@ -18,6 +18,7 @@ def launch_setup(context: LaunchContext):
     filename = 'turbopi.urdf.xacro'
 
     pkg_path = os.path.join(get_package_share_directory(pkg_name))
+    drive = context.perform_substitution(LaunchConfiguration('drive'))
     lidar = eval(context.perform_substitution(LaunchConfiguration('lidar')).title())
     sim = eval(context.perform_substitution(LaunchConfiguration('sim')).title())
     camera_params_file = os.path.join(pkg_path, 'config', 'camera.yaml')
@@ -34,19 +35,30 @@ def launch_setup(context: LaunchContext):
             "use_hardware:=",
             "mock" if sim else "robot",
             " ",
+            "use_drive:=",
+            drive,
+            " ",
         ]
     )
     robot_description = {'robot_description': robot_description_content}
+
+    if drive == "mecanum":
+        cm_remappings = [
+            ("/mecanum_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
+            ("/mecanum_drive_controller/odometry", "/odom"),
+        ]
+    else:
+        cm_remappings = [
+            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
+            ("/diff_drive_controller/odom", "/odom"),
+        ]
 
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[robot_description, controller_params],
         output='both',
-        remappings=[
-            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-            ("/diff_drive_controller/odom", "/odom"),
-        ],
+        remappings=cm_remappings,
     )
 
     node_robot_state_publisher = Node(
@@ -67,6 +79,17 @@ def launch_setup(context: LaunchContext):
         executable="spawner",
         arguments=["joint_state_broadcaster", "-c", CM],
     )
+
+    mecanum_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["mecanum_drive_controller", "-c", CM],
+    )
+
+    if drive == "mecanum":
+        drive_spawner = mecanum_drive_spawner
+    else:
+        drive_spawner = diff_drive_spawner
 
     position_spawner = Node(
         package="controller_manager",
@@ -130,10 +153,10 @@ def launch_setup(context: LaunchContext):
         )
     )
 
-    delayed_diff_drive_spawner = RegisterEventHandler(
+    delayed_drive_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_broad_spawner,
-            on_exit=[diff_drive_spawner],
+            on_exit=[drive_spawner],
         )
     )
 
@@ -189,7 +212,7 @@ def launch_setup(context: LaunchContext):
         controller_manager,
         node_robot_state_publisher,
         delayed_joint_broad_spawner,
-        delayed_diff_drive_spawner,
+        delayed_drive_spawner,
         delayed_position_spawner,
         delayed_infrared_node_spawner,
         delayed_sonar_node_spawner,
@@ -212,6 +235,13 @@ def stop_lidar(context: LaunchContext):
 def generate_launch_description():
     # Declare arguments
     declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "drive",
+            default_value="diff",
+            description="Drive system diff or mecanum",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "lidar",
