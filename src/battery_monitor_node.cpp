@@ -28,7 +28,7 @@ namespace turbopi
 
         if(msg->voltage == 0)
         {
-            RCLCPP_INFO(rclcpp::get_logger("BatteryMonitorNode"), "No reading from battery node");
+            RCLCPP_WARN(rclcpp::get_logger("BatteryMonitorNode"), "No reading from battery node");
             return;
         }
 
@@ -63,7 +63,7 @@ namespace turbopi
         // print interesting values for improvement
         else
         {
-            RCLCPP_INFO(rclcpp::get_logger("BatteryMonitorNode"), "Battery voltage %f", msg->voltage);
+            RCLCPP_DEBUG(rclcpp::get_logger("BatteryMonitorNode"), "Battery voltage %f", msg->voltage);
             return; // avoid garbage last reading
         }
 
