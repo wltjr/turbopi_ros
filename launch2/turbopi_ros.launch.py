@@ -42,23 +42,11 @@ def launch_setup(context: LaunchContext):
     )
     robot_description = {'robot_description': robot_description_content}
 
-    if drive == "mecanum":
-        cm_remappings = [
-            ("/mecanum_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-            ("/mecanum_drive_controller/odometry", "/odom"),
-        ]
-    else:
-        cm_remappings = [
-            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-            ("/diff_drive_controller/odom", "/odom"),
-        ]
-
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[robot_description, controller_params],
         output='both',
-        remappings=cm_remappings,
     )
 
     node_robot_state_publisher = Node(
@@ -71,7 +59,13 @@ def launch_setup(context: LaunchContext):
     diff_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["diff_drive_controller", "-c", CM],
+        arguments=[
+            "diff_drive_controller", "-c", CM,
+            "--controller-ros-args",
+            "-r /diff_drive_controller/cmd_vel:=/cmd_vel",
+            "--controller-ros-args",
+            "-r /diff_drive_controller/odom:=/odom",
+        ],
     )
 
     joint_broad_spawner = Node(
@@ -83,7 +77,12 @@ def launch_setup(context: LaunchContext):
     mecanum_drive_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["mecanum_drive_controller", "-c", CM],
+        arguments=["mecanum_drive_controller", "-c", CM,
+            "--controller-ros-args",
+            "-r /mecanum_drive_controller/tf_odometry:=/tf",
+            "--controller-ros-args",
+            "-r /mecanum_drive_controller/reference:=/cmd_vel",
+        ],
     )
 
     if drive == "mecanum":
