@@ -14,7 +14,7 @@ namespace teleop_turbopi
         : Node("teleop_turbopi", options)
     {
         // publish to controller specific topics, may combine into unified
-        publisher_cmd_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
+        publisher_cmd_vel_ = this->create_publisher<geometry_msgs::msg::TwistStamped>("cmd_vel", 10);
         publisher_pos_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("position_controllers/commands", 10);
 
         // subscribe to /joy topic for joystick messages
@@ -33,11 +33,15 @@ namespace teleop_turbopi
         }
 
         // Initializes with zeros by default.
-        auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
+        auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::TwistStamped>();
+
+        // set header
+        cmd_vel_msg->header.stamp = get_clock()->now();
+        cmd_vel_msg->header.frame_id = "";
 
         // set wheel velocity
-        cmd_vel_msg->linear.x = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_Y)];
-        cmd_vel_msg->angular.z = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_X)];
+        cmd_vel_msg->twist.linear.x = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_Y)];
+        cmd_vel_msg->twist.angular.z = joy_msg->axes[std::to_underlying(TurboPi::axes::LEFT_JOY_X)];
 
         // publish velocities
         publisher_cmd_vel_->publish(std::move(cmd_vel_msg));
