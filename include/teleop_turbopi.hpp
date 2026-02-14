@@ -8,6 +8,7 @@
 #define TELEOP_MANUAL_JOY__TELEOP_MANUAL_JOY_HPP_
 
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/twist_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/node_options.hpp"
 #include "sensor_msgs/msg/joy.hpp"
@@ -75,7 +76,7 @@ namespace teleop_turbopi
 
         private:
             // publishers - topics we publish commands to; cmd_vel and positions
-            rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_cmd_vel_;
+            rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr publisher_cmd_vel_;
             rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_pos_;
 
             // subscriber - the joy topic we listen to for joystick buttons
