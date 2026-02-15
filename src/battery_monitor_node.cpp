@@ -32,7 +32,7 @@ namespace turbopi
             return;
         }
 
-        if(msg->voltage > 3 && msg->voltage < 4.3)
+        if(msg->voltage > 3 && msg->voltage < 4.1)
         {
             RCLCPP_INFO(rclcpp::get_logger("BatteryMonitorNode"),
                         "Battery low voltage %f, shutting down",
