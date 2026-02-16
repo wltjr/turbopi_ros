@@ -95,6 +95,7 @@ remote.
 - [ign_gazebo.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/ign_gazebo.launch.py) -
 Start a simulated TurboPi in Gazebo; run in container or desktop/laptop.
   - `depth:=False` - Run customized 3d camera vs sonar with 2d camera (default `True`).
+  - `drive:=mecanum` - Drive system diff or mecanum (default `diff`).
   - `lidar:=False` - Run customized RPLidar (default `True`).
   - `world:=playground` - The world the robot will be spawned within (default `none`).
 - [nav2.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/nav2.launch.py) -
@@ -102,6 +103,7 @@ Start the Nav 2 stack, used with both hardware and simulation.
 - [turbopi_ros.launch.py](https://github.com/wltjr/turbopi_ros/blob/main/launch2/turbopi_ros.launch.py) -
 Start ROS 2 with hardware support for TurboPi on robot hardware, following
 optional arguments (default `False`).
+  - `drive:=mecanum` - Drive system diff or mecanum (default `diff`).
   - `lidar:=True` - Enable optional hardware lidar support (RPLidar)
   - `sim:=True` - Use simulated hardware
 
