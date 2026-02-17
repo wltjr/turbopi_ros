@@ -2,10 +2,9 @@
 v4l2_camera_node:
   ros__parameters:
       video_device: "/dev/video0"
-      frame_id: "camera"
+      camera_frame_id: "camera"
       pixel_format: "mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
-      image_width: 640
-      image_height: 480
+      image_size: [640, 480]
       camera_info_url: "package://turbopi/config/camera_info.yaml"
       brightness: -1
       contrast: -1
