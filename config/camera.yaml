@@ -10,4 +10,4 @@ v4l2_camera:
       brightness: 113
       contrast: 28
       saturation: 40
-      sharpness: -1
+      hue: 0
