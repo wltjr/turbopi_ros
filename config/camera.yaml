@@ -7,7 +7,7 @@ v4l2_camera:
       output_encoding: "yuv422_yuy2"
       image_size: [640, 480]
       camera_info_url: "package://turbopi/config/camera_info.yaml"
-      brightness: -1
-      contrast: -1
-      saturation: -1
+      brightness: 113
+      contrast: 28
+      saturation: 40
       sharpness: -1
