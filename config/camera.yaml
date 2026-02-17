@@ -1,5 +1,5 @@
 
-v4l2_camera_node:
+v4l2_camera:
   ros__parameters:
       video_device: "/dev/video0"
       camera_frame_id: "camera"
