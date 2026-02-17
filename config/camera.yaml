@@ -6,7 +6,7 @@ v4l2_camera:
       pixel_format: "YUYV"
       output_encoding: "yuv422_yuy2"
       image_size: [640, 480]
-      camera_info_url: "package://turbopi/config/camera_info.yaml"
+      camera_info_url: "package://turbopi_ros/config/camera_info.yaml"
       brightness: 113
       contrast: 28
       saturation: 40
