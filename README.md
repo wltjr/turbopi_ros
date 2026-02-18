@@ -45,19 +45,20 @@ source /opt/ros/jazzy/setup.bash
 You may want to have your development user environment do this on login via
 `~/.bashrc` file; add that command to the end of that file.
 
-Its recommended to have a ros2 workspace in a user directory for development
-purposes, to build this project, etc; ex `~/ros2_ws/`. The following will refer
-to that directory, and directories created within.
+Its recommended to have a ros workspace in `/opt/ros_ws/` for development
+purposes and to build this project. The following will refer to that directory, and
+directories created within. This directory matches the layout in docker containers,
+and allows usage of RViz2 on a remote system, while running on actual hardware.
 
 ## Download
 
 Download and unpack or clone this repositories contents into your ros2
-workspace; ex `~/ros2_ws/src/turbopi_ros`.
+workspace; ex `/opt/ros_ws/src/turbopi_ros`.
 
 ## Build and Install
 
 Building is done using colcon which will invoke cmake and run the necessary
-commands. Run the following command in your ros2 workspace; ex `~/ros2_ws/`.
+commands. Run the following command in your ros2 workspace; ex `/opt/ros_ws/`.
 
 ```bash
 colcon build --symlink-install --packages-select  turbopi_ros
@@ -66,7 +67,7 @@ colcon build --symlink-install --packages-select  turbopi_ros
 ### Source install
 
 Make sure to run the following command after install and login. Run the
-following command in your ros2 workspace; ex `~/ros2_ws/`.
+following command in your ros2 workspace; ex `/opt/ros_ws/`.
 
 ```bash
 source install/setup.bash
@@ -76,14 +77,14 @@ You may want to have your development user environment do this on login via
 `~/.bashrc` file; add the following to the end of that file.
 
 ```bash
-source ~/ros2_ws/install/setup.bash
+source /opt/ros_ws/install/setup.bash
 ```
 
 ## Run
 
 There are several launchers that are used to run parts of the project, some are
 used together, some stand-alone, some for simulation and the robot. They are all
-run from your ros2 workspace; ex `~/ros2_ws/`.
+run from your ros2 workspace; ex `/opt/ros_ws/`.
 
 ```bash
 ros2 launch turbopi_ros turbopi_ros.launch.py
