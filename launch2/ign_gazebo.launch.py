@@ -291,6 +291,7 @@ def launch_setup(context: LaunchContext):
     if lidar:
         nodes += [
             delayed_static_transform_publisher_lidar,
+            delayed_slam_toolbox_node_spawner,
         ]
 
     if depth and lidar:
@@ -304,7 +305,6 @@ def launch_setup(context: LaunchContext):
     nodes += [
         delayed_static_transform_publisher_base_link,
         delayed_static_transform_publisher_sonar,
-        delayed_slam_toolbox_node_spawner,
     ]
 
     return nodes
