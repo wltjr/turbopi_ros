@@ -1,0 +1,10 @@
+# Hiwonder ROS Robot Controller (STM32 co-processor) via GPIO UART
+# On Raspberry Pi 5 the expansion board connects via the 40-pin header UART
+# which appears as ttyAMA0 (the primary UART, enabled by dtoverlay=uart0-pi5).
+#
+# Note: ttyAMA10 is a different UART; the board is on ttyAMA0.
+#
+# Requires UART to be enabled in /boot/firmware/config.txt:
+#   dtoverlay=uart0-pi5
+# (see etc/udev/install_udev_rules.sh for the full setup procedure)
+KERNEL=="ttyAMA0", SUBSYSTEM=="tty", GROUP="dialout", MODE="0660", SYMLINK+="rrc"

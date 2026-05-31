@@ -1,0 +1,20 @@
+# 99-ds4-bluetooth.rules
+# Trigger ds4-autoconnect.service when the Bluetooth adapter is added/powered.
+# This covers two cases:
+#   1. The Pi5's onboard BT adapter initialises after boot.
+#   2. A USB BT dongle is plugged in (fallback adapter).
+#
+# The service itself uses bluetoothctl to reconnect all paired
+# "Wireless Controller" (DS4) devices.
+#
+# Install: sudo cp 99-ds4-bluetooth.rules /etc/udev/rules.d/
+#          sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# Raspberry Pi 5 onboard Bluetooth (BCM4345C0 via hci_uart / btbcm)
+# subsystem=bluetooth, devtype=host — fires when the HCI adapter is registered.
+SUBSYSTEM=="bluetooth", ACTION=="add", RUN+="/bin/systemctl start ds4-autoconnect.service"
+
+# Also trigger when any HCI network interface (hci0, hci1…) comes up,
+# e.g. after rfkill unblock or adapter power-on.
+KERNEL=="hci[0-9]*", SUBSYSTEM=="bluetooth", ACTION=="add", \
+    RUN+="/bin/systemctl start ds4-autoconnect.service"

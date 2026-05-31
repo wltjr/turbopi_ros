@@ -7,6 +7,8 @@
                     <plugin>turbopi_hardware_interface/TurboPiSystemHardware</plugin>
                     <param name="hw_start_duration_sec">1.0</param>
                     <param name="hw_stop_duration_sec">3.0</param>
+                    <param name="camera_pan_offset">0.0</param>
+                    <param name="camera_tilt_offset">0.0</param>
                 </hardware>
             </xacro:if>
             <xacro:if value="${use_hardware == 'mock'}">

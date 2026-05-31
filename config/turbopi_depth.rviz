@@ -164,6 +164,10 @@ Visualization Manager:
           Value: true
         lidar:
           Value: true
+        odom:
+          Value: true
+        map:
+          Value: true
         rear_left_wheel:
           Value: true
         rear_right_wheel:
@@ -178,56 +182,40 @@ Visualization Manager:
           Value: true
         spacer_4:
           Value: true
-        turbopi/base_link:
-          Value: true
-        turbopi/base_link/depth_camera:
-          Value: true
-        turbopi/base_link/lidar_sensor:
-          Value: true
-        turbopi/base_link/sonar_sensor:
-          Value: true
-        turbopi/map:
-          Value: true
-        turbopi/odom:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: false
       Show Names: false
       Tree:
-        turbopi/map:
-          turbopi/odom:
-            turbopi/base_link:
-              base_link:
-                chassis:
-                  depth_camera:
-                    turbopi/base_link/depth_camera:
-                      {}
-                  front_left_wheel:
-                    {}
-                  front_right_wheel:
-                    {}
-                  laser:
-                    {}
-                  lidar:
-                    turbopi/base_link/lidar_sensor:
-                      {}
-                  rear_left_wheel:
-                    {}
-                  rear_right_wheel:
-                    {}
-                  sonar:
-                    turbopi/base_link/sonar_sensor:
-                      {}
-                  spacer_1:
-                    {}
-                  spacer_2:
-                    {}
-                  spacer_3:
-                    {}
-                  spacer_4:
-                    {}
+        map:
+          odom:
+            base_link:
+              chassis:
+                depth_camera:
+                  {}
+                front_left_wheel:
+                  {}
+                front_right_wheel:
+                  {}
+                laser:
+                  {}
+                lidar:
+                  {}
+                rear_left_wheel:
+                  {}
+                rear_right_wheel:
+                  {}
+                sonar:
+                  {}
+                spacer_1:
+                  {}
+                spacer_2:
+                  {}
+                spacer_3:
+                  {}
+                spacer_4:
+                  {}
       Update Interval: 0
       Value: true
     - Angle Tolerance: 0.10000000149011612
@@ -379,7 +367,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:

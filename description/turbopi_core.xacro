@@ -338,13 +338,16 @@
     </link>
 
     <!-- 360 Lidar -->
-    <xacro:macro name="lidar" params="use_lidar">
+    <!-- lidar_yaw: rotation around Z axis for the lidar mount.
+         Default is pi (180°) because the RPLidar A1 is mounted facing backward
+         on the TurboPi. Set lidar_yaw:=0 if your mount faces forward. -->
+    <xacro:macro name="lidar" params="use_lidar lidar_yaw:=${pi}">
         <xacro:if value="${use_lidar == 'lidar'}">
             <joint name="lidar_joint" type="fixed">
                 <parent link="chassis"/>
                 <child link="lidar"/>
                 <axis xyz="0 0 1"/>
-                <origin xyz="${-lidar_length/2 + 0.01} 0 0.0725" rpy="0 0 0"/>
+                <origin xyz="${-lidar_length/2 + 0.01} 0 0.0725" rpy="0 0 ${lidar_yaw}"/>
             </joint>
             <link name="lidar">
                 <collision>

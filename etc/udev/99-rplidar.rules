@@ -1,0 +1,12 @@
+# RPLidar USB-to-serial adapter → /dev/rplidar symlink
+#
+# RPLidar A1/A2/A3 use a CP2102 (Silicon Labs) USB-to-UART bridge:
+#   idVendor=10c4  idProduct=ea60
+#
+# If your unit uses a different chip (e.g. CH340: 1a86:7523) verify with:
+#   udevadm info -a -n /dev/ttyUSBx | grep -E 'idVendor|idProduct'
+# and adjust the ATTRS below accordingly.
+#
+# Creates /dev/rplidar  (group dialout, rw for group members)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
+    GROUP="dialout", MODE="0660", SYMLINK+="rplidar"

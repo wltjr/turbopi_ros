@@ -1,0 +1,7 @@
+# Grant the video group read/write access to all V4L2 camera devices.
+# This lets the v4l2_camera_node (running as a normal user in the video group)
+# open /dev/video* without requiring root or sudo.
+#
+# Install: sudo cp 99-video.rules /etc/udev/rules.d/
+#          sudo udevadm control --reload-rules && sudo udevadm trigger
+KERNEL=="video[0-9]*", GROUP="video", MODE="0660"

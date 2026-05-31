@@ -12,7 +12,7 @@ controller_manager:
       type: mecanum_drive_controller/MecanumDriveController
 
     position_controllers:
-      type: position_controllers/JointGroupPositionController
+      type: joint_trajectory_controller/JointTrajectoryController
 
 diff_drive_controller:
   ros__parameters:
@@ -53,3 +53,17 @@ position_controllers:
     joints:
       - camera_joint
       - camera_frame_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    allow_partial_joints_goal: true
+    # open_loop_control is intentionally NOT set (defaults to false).
+    # When false the JTC uses state interfaces (hw_positions_) to initialise
+    # its hold position, which correctly reports 0.0 for servo joints before
+    # any trajectory is received.  With open_loop_control: true the JTC would
+    # read the command interface value – which is NaN until the first goal
+    # arrives – and produce NaN interpolation, preventing servo movement.
+    allow_nonzero_velocity_at_trajectory_end: true
+    state_publish_rate: 10.0
+    action_monitor_rate: 10.0

@@ -2,17 +2,18 @@
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
+ *
+ *  Updated for Pi5 / ROS Robot Controller (STM32) board.
+ *  Battery voltage is now read from the STM32 via the Board serial class
+ *  instead of direct I2C ADC register reads.
  */
 
 #ifndef TURBOPI__BATTERY_H
 #define TURBOPI__BATTERY_H
 
 #include <inttypes.h>
-#include <vector>
 
-#include "i2c.hpp"
-
-const uint8_t BATTERY_ADDRESS = 0x7A;
+#include "board.hpp"
 
 // classname used in logging output
 extern char const* const CLASS_NAME;
@@ -20,7 +21,9 @@ extern char const* const CLASS_NAME;
 namespace turbopi
 {
     /**
-     * @brief Class to interface with the Battery hardware
+     * @brief Class to interface with the Battery hardware via the Pi5 Board
+     *        (STM32 co-processor).  Battery voltage is reported by the STM32
+     *        over the serial UART in millivolts.
      */
 	class Battery
 	{
@@ -32,29 +35,27 @@ namespace turbopi
             Battery();
 
             /**
-             * @brief Construct a new Battery object, handles initialization
+             * @brief Construct a new Battery object.
              *
-             * @param i2c_dev          I2C device minor number range 0-89
-             * @param i2c_address      I2C slave address
+             * @param board  reference to the shared Board serial interface
              */
-			Battery(uint8_t i2c_dev, uint8_t i2c_address);
+			Battery(Board &board);
 
             /**
-             * @brief Destroy the Battery object, closes device handle
+             * @brief Destroy the Battery object
              */
 			virtual ~Battery();
 
             /**
-             * @brief Get voltage reading from battery
+             * @brief Get voltage reading from battery (in Volts).
+             *        Reads the millivolt value reported by the STM32.
              *
-             * @return float voltage reading from battery
+             * @return float voltage reading in Volts, or 0.0 if not yet available
              */
             float getVoltage();
 
 		private:
-			I2C *i2c_;
-            uint8_t i2c_address_;
-
+            Board *board_ = nullptr;
 	};
 }
 

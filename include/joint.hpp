@@ -2,21 +2,23 @@
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
+ *
+ *  Updated for Pi5 / ROS Robot Controller (STM32) board.
+ *  Motor and servo control now go through the Board serial class
+ *  instead of direct I2C register writes.
  */
 
 #ifndef TURBOPI__JOINT_H
 #define TURBOPI__JOINT_H
 
+#include <cmath>
+#include <limits>
 #include <sstream>
 
-#include "i2c.hpp"
+#include "board.hpp"
 
-const uint8_t BASE_SLAVE_ADDRESS = 0x7A;
-const uint8_t CAMERA_ADDRESS = 21;
-const uint8_t MOTOR_ADDRESS = 31;
-const uint8_t SERVO_ADDRESS_CMD = 40;
-
-const uint8_t TYPE_NONE = -1;
+// Joint types
+const uint8_t TYPE_NONE  = 255;
 const uint8_t TYPE_MOTOR = 0;
 const uint8_t TYPE_SERVO = 1;
 
@@ -26,7 +28,7 @@ namespace turbopi
 {
     /**
      * @brief Class to hardware interface with and represent motors, servos,
-     *        and other joints connected to the robot
+     *        and other joints connected to the robot via the Board (STM32).
      */
 	class Joint
 	{
@@ -41,13 +43,13 @@ namespace turbopi
 
             /**
              * @brief Construct a new Joint object, primary means to create a
-             *        new joint with a read only id, type, and i2c device
-             * 
-             * @param id internal joint id, read only after creation
-             * @param type type of joint from DEFINES; motor, servo, etc
-             * @param i2c  i2c device for the joint
+             *        new joint with a read-only id, type, and board reference.
+             *
+             * @param id    1-based joint id (matches motor/servo id on the board)
+             * @param type  type of joint: TYPE_MOTOR or TYPE_SERVO
+             * @param board reference to the Board serial interface
              */
-			Joint(uint8_t id, uint8_t type, I2C &i2c);
+			Joint(uint8_t id, uint8_t type, Board &board);
 
             /**
              * @brief Destroy the Joint object, empty/unused
@@ -56,57 +58,60 @@ namespace turbopi
 
             /**
              * @brief Actuate the joint
-             * 
-             * @param effort    the effort of the actuation, speed, position, etc
-             * @param duration  the duration of the effort
+             *
+             * @param effort    the effort of the actuation (velocity for motors,
+             *                  position [-1..1] for servos)
+             * @param duration  duration hint (used for servo moves, seconds)
              */
 			void actuate(double effort, uint8_t duration);
 
             /**
              * @brief Get the type of joint
-             * 
+             *
              * @return int type of joint from DEFINES; motor, servo, etc
              */
 			int getType();
 
             /**
-             * @brief Get the type of joint
-             * 
-             * @return uint8_t internal joint id
+             * @brief Get the joint id
+             *
+             * @return uint8_t internal joint id (1-based)
              */
 			uint8_t getId();
 
 	        double getPreviousEffort();
 
             /**
-             * @brief Get the joints curent value
-             * 
-             * @return double internal joint id
+             * @brief Get the joint's current value
+             *        For motors: returns last commanded velocity (odometry not
+             *        available via serial without encoder feedback).
+             *
+             * @return double joint value
              */
 			double getValue();
 
             /**
              * @brief Set the type of joint
-             * 
-             * @param type type of joint from DEFINES; motor, servo, etc
+             *
+             * @param type type of joint from DEFINES
              */
 			void setType(uint8_t type);
 
             /**
-             * @brief Set the joint limits, minimum and maximum values
-             * 
-             * @param min   the minimum joint value
-             * @param max   the maximum joint value
+             * @brief Set the joint limits (used for servo range clamping)
+             *
+             * @param min   the minimum joint value (degrees)
+             * @param max   the maximum joint value (degrees)
              */
 			void setLimits(uint8_t min, uint8_t max);
 
 		private:
-            I2C *i2c_;
-			uint8_t id_ = 0;
-			uint8_t max_ = 75;
-			uint8_t min_ = 0;
+            Board  *board_;
+			uint8_t id_   = 0;
+			uint8_t max_  = 75;
+			uint8_t min_  = 0;
 			uint8_t type_ = 0;
-			double _previousEffort;
+			double  _previousEffort = std::numeric_limits<double>::quiet_NaN();
 	};
 }
 

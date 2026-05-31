@@ -1,0 +1,22 @@
+[Unit]
+Description=DualShock 4 Bluetooth Auto-Connect
+# Wait for the bluetooth stack to be fully up and the adapter powered on.
+After=bluetooth.service
+Requires=bluetooth.service
+# Also wait for network (some BT adapters re-init after network is up on Pi5)
+After=network.target
+
+[Service]
+Type=oneshot
+# Give BlueZ a moment to settle and scan its device database before
+# we attempt to connect trusted paired devices.
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/local/bin/ds4-autoconnect.sh
+RemainAfterExit=yes
+
+# If a DS4 is not powered on at boot the connect will fail – that is
+# normal. Don't restart on failure; the udev rule handles hot-plug.
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
