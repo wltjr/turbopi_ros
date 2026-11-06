@@ -60,24 +60,32 @@ namespace turbopi
         {
             float duty = 0.0f;
 
-            if (floor(effort) != 0)
+            if (effort != 0.0)
             {
-                const float LOW = 50.0f;
+                // Convert rad/s (from mecanum_drive_controller) to duty [-100..100].
+                // The controller publishes values in roughly ±31 rad/s at full wheel speed,
+                // so dividing by 31 and scaling to 100 gives a proportional duty.
+                // Use the actual float value (NOT ceil) for smooth analog control.
+                duty = static_cast<float>(effort / 31.0 * 100.0);
 
-                duty = static_cast<float>(ceil(effort) / 31.0 * 100.0);
+                // Hard clamp to valid range
+                if (duty > 100.0f)  duty =  100.0f;
+                if (duty < -100.0f) duty = -100.0f;
 
-                if (duty > 100.0f)
-                    duty = 100.0f;
-                else if (duty < -100.0f)
-                    duty = -100.0f;
-                else if (duty > 0.0f && duty < LOW)
-                    duty = LOW;
-                else if (duty < 0.0f && duty > -LOW)
-                    duty = -LOW;
+                // Dead-zone cutoff: below this duty the motor receives power but
+                // doesn't actually move (stiction / stall region).
+                // Instead of clamping UP to LOW (which caused a sudden jump to 50%
+                // on any tiny stick input), we snap to ZERO — a clean motor stop.
+                // This means stick movements below ~40% produce no motion, which is
+                // intentional: it prevents motor humming/heating at sub-stall duty.
+                // Tune LOW on the real robot: increase until wheels just barely spin.
+                const float LOW = 28.0f;
+                if (std::abs(duty) < LOW)
+                    duty = 0.0f;
 
                 // Invert left-side motors (ids 1 and 3 are odd).
                 // Matches Pi5 mecanum.py: set_motor_duty([[1,-v1],[2,v2],[3,-v3],[4,v4]])
-                if (id_ & 1u)
+                if (duty != 0.0f && (id_ & 1u))
                     duty = -duty;
             }
 

@@ -213,6 +213,42 @@ You may want to have your development user environment do this on login via
 source /opt/ros_ws/install/setup.bash
 ```
 
+## Remote Access
+Remote system can be accessed through ssh to command, start ROS2 nodes and also troubleshoot, but sometimes you need access to the visual interfaces.
+For such you can use RDP or VNC, the first one SHOULD work but if problem arises is advisable to use xfreerdp
+Also if you use gnome rdp, disable desktop sharing, log off and set a headless user pass
+
+```bash
+grdctl --headless rdp set-credentials marce 12345
+grdctl --headless rdp enable
+```
+
+### On the target (the navigator)
+```bash
+sudo apt update
+sudo apt install xrdp
+
+sudo systemctl enable --now xrdp
+```
+
+### On the remote system
+Install xfreeRDP according to your computer OS, and use it like this
+```bash
+xfreerdp /v:<TARGET_IP> /u:<USERNAME>
+```
+Where user and password are the target credentials
+
+### Consuming telemetry remotely
+Set both on the rover and the remote linux computer the same domain id, and share the same network
+```bash
+export ROS_DOMAIN_ID=0
+```
+
+You will be able to see telemetry and see rviz (you need the same code to see the turbopi.rviz descriptions)
+```bash
+ros2 run rviz2 rviz2 -d ~/ros2_ws/install/turbopi_ros/share/turbopi_ros/config/turbopi.rviz
+```
+
 ## Run
 
 There are several launchers that are used to run parts of the project, some are
@@ -490,7 +526,8 @@ ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped \
 | Terminal | Where | Command |
 |----------|-------|---------|
 | 1 — Robot + SLAM | Pi | `ros2 launch turbopi_ros turbopi_ros.launch.py drive:=mecanum camera:=True camera_type:=default lidar:=True` |
-| 2 — Gamepad | Pi or desktop | `ros2 launch turbopi_ros gamepad.launch.py` |
+| 2 — a: Gamepad | Pi or desktop | `ros2 launch turbopi_ros gamepad.launch.py` |
+| 2 — b: Keyboard | Pi or desktop | `ros2 run teleop_twist_keyboard teleop_twist_keyboard` |
 | 3 — Nav 2 | Pi or desktop | `ros2 launch turbopi_ros nav2.launch.py` |
 | 4 — RViz2 | Desktop | `ros2 run rviz2 rviz2 -d ~/ros2_ws/install/turbopi_ros/share/turbopi_ros/config/turbopi.rviz` |
 
